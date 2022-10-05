@@ -19,7 +19,8 @@
             "error",
             "double"
         ],
-        "indent": ["error", 4]
+        "indent": ["error", 4],
+        "class-methods-use-this" : ["warn"]
     },
     "overrides": [
         {
@@ -38,6 +39,9 @@
                 "@typescript-eslint/indent" : [
                     "error",
                     4
+                ],
+                "@typescript-eslint/no-unused-vars" : [
+                    "warn"
                 ]
             }
         }
