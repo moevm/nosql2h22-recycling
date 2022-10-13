@@ -1,7 +1,8 @@
 import { Response, Request } from "express";
+import BaseController from "./BaseController";
 
-export default class UserController {
-    public ping(req: Request, res: Response): void {
-        res.send("ok");
+export default class UserController extends BaseController {
+    public async ping(): Promise<string> {
+        return "ok";
     }
 }

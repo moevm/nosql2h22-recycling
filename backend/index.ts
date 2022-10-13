@@ -5,6 +5,7 @@ import { Express } from "express/ts4.0";
 import DatabaseManager from "./database/DatabaseManager";
 import ApiRouter from "./routes/ApiRouter";
 import AdminRouter from "./routes/AdminRouter";
+import errorHandler from "./middlewares/ErrorHandler/ErrorHandler";
 
 const port: number | string = process.env.PORT || 8000;
 const app: Express = express();
@@ -18,6 +19,8 @@ app.use([
 
 app.use("/api", ApiRouter);
 app.use("/admin", AdminRouter);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
     console.log(`Ready on: ${port}`);

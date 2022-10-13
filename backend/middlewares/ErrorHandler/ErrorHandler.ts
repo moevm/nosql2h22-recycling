@@ -10,6 +10,7 @@ const errorHandler = (
     const status: number = err.status || 500;
     const message: string = err.message || "Internal server error";
 
+    console.error(`${status}: ${message}`);
     res.send(message).status(status);
 };
 
