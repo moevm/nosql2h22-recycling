@@ -3,11 +3,13 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "dev": "npm-run-all --parallel dev:{server,client}",
-        "dev:client": "cd ./frontend && npm run dev",
+        "dev": "npm-run-all --parallel dev:{server,client,client-admin}",
         "dev:server": "cd ./backend && npm run dev",
-        "build:client": "cd ./frontend && npm run build",
-        "start:client": "cd ./frontend && npm run start",
+        "dev:client": "cd ./client && npm run dev",
+        "dev:client-admin": "cd ./client-admin && npm start",
+        "start": "npm-run-all --parallel start:{server,client}",
+        "start:server": "cd ./client-admin && npm run build && cd ../ && npm run dev:server",
+        "start:client": "cd ./client && npm run build && npm start",
         "lint": "eslint --fix --ext .ts,.tsx,.js,.jsx ./",
         "deps": "npm ci && cd ./backend && npm ci"
     },
