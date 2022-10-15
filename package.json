@@ -8,7 +8,8 @@
         "dev:server": "cd ./backend && npm run dev",
         "build:client": "cd ./frontend && npm run build",
         "start:client": "cd ./frontend && npm run start",
-        "lint": "eslint --fix --ext .ts,.tsx,.js,.jsx ./"
+        "lint": "eslint --fix --ext .ts,.tsx,.js,.jsx ./",
+        "deps": "npm ci && cd ./backend && npm ci"
     },
     "author": "",
     "license": "ISC",
