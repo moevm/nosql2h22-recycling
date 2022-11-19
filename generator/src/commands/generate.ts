@@ -8,7 +8,11 @@ export default class Generate extends Command {
   static flags = {
     port: Flags.integer({char: 'p', description: 'type: number, number of port for mongo', required: true}),
     count_of_users: Flags.integer({char: 'u', description: 'type:number, number of users', required: true}),
-    order_per_person: Flags.integer({char: 'o', description: 'type:number, number of orders for each user', required: true})
+    order_per_person: Flags.integer({
+      char: 'o',
+      description: 'type:number, number of orders for each user',
+      required: true
+    })
   }
 
   static args = [{name: 'file'}]
@@ -47,28 +51,25 @@ export default class Generate extends Command {
     return Math.floor(Math.random() * max);
   }
 
-  public generateData(numUsers: number, numOrders: number){
+  public generateData(numUsers: number, numOrders: number) {
     let orders = this.generateOrders(numOrders * numOrders);
-    console.log(orders);
+    let users = this.generateUsers(numUsers);
+    console.log(users);
   }
 
-  public generateName(){
-
-  }
-
-  public generateDate(start: Date, end: Date){
+  public generateDate(start: Date, end: Date) {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
   }
 
-  public generateOrders(n: number){
-    let orders = []
-    for (let i = 0; i < n; i++){
-      orders.push(this.generateOrder())
+  public generateOrders(n: number) {
+    let orders = [];
+    for (let i = 0; i < n; i++) {
+      orders.push(this.generateOrder());
     }
-    return orders
+    return orders;
   }
 
-  public generateOrder(){
+  public generateOrder() {
     let history = this.generateHistory();
     return {
       "_id": new mongoose.Types.ObjectId(), "users": [], status: history[history.length - 1].status,
@@ -77,7 +78,7 @@ export default class Generate extends Command {
     };
   }
 
-  public generateReception(){
+  public generateReception() {
     const receptions = [
       'G. St. Petersburg, Ivan Ivanova street, 5',
       'G. St. Petersburg, Karl Marx street, 17',
@@ -99,7 +100,7 @@ export default class Generate extends Command {
   }
 
   public generateMaterial() {
-    let types = [
+    const types = [
       "plastic",
       "paper",
       "metal",
@@ -107,7 +108,7 @@ export default class Generate extends Command {
       "glass",
       "battery"
     ];
-    let subtypes = [
+    const subtypes = [
       [
         "Polyethylene terephthalate",
         "High density polyethylene",
@@ -156,7 +157,7 @@ export default class Generate extends Command {
         "Manganese-zinc element"
       ]
     ];
-    let materialOdds = [15, 25, 200, 15, 2.5, 40];
+    const materialOdds = [15, 25, 200, 15, 2.5, 40];
     let count = this.getRandomInt(151);
     let firstNum = this.getRandomInt(types.length - 1);
     return {
@@ -167,7 +168,7 @@ export default class Generate extends Command {
     };
   }
 
-  public generateHistory(){
+  public generateHistory() {
     let firstDate: Date = this.generateDate(new Date(2022, 10, 1), new Date());
     let history = [];
     switch (this.getRandomInt(4)) {
@@ -177,25 +178,138 @@ export default class Generate extends Command {
       }
       case 1: {
         history.push({status: 'Created', date: firstDate});
-        history.push({status: 'For export', date: new Date(firstDate.getTime() + 86400000) });
+        history.push({status: 'For export', date: new Date(firstDate.getTime() + 86400000)});
         break;
       }
       case 2: {
         history.push({status: 'Created', date: firstDate});
-        history.push({status: 'For export', date: new Date(firstDate.getTime() + 86400000) });
-        history.push({status: 'In delivery', date: new Date(firstDate.getTime() + 86400000 * 2) });
+        history.push({status: 'For export', date: new Date(firstDate.getTime() + 86400000)});
+        history.push({status: 'In delivery', date: new Date(firstDate.getTime() + 86400000 * 2)});
         break;
       }
       case 3: {
         history.push({status: 'Created', date: firstDate});
-        history.push({status: 'For export', date: new Date(firstDate.getTime() + 86400000) });
-        history.push({status: 'In delivery', date: new Date(firstDate.getTime() + 86400000 * 2) });
-        history.push({status: 'Delivered', date: new Date(firstDate.getTime() + 86400000 * 3) });
+        history.push({status: 'For export', date: new Date(firstDate.getTime() + 86400000)});
+        history.push({status: 'In delivery', date: new Date(firstDate.getTime() + 86400000 * 2)});
+        history.push({status: 'Delivered', date: new Date(firstDate.getTime() + 86400000 * 3)});
         break;
       }
     }
     return history;
   }
 
-}
+  public generateUsers(numUsers: number) {
+    let users = [];
+    for (let i = 0; i < numUsers; i++) {
+      users.push(this.generateUser(i, 'User'));
+    }
+    for (let i = 0; i < Math.floor(numUsers / 2); i++) {
+      users.push(this.generateUser(i, 'Driver'));
+    }
+    for (let i = 0; i < 15; i++) {
+      users.push(this.generateUser(i, 'Manager'));
+    }
+    users.push(this.generateUser(1, 'Admin'));
+    return users;
+  }
 
+  public generateUser(i: number, role: string) {
+    let name = this.generateName();
+    let surname = this.generateSurname();
+    return {
+      "_id": new mongoose.Types.ObjectId(), "login": this.generateLogin(name, surname, i),
+      "password": this.generatePassword(), "email": this.generateEmail(name, surname, i), "role": role,
+      "firstName": name, "lastName": surname, "loyalty": this.getRandomInt(5) + 1, "orders": []
+
+    };
+  }
+
+  public generateLogin(name: string, surname: string, i: number) {
+    return name + '.' + surname + i.toString();
+  }
+
+  public generateName() {
+    const names = [
+      "Alexander",
+      "Dmitry",
+      "Maksim",
+      "Sergey",
+      "Andrew",
+      "Alexei",
+      "Artyom",
+      "Ilya",
+      "Kirill",
+      "Michael",
+      "Nikita",
+      "Matvey",
+      "Novel",
+      "Egor",
+      "Arseniy",
+      "Ivan",
+      "Denis",
+      "Evgeny",
+      "Daniel",
+      "Timothy",
+      "Vladislav",
+      "Igor",
+      "Vladimir",
+      "Paul",
+      "Ruslan"
+    ];
+    return names[this.getRandomInt(names.length - 1)];
+  }
+
+
+  public generateSurname() {
+    const surnames = [
+      "Ivanov",
+      "Vasiliev",
+      "Petrov",
+      "Smirnov",
+      "Mikhailov",
+      "Fedorov",
+      "Sokolov",
+      "Yakovlev",
+      "Popov",
+      "Andreev",
+      "Alekseev",
+      "Alexandrov",
+      "Lebedev",
+      "Grigoriev",
+      "Stepanov",
+      "Semyonov",
+      "Pavlov",
+      "Bogdanov",
+      "Nikolaev",
+      "Dmitriev",
+      "Egorov",
+      "Volkov",
+      "Kuznetsov",
+      "Nikitin",
+      "Solovyov"
+    ];
+    return surnames[this.getRandomInt(surnames.length - 1)];
+  }
+
+  public generatePassword(){
+    const symbols = Array.from("1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM");
+    let password: string = "";
+    for (let i = 0; i < 8; i++){
+      password += symbols[this.getRandomInt(symbols.length)];
+    }
+    return password;
+  }
+
+  public generateEmail(name: string, surname: string, i: number){
+    const domains = [
+      "hotmail.com",
+      "yahoo.com",
+      "gmail.com",
+      "aol.com",
+      "mail.ru",
+      "yandex.ru",
+      "rambler.ru"
+    ];
+    return name + "." + surname + i.toString() + "@" + domains[this.getRandomInt(domains.length - 1)];
+  }
+}
