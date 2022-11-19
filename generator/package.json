@@ -19,7 +19,9 @@
   "dependencies": {
     "@oclif/core": "^1.19.1",
     "@oclif/plugin-help": "^5",
-    "@oclif/plugin-plugins": "^2.1.6"
+    "@oclif/plugin-plugins": "^2.1.6",
+    "mongodb": "^4.12.0",
+    "mongoose": "^6.7.2"
   },
   "devDependencies": {
     "@oclif/test": "^2.2.10",
