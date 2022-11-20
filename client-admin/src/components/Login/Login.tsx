@@ -1,14 +1,34 @@
 import React, {useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
-
+import { useNavigate } from "react-router-dom";
 import './Login.css'
 
 export const Login = () => {
     const [show, setShow] = useState(true);
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const navigate = useNavigate();
 
     const handleClose = () => setShow(false);
     const handleLogin = () => {
+        if(email === "admin" && password === "admin"){
+            navigate('/admin_screen')
+        }
+        if(email === "manager" && password === "manager"){
+            navigate('/manager_screen')
+        }
+        if(email === "carrier" && password === "carrier"){
+            navigate('/carrier_screen')
+        }
+    }
 
+    const savePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPassword(event.target.value);
+    }
+
+    const saveEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
     }
 
     return (
@@ -23,6 +43,7 @@ export const Login = () => {
                         <Form.Control
                             type="email"
                             placeholder="name@example.com"
+                            onChange={saveEmail}
                             autoFocus
                         />
                     </Form.Group>
@@ -34,6 +55,7 @@ export const Login = () => {
                         <Form.Control
                             type="password"
                             placeholder='Password'
+                            onChange={savePassword}
                         />
                     </Form.Group>
                 </Form>
