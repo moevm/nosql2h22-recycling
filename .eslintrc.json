@@ -11,6 +11,15 @@
                 "unnamedComponents": "arrow-function"
             }
         ],
+        "react/jsx-indent": [
+            0
+        ],
+        "react/jsx-indent-props": [
+            0
+        ],
+        "react/require-default-props": [
+            0
+        ],
         "arrow-body-style": [
             "error",
             "always"
@@ -20,7 +29,10 @@
             "double"
         ],
         "indent": ["error", 4],
-        "class-methods-use-this" : ["warn"]
+        "class-methods-use-this" : ["warn"],
+        "import/prefer-default-export": [
+            1
+        ]
     },
     "overrides": [
         {
@@ -29,7 +41,7 @@
             "extends": ["airbnb-typescript"],
             "plugins": ["@typescript-eslint"],
             "parserOptions": {
-                "project": ["./backend/tsconfig.json"]
+                "project": ["./backend/tsconfig.json", "./client/tsconfig.json"]
             },
             "rules": {
                 "@typescript-eslint/quotes": [
