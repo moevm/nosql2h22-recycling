@@ -16,9 +16,13 @@ const server = express();
             return handle(req, res);
         });
 
+        server.post("*", (req, res) => {
+            return handle(req, res);
+        });
+
         server.listen(port, (err) => {
             if (err) throw err;
-            console.log(`> Ready on localhost:${port} - env ${process.env.NODE_ENV}`);
+            console.log(`> Ready on localhost:${port}`);
         });
     } catch (e) {
         console.error(e);

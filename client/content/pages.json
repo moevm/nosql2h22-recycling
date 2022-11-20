@@ -1,0 +1,10 @@
+[
+    {
+        "link": "/",
+        "title": "Main page"
+    },
+    {
+        "link": "/statistics",
+        "title": "Statistics"
+    }
+]
