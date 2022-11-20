@@ -5,3 +5,26 @@
 .AdminNavbar {
     background-color: green;
 }
+
+h4{
+    color:white;
+    margin-left: 3vh;
+    padding-top: 0.5vh;
+}
+
+.button-login{
+    color: white;
+    border: 1px solid white;
+    background-color: green;
+    padding: 5px 20px;
+    border-radius: 10px;
+}
+
+.button-login:hover{
+    color: green;
+    border: 1px solid white;
+    background-color: white;
+    padding: 5px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}

@@ -41,7 +41,7 @@
             "extends": ["airbnb-typescript"],
             "plugins": ["@typescript-eslint"],
             "parserOptions": {
-                "project": ["./backend/tsconfig.json", "./client/tsconfig.json"]
+                "project": ["./backend/tsconfig.json", "./client/tsconfig.json", "./client-admin/tsconfig.json"]
             },
             "rules": {
                 "@typescript-eslint/quotes": [
