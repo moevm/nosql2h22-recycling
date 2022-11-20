@@ -3,7 +3,7 @@ import React from 'react';
 export const ManagerPage = () => {
     return (
         <>
-            <h1>Manager</h1>
+            <h1>Manager_</h1>
         </>
     );
 };
