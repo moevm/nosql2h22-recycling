@@ -14,7 +14,7 @@ export const AdminNavbar = ({content, ...rest}: IAdminNavbarProps) => {
         <Navbar className="AdminNavbar" {...rest}>
             <h4>Recycle Admin</h4>
             <Container>
-                <>{content}</>
+                <span>{content}</span>
                 <a href="/login"><button className='button-login'>Log in</button></a>
             </Container>
         </Navbar>
