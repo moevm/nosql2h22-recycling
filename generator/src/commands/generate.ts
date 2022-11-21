@@ -3,6 +3,24 @@ import mongoose from "mongoose";
 
 
 export default class Generate extends Command {
+  public receptions = [
+    'G. St. Petersburg, Ivan Ivanova street, 5',
+    'G. St. Petersburg, Karl Marx street, 17',
+    'G. St. Petersburg, Torzhkovskaya street, 123',
+    'G. St. Petersburg, Prosveshcheniya avenue, 565',
+    'G. St. Petersburg, Mebelny lane, 14',
+    'G. St. Petersburg, Lesnaya street, 113',
+    'G. St. Petersburg, Lenskaya street, 65',
+    'G. St. Petersburg, Veteranov Avenue, 117',
+    'G. St. Petersburg, Kolomyazhsky avenue, 15',
+    'G. St. Petersburg, Bogatyrsky avenue, 876',
+    'G. St. Petersburg, Professor Popov street, 251',
+    'G. St. Petersburg, Nevsky avenue, 546',
+    'G. St. Petersburg, Sadovaya street, 223',
+    'G. St. Petersburg, Gorokhovaya street, 95',
+    'G. St. Petersburg, Lunocharskogo avenue, 375'
+  ];
+
   static description = 'describe the command here'
 
   static flags = {
@@ -54,7 +72,56 @@ export default class Generate extends Command {
   public generateData(numUsers: number, numOrders: number) {
     let orders = this.generateOrders(numOrders * numOrders);
     let users = this.generateUsers(numUsers);
-    console.log(users);
+    let collections = this.connectCollections(orders, users);
+
+  }
+
+  public connectCollections(orders: Array<any>, users: any){
+    let limits: Array<number> = Array(15).fill(0);
+    let counts: Array<number> = Array(15).fill(0);
+    let newUsers = [];
+    for (let i = 0; i < orders.length; i++){
+      let reception = this.receptions.indexOf(orders[i].reception.address)
+      if (orders[i].history.length < 3){
+        limits[reception] += orders[i].material.count;
+        counts[reception] += 1;
+      }
+
+      users.admin.orders.push(orders[i]._id);
+      orders[i].users.push(users.admin._id);
+
+      if (orders[i].history.length > 2){
+        let numDriver: number = this.getRandomInt(users.drivers.length);
+        users.drivers[numDriver].orders.push(orders[i]._id);
+        orders[i].users.push(users.drivers[numDriver]._id);
+      }
+
+      users.managers[reception].orders.push(orders[i]._id);
+      orders[i].users.push(users.managers[reception]._id);
+
+      let userNum = this.getRandomInt(users.users.length);
+      users.users[userNum].orders.push(orders[i]._id);
+      orders[i].users.push(users.users[userNum]._id);
+      if(users.users[userNum].orders.length == 15){
+        let fullUser = users.users.splice(userNum, 1);
+        newUsers.push(fullUser);
+      }
+    }
+
+    for (let i = 0; i < limits.length; i++){
+      if(limits[i] > 10000){
+        let diff: number = Math.ceil((limits[i] - 10000) / counts[i]);
+        for (let j = 0; j < orders.length; j++){
+          let reception = this.receptions.indexOf(orders[j].reception.address)
+          if(reception === i){
+            if (orders[j].history < 2){
+              orders[j].material.count -= diff;
+            }
+          }
+        }
+      }
+    }
+    return {"users": [users.admin, users.drivers, newUsers, users.managers], "orders": orders};
   }
 
   public generateDate(start: Date, end: Date) {
@@ -79,24 +146,7 @@ export default class Generate extends Command {
   }
 
   public generateReception() {
-    const receptions = [
-      'G. St. Petersburg, Ivan Ivanova street, 5',
-      'G. St. Petersburg, Karl Marx street, 17',
-      'G. St. Petersburg, Torzhkovskaya street, 123',
-      'G. St. Petersburg, Prosveshcheniya avenue, 565',
-      'G. St. Petersburg, Mebelny lane, 14',
-      'G. St. Petersburg, Lesnaya street, 113',
-      'G. St. Petersburg, Lenskaya street, 65',
-      'G. St. Petersburg, Veteranov Avenue, 117',
-      'G. St. Petersburg, Kolomyazhsky avenue, 15',
-      'G. St. Petersburg, Bogatyrsky avenue, 876',
-      'G. St. Petersburg, Professor Popov street, 251',
-      'G. St. Petersburg, Nevsky avenue, 546',
-      'G. St. Petersburg, Sadovaya street, 223',
-      'G. St. Petersburg, Gorokhovaya street, 95',
-      'G. St. Petersburg, Lunocharskogo avenue, 375'
-    ];
-    return receptions[this.getRandomInt(receptions.length - 1)];
+    return this.receptions[this.getRandomInt(this.receptions.length)];
   }
 
   public generateMaterial() {
@@ -159,10 +209,10 @@ export default class Generate extends Command {
     ];
     const materialOdds = [15, 25, 200, 15, 2.5, 40];
     let count = this.getRandomInt(151);
-    let firstNum = this.getRandomInt(types.length - 1);
+    let firstNum = this.getRandomInt(types.length);
     return {
       "title": types[firstNum],
-      "subtype": subtypes[firstNum][this.getRandomInt(subtypes[firstNum].length - 1)],
+      "subtype": subtypes[firstNum][this.getRandomInt(subtypes[firstNum].length)],
       "count": count,
       "price": count * materialOdds[firstNum]
     };
@@ -200,17 +250,19 @@ export default class Generate extends Command {
 
   public generateUsers(numUsers: number) {
     let users = [];
+    let drivers = [];
+    let managers = []
     for (let i = 0; i < numUsers; i++) {
       users.push(this.generateUser(i, 'User'));
     }
     for (let i = 0; i < Math.floor(numUsers / 2); i++) {
-      users.push(this.generateUser(i, 'Driver'));
+      drivers.push(this.generateUser(i, 'Driver'));
     }
     for (let i = 0; i < 15; i++) {
-      users.push(this.generateUser(i, 'Manager'));
+      managers.push(this.generateUser(i, 'Manager'));
     }
-    users.push(this.generateUser(1, 'Admin'));
-    return users;
+    let admin = this.generateUser(1, 'Admin');
+    return {users: users, drivers: drivers, managers: managers, admin: admin};
   }
 
   public generateUser(i: number, role: string) {
@@ -256,7 +308,7 @@ export default class Generate extends Command {
       "Paul",
       "Ruslan"
     ];
-    return names[this.getRandomInt(names.length - 1)];
+    return names[this.getRandomInt(names.length)];
   }
 
 
@@ -288,7 +340,7 @@ export default class Generate extends Command {
       "Nikitin",
       "Solovyov"
     ];
-    return surnames[this.getRandomInt(surnames.length - 1)];
+    return surnames[this.getRandomInt(surnames.length)];
   }
 
   public generatePassword(){
@@ -310,6 +362,6 @@ export default class Generate extends Command {
       "yandex.ru",
       "rambler.ru"
     ];
-    return name + "." + surname + i.toString() + "@" + domains[this.getRandomInt(domains.length - 1)];
+    return name + "." + surname + i.toString() + "@" + domains[this.getRandomInt(domains.length)];
   }
 }
