@@ -41,16 +41,16 @@ export default class Generate extends Command {
     this.initConnection(url)
       .then((res) => {
         console.log(`Connected to database Recycling on port ${flags.port}`);
-      })
-      .catch((err) => {
-        if (err instanceof Error) console.error(err.message);
-      });
-
-    this.generateData(flags.count_of_users, flags.order_per_person);
-
-    this.endConnection()
-      .then((res) => {
-        console.log(`Disconnected from database Recycling on port ${flags.port}`);
+        this.insertData(flags.count_of_users, flags.order_per_person)
+          .then((res) =>{
+            this.endConnection()
+              .then((res) => {
+                console.log(`Disconnected from database Recycling on port ${flags.port}`);
+              })
+              .catch((err) => {
+                if (err instanceof Error) console.error(err.message);
+              });
+          });
       })
       .catch((err) => {
         if (err instanceof Error) console.error(err.message);
@@ -69,17 +69,66 @@ export default class Generate extends Command {
     return Math.floor(Math.random() * max);
   }
 
-  public generateData(numUsers: number, numOrders: number) {
-    let orders = this.generateOrders(numOrders * numOrders);
-    let users = this.generateUsers(numUsers);
-    let collections = this.connectCollections(orders, users);
+  public async insertData(numUsers: number, numOrders: number){
+    let collections = this.generateData(numUsers, numOrders);
 
+    const orderSchema = new mongoose.Schema({
+      "_id": mongoose.Schema.Types.ObjectId,
+      "users": mongoose.Schema.Types.Array,
+      "status": mongoose.Schema.Types.String,
+      "date": mongoose.Schema.Types.Date,
+      "reception":
+      {
+        "address": mongoose.Schema.Types.String,
+        "limit": mongoose.Schema.Types.Number
+      },
+      "material": {
+      "title": mongoose.Schema.Types.String,
+        "subtype": mongoose.Schema.Types.String,
+        "count": mongoose.Schema.Types.Number,
+        "price": mongoose.Schema.Types.Number
+    },
+      "history": mongoose.Schema.Types.Array
+    })
+    const order = mongoose.model('Order', orderSchema);
+    await order.insertMany(collections.orders).then(function(){
+      console.log("Orders data inserted")
+    }).catch(function(error){
+      console.log(error)
+    });
+
+    const userSchema = new mongoose.Schema({
+      "_id": mongoose.Schema.Types.ObjectId,
+      "login": mongoose.Schema.Types.String,
+      "password": mongoose.Schema.Types.String,
+      "email": mongoose.Schema.Types.String,
+      "role": mongoose.Schema.Types.String,
+      "firstName": mongoose.Schema.Types.String,
+      "lastName": mongoose.Schema.Types.String,
+      "loyalty": mongoose.Schema.Types.Number,
+      "orders": mongoose.Schema.Types.Array
+    })
+    const user = mongoose.model('User', userSchema);
+    await user.insertMany(collections.users).then(function(){
+      console.log("Users data inserted")
+    }).catch(function(error){
+      console.log(error)
+    });
+  }
+
+  public generateData(numUsers: number, numOrders: number) {
+    let orders = this.generateOrders(numUsers * numOrders);
+    let users = this.generateUsers(numUsers);
+    return this.connectCollections(orders, users);
   }
 
   public connectCollections(orders: Array<any>, users: any){
     let limits: Array<number> = Array(15).fill(0);
     let counts: Array<number> = Array(15).fill(0);
-    let newUsers = [];
+    let notFull: Array<number> = [];
+    for (let i = 0; i < users.users.length; i++ ){
+      notFull.push(i);
+    }
     for (let i = 0; i < orders.length; i++){
       let reception = this.receptions.indexOf(orders[i].reception.address)
       if (orders[i].history.length < 3){
@@ -99,12 +148,12 @@ export default class Generate extends Command {
       users.managers[reception].orders.push(orders[i]._id);
       orders[i].users.push(users.managers[reception]._id);
 
-      let userNum = this.getRandomInt(users.users.length);
-      users.users[userNum].orders.push(orders[i]._id);
-      orders[i].users.push(users.users[userNum]._id);
-      if(users.users[userNum].orders.length == 15){
-        let fullUser = users.users.splice(userNum, 1);
-        newUsers.push(fullUser);
+
+      let userNum = this.getRandomInt(notFull.length);
+      users.users[notFull[userNum]].orders.push(orders[i]._id);
+      orders[i].users.push(users.users[notFull[userNum]]._id);
+      if(users.users[notFull[userNum]].orders.length == 15){
+        notFull.splice(userNum, 1);
       }
     }
 
@@ -121,7 +170,7 @@ export default class Generate extends Command {
         }
       }
     }
-    return {"users": [users.admin, users.drivers, newUsers, users.managers], "orders": orders};
+    return {"users": users.drivers.concat([users.admin]).concat(users.users).concat(users.managers), "orders": orders};
   }
 
   public generateDate(start: Date, end: Date) {
@@ -251,7 +300,7 @@ export default class Generate extends Command {
   public generateUsers(numUsers: number) {
     let users = [];
     let drivers = [];
-    let managers = []
+    let managers = [];
     for (let i = 0; i < numUsers; i++) {
       users.push(this.generateUser(i, 'User'));
     }
