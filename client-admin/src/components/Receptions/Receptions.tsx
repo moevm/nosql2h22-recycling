@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const MainStorage = () => {
+export const Receptions = () => {
     return (
         <>
-            MainStorage
+            Receptions
         </>
     );
 };

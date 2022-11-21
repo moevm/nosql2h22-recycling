@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const MainStorage = () => {
+export const Transitions = () => {
     return (
         <>
-            MainStorage
+            Transitions
         </>
     );
 };
