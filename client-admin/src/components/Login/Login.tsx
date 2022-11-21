@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import './Login.css'
 
 export const Login = () => {
-    const [show, setShow] = useState(true);
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [show, setShow] = useState<boolean>(true);
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
 
     const navigate = useNavigate();
 

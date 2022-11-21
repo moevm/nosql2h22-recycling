@@ -6,21 +6,25 @@ import {Receptions} from "../Receptions/Receptions";
 import {Transitions} from "../Transitions/Transitions";
 
 export const AdminPage = () => {
-    const [radioValue, setRadioValue] = useState('1');
+    const [radioValue, setRadioValue] = useState<string>('1');
 
     const showCurrentWidget = () => {
-      if (radioValue === '1'){
-          return (
-              <MainStorage/>
-          )
-      }else if(radioValue === '2'){
-          return (
-              <Receptions/>
-          )
-      }else if(radioValue === '3'){
-          return (
-              <Transitions/>
-          )
+      switch (radioValue){
+          case '1':{
+              return (
+                  <MainStorage/>
+              )
+          }
+          case '2':{
+              return (
+                  <Receptions/>
+              )
+          }
+          case '3':{
+              return (
+                  <Transitions/>
+              )
+          }
       }
     }
 

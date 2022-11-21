@@ -3,7 +3,7 @@ export type Ratio = {
     value: string;
 };
 
-export type Subtype = {
+export type SubtypeOfRecycle = {
     name: string;
     value: string;
 }

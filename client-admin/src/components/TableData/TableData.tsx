@@ -2,6 +2,9 @@ import React from 'react';
 import { Table, Pagination } from 'react-bootstrap';
 import {TableCell} from "./TableData.types";
 
+import BootstrapTable from "react-bootstrap-table-next";
+import paginationFactory from "react-bootstrap-table2-paginator";
+
 export type TableDataProps = {
     tableCells: Array<Array<TableCell>>;
     header: string[];
@@ -31,6 +34,7 @@ export const TableData = ({tableCells, header}: TableDataProps) => {
                     ))}
                 </tbody>
             </Table>
+
         </>
     );
 };

@@ -4,10 +4,9 @@ import {ratios, metal, paper, plastic, glass} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
 import {TableCell} from "../TableData/TableData.types";
 
-const header = ['ID','Date','Type of Waste','SubType','Among of waste','Status']
+const header: string[] = ['ID','Date','Type of Waste','SubType','Among of waste','Status']
 
-const data = [
-
+const data: TableCell[][] = [
     [{content: '1'},{content: '13-10-2021'},{content: 'Metal'},
         {content: 'Aluminium'},{content: '34kg'},{content: 'Status'}],
     [{content: '232'},{content: '13-11-2021'},{content: 'Metal'},
@@ -19,7 +18,7 @@ const data = [
 ]
 
 export const MainStorage = () => {
-    const [selectedType, setSelectedType] = useState('1');
+    const [selectedType, setSelectedType] = useState<string>('1');
 
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
