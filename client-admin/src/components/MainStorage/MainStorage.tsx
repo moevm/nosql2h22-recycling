@@ -1,6 +1,22 @@
 import React, {useState} from 'react';
 import { Form } from 'react-bootstrap';
 import {ratios, metal, paper, plastic, glass} from "./MainStorage.helpers";
+import {TableData} from "../TableData/TableData";
+import {TableCell} from "../TableData/TableData.types";
+
+const header = ['ID','Date','Type of Waste','SubType','Among of waste','Status']
+
+const data = [
+
+    [{content: '1'},{content: '13-10-2021'},{content: 'Metal'},
+        {content: 'Aluminium'},{content: '34kg'},{content: 'Status'}],
+    [{content: '232'},{content: '13-11-2021'},{content: 'Metal'},
+        {content: 'SubType'},{content: '34kg'},{content: 'Status'}],
+    [{content: '44'},{content: '12-10-2021'},{content: 'Metal'},
+        {content: 'Brass'},{content: '24kg'},{content: 'Status'}],
+    [{content: '346'},{content: '03-11-2021'},{content: 'Metal'},
+        {content: 'SubType'},{content: '15kg'},{content: 'Status'}]
+]
 
 export const MainStorage = () => {
     const [selectedType, setSelectedType] = useState('1');
@@ -83,9 +99,7 @@ export const MainStorage = () => {
                     {showSubtypes()}
                 </div>
             </div>
-            <>
-
-            </>
+            <TableData tableCells={data} header={header}/>
         </>
     );
 };
