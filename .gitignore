@@ -35,3 +35,14 @@ yarn-error.log*
 *.tsbuildinfo
 
 .idea
+generator/.nyc_output
+generator/dist
+generator/lib
+generator/package-lock.json
+generator/tmp
+generator/yarn.lock
+generator/node_modules
+generator/oclif.manifest.json
+generator/.vscode
+generator/.github
+generator/.gitignore
