@@ -1,11 +1,11 @@
 import React from 'react';
 import { Table, Pagination } from 'react-bootstrap';
-import {TableCell} from "./TableData.types";
+import {TableCellStorage, TableCellReceptions} from "./TableData.types";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 
 export type TableDataProps = {
-    tableCells: Array<TableCell>;
+    tableCells: Array<TableCellStorage> | Array<TableCellReceptions>;
     header: header[];
 }
 
@@ -16,7 +16,7 @@ export type header = {
     sort?: boolean;
 }
 
-export const TableData = ({tableCells, header}: TableDataProps) => {
+export const TableData = ({tableCells, header}: TableDataProps  ) => {
     return (
         <>
             <BootstrapTable
@@ -24,7 +24,13 @@ export const TableData = ({tableCells, header}: TableDataProps) => {
                 keyField="id"
                 data={tableCells}
                 columns={header}
-                pagination={paginationFactory({ sizePerPage: 5 })}
+                pagination={paginationFactory({ sizePerPageList: [ {
+                        text: '5', value: 5
+                    }, {
+                        text: '7', value: 7
+                    }, {
+                        text: 'All', value: tableCells.length
+                    } ]})}
             />
         </>
     );

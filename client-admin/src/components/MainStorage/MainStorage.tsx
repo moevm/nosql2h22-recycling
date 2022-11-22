@@ -3,6 +3,7 @@ import { Form } from 'react-bootstrap';
 import {ratios, metal, paper, plastic, glass} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
 import {data, columns} from "./MainStorage.content"
+import Container from "react-bootstrap/Container";
 
 export const MainStorage = () => {
     const [selectedType, setSelectedType] = useState<string>('1');
@@ -81,9 +82,9 @@ export const MainStorage = () => {
                         <label style={{margin: '0vh 3vh 0vh -2vh'}}>{radio.name}</label>
                     </>
                 ))}
-                <div style={{width: '15vh', margin: '3vh 0vh 0vh 0vh'}}>
+                <Container style={{width: '20vh', margin: '3vh 0vh 3vh 0vh'}}>
                     {showSubtypes()}
-                </div>
+                </Container>
             </div>
             <TableData tableCells={data} header={columns}/>
         </>
