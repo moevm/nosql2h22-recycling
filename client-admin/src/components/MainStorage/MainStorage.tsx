@@ -2,20 +2,7 @@ import React, {useState} from 'react';
 import { Form } from 'react-bootstrap';
 import {ratios, metal, paper, plastic, glass} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
-import {TableCell} from "../TableData/TableData.types";
-
-const header: string[] = ['ID','Date','Type of Waste','SubType','Among of waste','Status']
-
-const data: TableCell[][] = [
-    [{content: '1'},{content: '13-10-2021'},{content: 'Metal'},
-        {content: 'Aluminium'},{content: '34kg'},{content: 'Status'}],
-    [{content: '232'},{content: '13-11-2021'},{content: 'Metal'},
-        {content: 'SubType'},{content: '34kg'},{content: 'Status'}],
-    [{content: '44'},{content: '12-10-2021'},{content: 'Metal'},
-        {content: 'Brass'},{content: '24kg'},{content: 'Status'}],
-    [{content: '346'},{content: '03-11-2021'},{content: 'Metal'},
-        {content: 'SubType'},{content: '15kg'},{content: 'Status'}]
-]
+import {data, columns} from "./MainStorage.content"
 
 export const MainStorage = () => {
     const [selectedType, setSelectedType] = useState<string>('1');
@@ -98,7 +85,7 @@ export const MainStorage = () => {
                     {showSubtypes()}
                 </div>
             </div>
-            <TableData tableCells={data} header={header}/>
+            <TableData tableCells={data} header={columns}/>
         </>
     );
 };
