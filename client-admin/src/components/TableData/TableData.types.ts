@@ -19,4 +19,11 @@ export type TableCellReceptions = {
     percentage: string,
 }
 
+export type TableCellCarrier = {
+    id: number,
+    carrier: string,
+    reception: string,
+    amount: string,
+}
+
 

@@ -1,11 +1,10 @@
 import React from 'react';
-import { Table, Pagination } from 'react-bootstrap';
-import {TableCellStorage, TableCellReceptions} from "./TableData.types";
+import {TableCellStorage, TableCellReceptions, TableCellCarrier} from "./TableData.types";
 import BootstrapTable from "react-bootstrap-table-next";
 import paginationFactory from "react-bootstrap-table2-paginator";
 
 export type TableDataProps = {
-    tableCells: Array<TableCellStorage> | Array<TableCellReceptions>;
+    tableCells: Array<TableCellStorage> | Array<TableCellReceptions> | Array<TableCellCarrier>;
     header: header[];
 }
 

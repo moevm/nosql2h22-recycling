@@ -31,9 +31,9 @@ export const Receptions = () => {
                     </Col>
                 </Row>
             </Container>
-            <Card style={{margin: '3vh 0vh 0vh 0vh'}}>
+            <div style={{margin: '3vh 0vh 0vh 0vh'}}>
                 <TableData  header={columns} tableCells={data}/>
-            </Card>
+            </div>
         </>
     );
 };
