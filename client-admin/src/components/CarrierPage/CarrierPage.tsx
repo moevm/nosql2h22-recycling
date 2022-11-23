@@ -1,9 +1,59 @@
-import React from 'react';
+import React, {useState} from 'react';
+import {ButtonGroup, Card, ToggleButton} from "react-bootstrap";
+import {AvailableOrders} from "../AvailableOrders/AvailableOrders";
+import {CurrentOrder} from "../CurrentOrder/CurrentOrder";
 
 export const CarrierPage = () => {
+    const [radioValue, setRadioValue] = useState<string>('1');
+
+    const showCurrentWidget = () => {
+        switch (radioValue) {
+            case '1':
+                return(
+                    <CurrentOrder/>
+                )
+            case '2':
+                return(
+                    <AvailableOrders/>
+                )
+        }
+    }
+
     return (
         <>
-            <h1>Carrier</h1>
+            <Card>
+                <Card.Body>
+                    <ButtonGroup className="mb-2">
+                        <ToggleButton
+                            key="1"
+                            id={`radio-1`}
+                            type="radio"
+                            variant="success"
+                            name="radio"
+                            value='1'
+                            checked={radioValue === "1"}
+                            onChange={(e) => setRadioValue(e.currentTarget.value)}
+                        >
+                            Current Order
+                        </ToggleButton>
+                        <ToggleButton
+                            key="2"
+                            id={`radio-2`}
+                            type="radio"
+                            variant="success"
+                            name="radio"
+                            value='2'
+                            checked={radioValue === "2"}
+                            onChange={(e) => setRadioValue(e.currentTarget.value)}
+                        >
+                            Available Orders
+                        </ToggleButton>
+                    </ButtonGroup>
+                </Card.Body>
+            </Card>
+            <>
+                {showCurrentWidget()}
+            </>
         </>
     );
 };

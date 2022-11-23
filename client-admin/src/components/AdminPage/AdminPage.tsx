@@ -32,22 +32,22 @@ export const AdminPage = () => {
         <>
             <Card>
                 <Card.Body>
-                <ButtonGroup className="mb-2">
-                    {radios.map((radio, idx) => (
-                        <ToggleButton
-                            key={idx}
-                            id={`radio-${idx}`}
-                            type="radio"
-                            variant="success"
-                            name="radio"
-                            value={radio.value}
-                            checked={radioValue === radio.value}
-                            onChange={(e) => setRadioValue(e.currentTarget.value)}
-                        >
-                            {radio.name}
-                        </ToggleButton>
-                    ))}
-                </ButtonGroup>
+                    <ButtonGroup className="mb-2">
+                        {radios.map((radio, idx) => (
+                            <ToggleButton
+                                key={idx}
+                                id={`radio-${idx}`}
+                                type="radio"
+                                variant="success"
+                                name="radio"
+                                value={radio.value}
+                                checked={radioValue === radio.value}
+                                onChange={(e) => setRadioValue(e.currentTarget.value)}
+                            >
+                                {radio.name}
+                            </ToggleButton>
+                        ))}
+                    </ButtonGroup>
                 </Card.Body>
             </Card>
             <Card body>

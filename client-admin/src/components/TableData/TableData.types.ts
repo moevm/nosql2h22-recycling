@@ -1,3 +1,9 @@
+export type header = {
+    dataField:string;
+    text:string;
+    sort?: boolean;
+}
+
 export type TableCellStorage = {
     id: number;
     date: string;
@@ -26,4 +32,17 @@ export type TableCellCarrier = {
     amount: string,
 }
 
+export type TableCellCurrentOrder = {
+    parameter: string,
+    value: string,
+}
+
+export type TableCellAvailableOrders = {
+    departure:string,
+    arrival:string,
+    type:string,
+    subtype:string,
+    amount:string,
+    action:string,
+}
 
