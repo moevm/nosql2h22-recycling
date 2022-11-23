@@ -1,3 +1,5 @@
+import {ReactNode} from "react";
+
 export type header = {
     dataField:string;
     text:string;
@@ -43,6 +45,16 @@ export type TableCellAvailableOrders = {
     type:string,
     subtype:string,
     amount:string,
-    action:string,
+    action: string,
 }
+
+
+export type TableCellManagerReception = {
+    type:string,
+    subtype:string,
+    amount:string,
+    occupancy: string,
+    request: string,
+}
+
 
