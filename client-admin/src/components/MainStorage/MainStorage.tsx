@@ -13,47 +13,48 @@ export const MainStorage = () => {
     };
 
     const showSubtypes = () => {
-        if(selectedType === '1'){
-            return (
-                <Form.Select aria-label="Default select example">
-                    {ratios.map((radio,idx)=>(
-                        <option>
-                            {radio.name}
-                        </option>
-                    ))}
-                </Form.Select>
-            )
-        }else if(selectedType === '2'){
-            return (
-                <Form.Select aria-label="Default select example">
-                    {metal.map((metal)=>(
-                        <option>
-                            {metal.name}
-                        </option>
-                    ))}
-                </Form.Select>
-            )
-        }else if(selectedType === '3'){
-            return (
-                <Form.Select aria-label="Default select example">
-                    {plastic.map((metal)=>(
-                        <option>
-                            {metal.name}
-                        </option>
-                    ))}
-                </Form.Select>
-            )
-        }else if(selectedType === '4'){
-            return (
-                <Form.Select aria-label="Default select example">
-                    {glass.map((metal)=>(
-                        <option>
-                            {metal.name}
-                        </option>
-                    ))}
-                </Form.Select>
-            )
-        }else{
+        switch(selectedType){
+            case '1':
+                return (
+                    <Form.Select aria-label="Default select example">
+                        {ratios.map((radio,idx)=>(
+                            <option>
+                                {radio.name}
+                            </option>
+                        ))}
+                    </Form.Select>
+                )
+            case '2':
+                return (
+                    <Form.Select aria-label="Default select example">
+                        {metal.map((metal)=>(
+                            <option>
+                                {metal.name}
+                            </option>
+                        ))}
+                    </Form.Select>
+                )
+            case '3':
+                return (
+                    <Form.Select aria-label="Default select example">
+                        {plastic.map((metal)=>(
+                            <option>
+                                {metal.name}
+                            </option>
+                        ))}
+                    </Form.Select>
+                )
+            case '4':
+                return (
+                    <Form.Select aria-label="Default select example">
+                        {glass.map((metal)=>(
+                            <option>
+                                {metal.name}
+                            </option>
+                        ))}
+                    </Form.Select>
+                )
+            case '5':
                 return (
                     <Form.Select aria-label="Default select example">
                         {paper.map((metal)=>(
@@ -63,7 +64,7 @@ export const MainStorage = () => {
                         ))}
                     </Form.Select>
                 )
-            }
+        }
     }
 
     return (
