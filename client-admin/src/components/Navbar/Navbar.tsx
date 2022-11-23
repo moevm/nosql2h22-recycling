@@ -1,7 +1,7 @@
 import React, {ReactNode} from "react";
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import {NavbarProps, Button} from "react-bootstrap";
+import {NavbarProps} from "react-bootstrap";
 
 import "./Navbar.css";
 
