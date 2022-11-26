@@ -9,7 +9,7 @@ export type IHeroProps = {
 
 export const Hero = ({ title, description, footer }: IHeroProps) => {
     return (
-        <Container fluid>
+        <Container>
             <h1>
                 {title}
             </h1>

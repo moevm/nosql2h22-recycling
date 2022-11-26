@@ -1,6 +1,6 @@
 {
     "hero": {
         "title": "Order details",
-        "description": "Here you can see basing order information and status history.",
+        "description": "Here you can see basic order information and status history."
     }
 }

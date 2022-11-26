@@ -1,9 +1,12 @@
 import React from "react";
+import { Hero, IHeroProps } from "../../shared/Hero";
 
-export const OrderPage = () => {
+export type IOrderPageProps = IHeroProps & {};
+
+export const OrderPage = ({ title, description, footer }: IOrderPageProps) => {
     return (
         <main>
-            Order page
+            <Hero title={title} description={description} footer={footer} />
         </main>
     );
 };
