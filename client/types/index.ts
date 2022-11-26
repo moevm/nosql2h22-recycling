@@ -1,3 +1,5 @@
+import { WasteType } from "../components/pages/HomePage";
+
 export type Page = {
     link: string;
     title: string;
@@ -22,4 +24,9 @@ export type OrderContent = {
 
 export type StatisticsContent = {
     hero: HeroContent;
+};
+
+export type BoilerplateContent = {
+    wasteTypes: Array<WasteType>;
+    receptions: Array<string>;
 };

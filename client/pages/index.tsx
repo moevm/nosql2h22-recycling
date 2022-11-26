@@ -3,15 +3,16 @@ import { useSession } from "next-auth/react";
 import { MainNavbar } from "../components/shared/MainNavbar";
 import { HomePage } from "../components/pages/HomePage";
 import getContent from "../helpers/getContent";
-import { HomeContent, Page } from "../types";
+import { HomeContent, Page, BoilerplateContent } from "../types";
 import { useNavbarContent } from "../hooks/useNavbarContent";
 
 export type IHomeProps = {
     pages: Page[];
     content: HomeContent;
+    boilerplate: BoilerplateContent;
 };
 
-const Home = ({ pages, content }: IHomeProps) => {
+const Home = ({ pages, content, boilerplate }: IHomeProps) => {
     const { data: session } = useSession();
     const isLogged = Boolean(session);
 
@@ -22,7 +23,7 @@ const Home = ({ pages, content }: IHomeProps) => {
             <header>
                 <MainNavbar isLogged={isLogged} content={useNavbarContent(pages)} expand="lg" />
             </header>
-            <HomePage {...homeHeroProps} />
+            <HomePage isLogged={isLogged} {...homeHeroProps} {...boilerplate} />
         </>
     );
 };
@@ -32,6 +33,7 @@ export async function getServerSideProps() {
         props: {
             pages: getContent("pages"),
             content: getContent("home"),
+            boilerplate: getContent("boilerplate"),
         },
     };
 }

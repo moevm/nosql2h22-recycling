@@ -1,0 +1,13 @@
+.Boilerplate {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.Boilerplate-Left {
+    flex-basis: 33%;
+}
+
+.Boilerplate-Right {
+    flex-basis: 67%;
+}
