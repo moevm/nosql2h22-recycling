@@ -5,19 +5,18 @@ import { Button } from "react-bootstrap";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 export type INavUserProps = {
-    isLogged: boolean;
+    onLogin: () => void;
+    onLogout: () => void;
 };
 
-export const NavUser = ({ isLogged }: INavUserProps) => {
+export const NavUser = ({ onLogin, onLogout }: INavUserProps) => {
     const { data: session } = useSession();
 
     return (
-        !isLogged
+        !session
             ? (
                 <Button
-                    onClick={() => {
-                        signIn("yandex");
-                    }}
+                    onClick={onLogin}
                     variant="outline-light"
                 >
                     Log in
@@ -35,9 +34,7 @@ export const NavUser = ({ isLogged }: INavUserProps) => {
                             marginLeft: "1rem",
                             cursor: "pointer",
                         }}
-                        onClick={() => {
-                            signOut();
-                        }}
+                        onClick={onLogout}
                         src={session?.user?.image || ""}
                     />
                 </Navbar.Text>
