@@ -16,12 +16,16 @@
     "next-auth": "^4.17.0",
     "react": "18.2.0",
     "react-bootstrap": "^2.6.0",
+    "react-bootstrap-table-next": "^4.0.3",
+    "react-bootstrap-table2-paginator": "^2.1.2",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.0.4",
     "@types/node": "18.11.0",
     "@types/react": "18.0.21",
+    "@types/react-bootstrap-table-next": "^4.0.18",
+    "@types/react-bootstrap-table2-paginator": "^2.1.2",
     "@types/react-dom": "18.0.6",
     "eslint": "8.25.0",
     "eslint-config-next": "12.3.1",

@@ -1,0 +1,13 @@
+{
+    "hero": {
+        "initial": {
+            "title": "Welcome to ReCycle!",
+            "description": "ReCycle is an effective solution for waste utilization. It provides outstanding possibilities for utilizing plastic, paper, metal and glass by design. Also we show statistics by your profile and have a bonus program.",
+            "footer": "We use modern tech approaches to maximize speed of recycling and minimize ecological pollution. Help us to make the world better!"
+        },
+        "logged": {
+            "title": "Welcome to ReCycle!",
+            "description": "Here you can choose a kind of waste you want to hand over. Pick desired one, choose the amount of waste needed to utilize and center of utilization. Well done!"
+        }
+    }
+}
