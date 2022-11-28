@@ -29,7 +29,7 @@ export const ManagerReception = () => {
                     <Button variant="primary">Save changes</Button>
                 </Modal.Footer>
             </Modal>
-            <Card.Body style={{width: '90vh', margin:'1vh 0vh 0vh 0vh'}}>
+            <Card.Body style={{width: '90vh', padding:'1vh', margin:'1vh 0vh 0vh 0vh'}}>
                 <Row>
                     <Col xs lg="4">
                         <Form.Select onChange={searchHandler}  aria-label="Choose parameter of search">

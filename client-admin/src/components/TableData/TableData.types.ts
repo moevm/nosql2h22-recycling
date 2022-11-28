@@ -57,4 +57,12 @@ export type TableCellManagerReception = {
     request: string,
 }
 
+export type TableRequests = {
+    req_id: number;
+    date: string;
+    type_of_waste: string;
+    subtype: string;
+    among: string;
+    status: string;
+}
 

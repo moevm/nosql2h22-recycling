@@ -20,9 +20,8 @@ export type TableDataProps = {
 }
 
 export const TableData = ({tableCells, header}: TableDataProps  ) => {
-    console.log(tableCells);
     return (
-        <>
+        <div style = {{width:'200vh', margin:'0vh 0vh 0vh 1vh'}}>
             <BootstrapTable
                 hover
                 striped
@@ -39,7 +38,7 @@ export const TableData = ({tableCells, header}: TableDataProps  ) => {
                         text: 'All', value: tableCells.length
                     } ]})}
             />
-        </>
+        </div>
     );
 };
 

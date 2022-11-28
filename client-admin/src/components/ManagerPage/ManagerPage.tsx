@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, ButtonGroup, Card, ToggleButton} from "react-bootstrap";
+import {ButtonGroup, Card, ToggleButton} from "react-bootstrap";
 import {ManagerReception} from "../ManagerReception/ManagerReception";
 import {TransitionRequests} from "../TransitionRequests/TransitionRequests";
 
@@ -21,7 +21,7 @@ export const ManagerPage = () => {
 
     return (
         <>
-            <Card>
+            <Card style={{width: '100%'}}>
                 <Card.Body>
                     <ButtonGroup className="mb-2">
                         <ToggleButton
@@ -49,6 +49,7 @@ export const ManagerPage = () => {
                             Requests
                         </ToggleButton>
                     </ButtonGroup>
+                    <h1>Reception: Tikhvin</h1>
                 </Card.Body>
             </Card>
             <>
