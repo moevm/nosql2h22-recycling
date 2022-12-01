@@ -96,8 +96,6 @@ export default class Generate extends Command {
     }).catch(function(error){
       console.log(error)
     });
-    const docs = await order.find({status: 'Created'})
-    console.log(docs.length)
 
     const userSchema = new mongoose.Schema({
       "_id": mongoose.Schema.Types.ObjectId,
@@ -202,12 +200,12 @@ export default class Generate extends Command {
 
   public generateMaterial() {
     const types = [
-      "plastic",
-      "paper",
-      "metal",
-      "organic",
-      "glass",
-      "battery"
+      "Plastic",
+      "Paper",
+      "Metal",
+      "Organic",
+      "Glass",
+      "Battery"
     ];
     const subtypes = [
       [

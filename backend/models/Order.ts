@@ -1,27 +1,27 @@
-import {model, Schema, Types} from "mongoose";
+import {model, Schema} from "mongoose";
 
 interface Reception {
-    "address": Schema.Types.String,
-    "limit": Schema.Types.Number
+    "address": string,
+    "limit": number
 }
 
 interface Material {
-    "title": Schema.Types.String,
-    "subtype": Schema.Types.String,
-    "count": Schema.Types.Number,
-    "price": Schema.Types.Number
+    "title": string,
+    "subtype": string,
+    "count": number,
+    "price": number
 }
 
 interface History {
-    "status": Schema.Types.String,
-    "date": Schema.Types.Date
+    "status": string,
+    "date": Date
 }
 
 interface IOrder{
     "_id": Schema.Types.ObjectId,
     "users": Array<Schema.Types.ObjectId>,
-    "status": Schema.Types.String,
-    "date": Schema.Types.Date,
+    "status": string,
+    "date": Date,
     "reception": Reception,
     "material": Material,
     "history": History
