@@ -1,0 +1,21 @@
+{
+    "wasteTypes": [
+        {
+            "type": "Paper",
+            "subtypes": ["Office paper", "Carton"]
+        },
+        {
+            "type": "Metal",
+            "subtypes": ["Aluminum", "Cuprum"]
+        },
+        {
+            "type": "Glass",
+            "subtypes": ["Simple glass"]
+        },
+        {
+            "type": "Plastic",
+            "subtypes": ["Simple plastic"]
+        }
+    ],
+    "receptions": ["Reception 1", "Reception 2", "Reception 3", "Reception 4"]
+}
