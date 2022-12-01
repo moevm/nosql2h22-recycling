@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const databaseConfig = {
     DATABASE_HOST: process.env.DATABASE_HOST || "localhost",
-    DATABASE_NAME: process.env.DATABASE_NAME || "test",
+    DATABASE_NAME: process.env.DATABASE_NAME || "Recycling",
     DATABASE_PORT: process.env.DATABASE_PORT || "27017",
 };
 

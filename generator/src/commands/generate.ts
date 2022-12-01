@@ -200,12 +200,12 @@ export default class Generate extends Command {
 
   public generateMaterial() {
     const types = [
-      "plastic",
-      "paper",
-      "metal",
-      "organic",
-      "glass",
-      "battery"
+      "Plastic",
+      "Paper",
+      "Metal",
+      "Organic",
+      "Glass",
+      "Battery"
     ];
     const subtypes = [
       [
