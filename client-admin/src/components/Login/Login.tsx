@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import './Login.css'
+import {UserLogged} from "../../App";
 
 export const Login = () => {
     const [show, setShow] = useState<boolean>(true);
@@ -10,15 +11,26 @@ export const Login = () => {
 
     const navigate = useNavigate();
 
-    const handleClose = () => setShow(false);
+    const userLogged = useContext(UserLogged);
+
+    const handleClose = () => {
+        navigate('/');
+        setShow(false)
+    };
     const handleLogin = () => {
         if(email === "admin" && password === "admin"){
+            userLogged.stateFunc(true);
+            userLogged.setUser('Admin');
             navigate('/admin_screen')
         }
         if(email === "manager" && password === "manager"){
+            userLogged.stateFunc(true);
+            userLogged.setUser('Manager');
             navigate('/manager_screen')
         }
         if(email === "carrier" && password === "carrier"){
+            userLogged.stateFunc(true);
+            userLogged.setUser('Carrier');
             navigate('/carrier_screen')
         }
     }

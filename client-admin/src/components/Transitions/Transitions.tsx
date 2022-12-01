@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useState} from 'react';
-import {Form, Container, Row, Col, Card} from "react-bootstrap";
+import {Form, Container, Row, Col} from "react-bootstrap";
 import {TableData} from "../TableData/TableData";
 import {columns, data} from "./Transitiions.content";
 

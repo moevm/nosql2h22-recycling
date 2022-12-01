@@ -30,6 +30,4 @@ export const data: TableCellCarrier[] = [
     {id: 12, carrier: 'qwerty5', reception: "asdas",amount: '43kg'},
     {id: 13, carrier: 'qwerty6', reception: "Viasdastalya",amount: '43kg'},
     {id: 14, carrier: 'qwerty7', reception: "Viasdasalya",amount: '123kg'},
-
-
 ]

@@ -1,3 +1,11 @@
+import {ReactNode} from "react";
+
+export type header = {
+    dataField:string;
+    text:string;
+    sort?: boolean;
+}
+
 export type TableCellStorage = {
     id: number;
     date: string;
@@ -26,4 +34,35 @@ export type TableCellCarrier = {
     amount: string,
 }
 
+export type TableCellCurrentOrder = {
+    parameter: string,
+    value: string,
+}
+
+export type TableCellAvailableOrders = {
+    departure:string,
+    arrival:string,
+    type:string,
+    subtype:string,
+    amount:string,
+    action: string,
+}
+
+
+export type TableCellManagerReception = {
+    type:string,
+    subtype:string,
+    amount:string,
+    occupancy: string,
+    request: string,
+}
+
+export type TableRequests = {
+    req_id: number;
+    date: string;
+    type_of_waste: string;
+    subtype: string;
+    among: string;
+    status: string;
+}
 
