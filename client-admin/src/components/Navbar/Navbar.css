@@ -28,3 +28,25 @@ h4{
     border-radius: 10px;
     transition: background-color 0.3s;
 }
+
+.button-logout{
+    color: white;
+    border: 1px solid white;
+    background-color: red;
+    padding: 5px 20px;
+    border-radius: 10px;
+}
+
+.button-logout:hover{
+    color: red;
+    border: 1px solid white;
+    background-color: white;
+    padding: 5px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s;
+}
+
+.user-name{
+    color: white;
+    margin-left: 120vh;
+}

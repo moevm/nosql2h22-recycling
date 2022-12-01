@@ -41,4 +41,3 @@ export const TableData = ({tableCells, header}: TableDataProps  ) => {
         </div>
     );
 };
-
