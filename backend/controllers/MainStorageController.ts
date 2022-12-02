@@ -1,13 +1,13 @@
-import {Get, Route} from "tsoa";
+import {Get, Post, Route} from "tsoa";
 import BaseController from "./BaseController";
 import {IMainStorage} from "../models/MainStorage";
 import {order} from "../models/Order";
 
 @Route("/api/admin")
 export default class MainStorageController extends BaseController {
-    @Get("/main")
+    @Post("/main")
     public async main(): Promise<Array<IMainStorage>> {
-        let {type, subType} = this.req.body;
+        const {type, subType, page, perPage} = this.req.body;
         let query: {}
         if (type === 'All' || type === undefined){
             query = {
@@ -15,7 +15,7 @@ export default class MainStorageController extends BaseController {
             }
         }
         else {
-            if (subType === undefined){
+            if (subType === 'All' || subType === undefined){
                 query = {
                     "history.3": {$exists: true},
                     "material.title": type
