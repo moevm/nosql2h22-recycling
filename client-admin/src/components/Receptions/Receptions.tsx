@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Form, Container, Row, Col, Button} from "react-bootstrap";
 import {TableData} from "../TableData/TableData";
 import {columns, data, header} from "./Reception.content";

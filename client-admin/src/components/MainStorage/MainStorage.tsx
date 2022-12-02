@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Form } from 'react-bootstrap';
 import {ratios, metal, paper, plastic, glass} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
@@ -11,6 +11,15 @@ export const MainStorage = () => {
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
     };
+
+    useEffect(() => {
+        fetch('http://localhost:8000/api/admin/main')
+            .then(response => response.json())
+            .then(content => {
+                console.log(content);
+            })
+            .catch(err => console.error(err));
+    }, [])
 
     const showSubtypes = () => {
         switch(selectedType){
