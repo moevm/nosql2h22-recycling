@@ -5,31 +5,53 @@ export const ratios: Ratio[] = [
     {name: 'Metal', value: '2'},
     {name: 'Plastic', value: '3'},
     {name: 'Glass', value: '4'},
-    {name: 'Paper', value: '5'}
+    {name: 'Paper', value: '5'},
+    {name: 'Organic', value: '4'},
+    {name: 'Battery', value: '5'}
 ]
 
 export const metal: SubtypeOfRecycle[] = [
     {name: 'All', value: '1'},
-    {name: 'Aluminium', value: '2'},
-    {name: 'Cuprum', value: '3'},
-    {name: 'Brass', value: '4'}
+    {name: 'Steel', value: '2'},
+    {name: 'Aluminium', value: '3'}
 ]
 
 export const plastic: SubtypeOfRecycle[] = [
     {name: 'All', value: '1'},
-    {name: 'High-density polyethylene', value: '2'},
-    {name: 'polypropylene', value: '3'}
+    {name: "Polyethylene terephthalate", value: '2'},
+    {name: 'High density polyethylene', value: '3'},
+    {name: 'PVC', value: '4'},
+    {name: 'Polypropylene', value: '5'},
+    {name: 'Polystyrene', value: '6'},
+    {name: 'Other types of plastic', value: '7'},
+    {name: 'ABS plastic', value: '8'},
 ]
 
 export const glass: SubtypeOfRecycle[] = [
     {name: 'All', value: '1'},
-    {name: 'Clear Glass', value: '2'},
-    {name: 'Green Glass', value: '3'}
+    {name: 'Colorless glass', value: '2'},
+    {name: 'Green Glass', value: '3'},
+    {name: 'Brown glass', value: '4'},
+    {name: 'Bottle glass dark brown', value: '5'},
+    {name: 'Glass with low lead content', value: '6'},
+    {name: 'Crystal', value: '7'},
+    {name: 'Glass coated with copper', value: '8'},
+    {name: 'Silver plated glass', value: '9'},
+    {name: 'Gilded glass', value: '10'},
+]
+
+export const organic: SubtypeOfRecycle[] = [
+    {name: 'All', value: '1'},
+    {name: 'Wood', value: '2'},
+    {name: 'Cork', value: '3'},
+    {name: 'Cotton', value: '4'},
+    {name: 'Jute fiber', value: '5'}
 ]
 
 export const paper: SubtypeOfRecycle[] = [
     {name: 'All', value: '1'},
-    {name: 'Cardboard', value: '2'},
-    {name: 'Paperboard', value: '3'},
-    {name: 'Paper', value: '3'}
+    {name: 'Corrugated cardboard', value: '2'},
+    {name: 'Other cardboard', value: '3'},
+    {name: 'Paper', value: '3'},
+    {name: 'Wax paper', value: '3'},
 ]

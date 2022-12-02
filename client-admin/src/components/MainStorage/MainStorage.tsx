@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import { Form } from 'react-bootstrap';
 import {ratios, metal, paper, plastic, glass} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
@@ -6,26 +6,43 @@ import {data, columns} from "./MainStorage.content"
 import Container from "react-bootstrap/Container";
 
 export const MainStorage = () => {
-    const [selectedType, setSelectedType] = useState<string>('1');
-
+    const [selectedType, setSelectedType] = useState<string>('All');
+    const [selectedSubType, setSubType] = useState<string>('All')
+    const [currectData, setData] = useState<Array<any>>([])
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
     };
 
-    useEffect(() => {
-        fetch('http://localhost:8000/api/admin/main')
+    const getData = () => {
+        fetch('http://localhost:8000/api/admin/main', {
+            method:"POST",
+            headers: new Headers({
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }),
+            body: JSON.stringify({type:selectedType, subType: selectedSubType})
+        }
+        )
             .then(response => response.json())
             .then(content => {
-                console.log(content);
+                setData(content);
             })
             .catch(err => console.error(err));
+    }
+
+    useEffect(() => {
+        getData();
     }, [])
+
+    useEffect(() => {
+        getData();
+    }, [selectedType, selectedSubType])
 
     const showSubtypes = () => {
         switch(selectedType){
-            case '1':
+            case 'All':
                 return (
-                    <Form.Select aria-label="Default select example">
+                    <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
                         {ratios.map((radio,idx)=>(
                             <option>
                                 {radio.name}
@@ -33,9 +50,9 @@ export const MainStorage = () => {
                         ))}
                     </Form.Select>
                 )
-            case '2':
+            case 'Metal':
                 return (
-                    <Form.Select aria-label="Default select example">
+                    <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
                         {metal.map((metal)=>(
                             <option>
                                 {metal.name}
@@ -43,32 +60,32 @@ export const MainStorage = () => {
                         ))}
                     </Form.Select>
                 )
-            case '3':
+            case 'Plastic':
                 return (
-                    <Form.Select aria-label="Default select example">
-                        {plastic.map((metal)=>(
+                    <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
+                        {plastic.map((plastic)=>(
                             <option>
-                                {metal.name}
+                                {plastic.name}
                             </option>
                         ))}
                     </Form.Select>
                 )
-            case '4':
+            case 'Glass':
                 return (
-                    <Form.Select aria-label="Default select example">
-                        {glass.map((metal)=>(
+                    <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
+                        {glass.map((glass)=>(
                             <option>
-                                {metal.name}
+                                {glass.name}
                             </option>
                         ))}
                     </Form.Select>
                 )
-            case '5':
+            case 'Paper':
                 return (
-                    <Form.Select aria-label="Default select example">
-                        {paper.map((metal)=>(
+                    <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
+                        {paper.map((paper)=>(
                             <option>
-                                {metal.name}
+                                {paper.name}
                             </option>
                         ))}
                     </Form.Select>
@@ -84,7 +101,7 @@ export const MainStorage = () => {
                         <input
                             type='radio'
                             id={`radio-${idx}`}
-                            value={radio.value}
+                            value={radio.name}
                             name='recycle'
                             style={{margin: '0vh 3vh 0vh 0vh'}}
                             onChange={radioHandler}
@@ -96,7 +113,7 @@ export const MainStorage = () => {
                     {showSubtypes()}
                 </Container>
             </div>
-            <TableData tableCells={data} header={columns}/>
+            <TableData tableCells={currectData} header={columns}/>
         </>
     );
 };
