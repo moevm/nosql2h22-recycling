@@ -2,11 +2,6 @@ import {TableCellCarrier} from "../TableData/TableData.types";
 
 export const columns = [
     {
-        dataField: "id",
-        text: "ID",
-        sort: true
-    },
-    {
         dataField: "carrier",
         text: "Carrier",
     },
