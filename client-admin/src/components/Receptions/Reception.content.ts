@@ -13,7 +13,7 @@ export const header = [
 
 export const columns = [
     {
-        dataField: "Reception",
+        dataField: "Address",
         text: "Reception",
     },
     {

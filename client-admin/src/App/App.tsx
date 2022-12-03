@@ -9,7 +9,12 @@ import {AdminPage} from "../components/AdminPage/AdminPage";
 import {ManagerPage} from "../components/ManagerPage/ManagerPage";
 import {CarrierPage} from "../components/CarrierPage/CarrierPage";
 
-export const UserLogged = React.createContext({stateValue:false,stateFunc: (b: boolean)=>{},user:'', setUser: (b: string)=>{}});
+export const UserLogged = React.createContext({
+    stateValue:false,
+    stateFunc: (b: boolean)=>{},
+    user:'',
+    setUser: (b: string)=>{}
+});
 
 export const App = () => {
     const [isLogged, setLogged] = useState(false);
