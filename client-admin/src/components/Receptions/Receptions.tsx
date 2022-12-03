@@ -7,7 +7,7 @@ import useDebounce from "./Reception.hooks";
 import { TableCellReceptions } from '../TableData/TableData.types';
 
 export const Receptions = () => {
-    const [searchParameter, setSearchParameter] = useState<string>('reception')
+    const [searchParameter, setSearchParameter] = useState<string>('Reception')
     const [currentData, setData] = useState(data);
     const [currentCols, setCols] = useState(columns);
     const [searchInput, setSearchInput] = useState("");
@@ -23,6 +23,26 @@ export const Receptions = () => {
 
     const debouncedSearchTerm = useDebounce(searchInput, 500);
 
+    useEffect(
+        () => {
+            fetch('http://localhost:8000/api/admin/main', {
+                    method:"POST",
+                    headers: new Headers({
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    }),
+                    body: JSON.stringify({filter: searchParameter, filterValue: ''})
+                }
+            )
+                .then(response => response.json())
+                .then(content => {
+                    setData(content);
+                })
+                .catch(err => console.error(err));
+        },
+        []
+    );
+
     const requestForData = (request: string) =>{
         return fetch('http://localhost:8000/api/admin/reception', {
             method:"POST",
@@ -30,7 +50,7 @@ export const Receptions = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({filter: request, searchType: searchParameter})
+            body: JSON.stringify({filter: request, filterValue: searchParameter})
         })
             .then(r => r.json())
             .then(r => r.data.results)
@@ -42,15 +62,11 @@ export const Receptions = () => {
 
     useEffect(
         () => {
-            if (debouncedSearchTerm) {
-                setIsSearching(true);
-                requestForData(debouncedSearchTerm).then(results => {
-                    setIsSearching(false);
-                    setData(results);
-                });
-            } else {
-                setData([]);
-            }
+            setIsSearching(true);
+            requestForData(debouncedSearchTerm).then(results => {
+                setIsSearching(false);
+                setData(results);
+            });
         },
         [debouncedSearchTerm]
     );
