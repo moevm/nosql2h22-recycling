@@ -25,7 +25,7 @@ export const Receptions = () => {
 
     useEffect(
         () => {
-            fetch('http://localhost:8000/api/admin/main', {
+            fetch('http://localhost:8000/api/admin/receptions', {
                     method:"POST",
                     headers: new Headers({
                         Accept: 'application/json',
@@ -44,16 +44,15 @@ export const Receptions = () => {
     );
 
     const requestForData = (request: string) =>{
-        return fetch('http://localhost:8000/api/admin/reception', {
+        return fetch('http://localhost:8000/api/admin/receptions', {
             method:"POST",
             headers: new Headers({
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({filter: request, filterValue: searchParameter})
+            body: JSON.stringify({filter: searchParameter, filterValue: request})
         })
             .then(r => r.json())
-            .then(r => r.data.results)
             .catch(error => {
                 console.error(error);
                 return [];
@@ -73,13 +72,12 @@ export const Receptions = () => {
 
     return (
         <>
-            <h1>{debouncedSearchTerm}</h1>
             <Container style={{width: '90vh', margin:'1vh 0vh 0vh 0vh'}}>
                 <Row>
                     <Col xs lg="3">
                         <Form.Select onChange={searchHandler}  aria-label="Choose parameter of search">
-                            <option value='reception'>Reception</option>
-                            <option value='manager'>Manager</option>
+                            <option value='Reception'>Reception</option>
+                            <option value='Manager'>Manager</option>
                         </Form.Select>
                     </Col>
                     <Col lg="4">
