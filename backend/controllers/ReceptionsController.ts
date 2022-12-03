@@ -20,11 +20,9 @@ interface Reception {
 export default class MainStorageController extends BaseController {
     @Post("/receptions")
     public async receptions(): Promise<Array<Reception>> {
-        const filter: string = this.req.query.filter as string;
-        const filterValue: string = this.req.query.filterValue as string;
-        /* const {
+        const {
             filter, filterValue,
-        } = this.req.body; */
+        } = this.req.body;
         let query: {};
         let findDocs: Array<any> = [];
         let totals: Array<any> = [];
