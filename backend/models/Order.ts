@@ -1,4 +1,4 @@
-import {model, Schema} from "mongoose";
+import { model, Schema } from "mongoose";
 
 interface Reception {
     "address": string,
@@ -17,7 +17,7 @@ interface History {
     "date": Date
 }
 
-interface IOrder{
+interface IOrder {
     "_id": Schema.Types.ObjectId,
     "users": Array<Schema.Types.ObjectId>,
     "status": string,
@@ -28,23 +28,23 @@ interface IOrder{
 }
 
 const orderSchema = new Schema<IOrder>({
-    "_id": Schema.Types.ObjectId,
-    "users": Schema.Types.Array,
-    "status": Schema.Types.String,
-    "date": Schema.Types.Date,
-    "reception": {
-        "address": Schema.Types.String,
-        "limit": Schema.Types.Number
-      },
-      "material": {
-        "title": Schema.Types.String,
-        "subtype": Schema.Types.String,
-        "count": Schema.Types.Number,
-        "price": Schema.Types.Number
+    _id: Schema.Types.ObjectId,
+    users: Schema.Types.Array,
+    status: Schema.Types.String,
+    date: Schema.Types.Date,
+    reception: {
+        address: Schema.Types.String,
+        limit: Schema.Types.Number,
     },
-    "history": Schema.Types.Array
+    material: {
+        title: Schema.Types.String,
+        subtype: Schema.Types.String,
+        count: Schema.Types.Number,
+        price: Schema.Types.Number,
+    },
+    history: Schema.Types.Array,
 });
 
-const order = model('Order', orderSchema);
+const order = model("Order", orderSchema);
 
-export {IOrder, order}
+export { IOrder, order };
