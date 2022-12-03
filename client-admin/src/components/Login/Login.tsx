@@ -18,11 +18,6 @@ export const Login = () => {
         setShow(false)
     };
 
-    const redirectUser = () => {
-        console.log(userLogged.user);
-
-    }
-
     const handleLogin = () => {
         fetch('http://localhost:8000/api/login', {
                 method:"POST",
