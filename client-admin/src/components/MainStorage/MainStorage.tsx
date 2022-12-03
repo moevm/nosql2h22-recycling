@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import { Form } from 'react-bootstrap';
-import {ratios, metal, paper, plastic, glass} from "./MainStorage.helpers";
+import {ratios, metal, paper, plastic, glass, organic, battery} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
 import {data, columns} from "./MainStorage.content"
 import Container from "react-bootstrap/Container";
@@ -76,6 +76,26 @@ export const MainStorage = () => {
                         {glass.map((glass)=>(
                             <option>
                                 {glass.name}
+                            </option>
+                        ))}
+                    </Form.Select>
+                )
+            case 'Organic':
+                return (
+                    <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
+                        {organic.map((paper)=>(
+                            <option>
+                                {paper.name}
+                            </option>
+                        ))}
+                    </Form.Select>
+                )
+            case 'Battery':
+                return (
+                    <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
+                        {battery.map((paper)=>(
+                            <option>
+                                {paper.name}
                             </option>
                         ))}
                     </Form.Select>

@@ -55,3 +55,14 @@ export const paper: SubtypeOfRecycle[] = [
     {name: 'Paper', value: '3'},
     {name: 'Wax paper', value: '3'},
 ]
+
+export const battery: SubtypeOfRecycle[] = [
+    {name: 'All', value: '1'},
+    {name: 'Lead acid battery', value: '2'},
+    {name: 'Alkaline element', value: '3'},
+    {name: 'Nickel-cadmium battery', value: '4'},
+    {name: 'Nickel metal hydride battery', value: '5'},
+    {name: 'Lithium battery', value: '6'},
+    {name: 'Silver-zinc accumulator', value: '7'},
+    {name: 'Manganese-zinc element', value: '8'},
+]

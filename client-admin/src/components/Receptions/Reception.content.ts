@@ -1,7 +1,6 @@
 import {TableCellReceptions} from "../TableData/TableData.types";
 
 export const header = [
-    { label: "ID", key: "id" },
     { label: "Reception", key: "reception" },
     { label: "Manager", key: "manager" },
     { label: "Paper", key: "paper" },
@@ -13,11 +12,6 @@ export const header = [
 ]
 
 export const columns = [
-    {
-        dataField: "id",
-        text: "ID",
-        sort: true
-    },
     {
         dataField: "reception",
         text: "Reception",
