@@ -1,4 +1,4 @@
-import {model, Schema} from "mongoose";
+import { model, Schema } from "mongoose";
 
 interface IMainStorage {
     ID: string,
@@ -13,5 +13,5 @@ const mainStorageSchema = new Schema<IMainStorage>();
 
 const mainStorage = model<IMainStorage>("MainStorage", mainStorageSchema);
 
-export default mainStorage
-export {IMainStorage, mainStorage}
+export default mainStorage;
+export { IMainStorage, mainStorage };

@@ -1,10 +1,12 @@
 import express, { Router } from "express";
 import MainStorageController from "../controllers/MainStorageController";
 import AuthorizationController from "../controllers/AuthorizationController";
+import ReceptionsController from "../controllers/ReceptionsController";
 
 const ApiRouter: Router = express.Router();
 
 ApiRouter.post("/admin/main", MainStorageController.handleAction("main"));
 ApiRouter.post("/login", AuthorizationController.handleAction("login"));
+ApiRouter.post("/admin/receptions", ReceptionsController.handleAction("receptions"));
 
 export default ApiRouter;
