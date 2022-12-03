@@ -29,12 +29,12 @@ export default class MainStorageController extends BaseController {
         const receptions: Array<Reception> = [];
         if (filter === "Reception") {
             findDocs = await order.aggregate(
-                [{ $match: { "reception.address": { $regex: filterValue }, "history.2": { $exists: true }, "history.3": { $exists: false } } },
+                [{ $match: { "reception.address": { $regex: filterValue }, status: "For export" } },
                     { $group: { _id: { reception: "$reception.address", type: "$material.title" }, totalELem: { $sum: "$material.count" } } }]
                 ,
             );
             totals = await order.aggregate(
-                [{ $match: { "reception.address": { $regex: filterValue }, "history.2": { $exists: true }, "history.3": { $exists: false } } },
+                [{ $match: { "reception.address": { $regex: filterValue }, status: "For export" } },
                     { $group: { _id: { reception: "$reception.address" }, total: { $sum: "$material.count" } } }]
                 ,
             );
@@ -60,13 +60,13 @@ export default class MainStorageController extends BaseController {
             for (let i = 0; i < findUsers.length; i += 1) {
                 // eslint-disable-next-line no-await-in-loop
                 findDocs = findDocs.concat(await order.aggregate(
-                    [{ $match: { _id: { $in: findUsers[i].orders }, "history.2": { $exists: true }, "history.3": { $exists: false } } },
+                    [{ $match: { _id: { $in: findUsers[i].orders }, status: "For export" } },
                         { $group: { _id: { reception: "$reception.address", type: "$material.title" }, totalELem: { $sum: "$material.count" } } }]
                     ,
                 ));
                 // eslint-disable-next-line no-await-in-loop
                 totals = totals.concat(await order.aggregate(
-                    [{ $match: { _id: { $in: findUsers[i].orders }, "history.2": { $exists: true }, "history.3": { $exists: false } } },
+                    [{ $match: { _id: { $in: findUsers[i].orders }, status: "For export" } },
                         { $group: { _id: { reception: "$reception.address" }, total: { $sum: "$material.count" } } }]
                     ,
                 ));
