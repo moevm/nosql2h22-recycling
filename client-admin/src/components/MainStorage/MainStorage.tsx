@@ -1,8 +1,8 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import { Form } from 'react-bootstrap';
 import {ratios, metal, paper, plastic, glass, organic, battery} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
-import {data, columns} from "./MainStorage.content"
+import {columns} from "./MainStorage.content"
 import Container from "react-bootstrap/Container";
 
 export const MainStorage = () => {

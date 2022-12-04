@@ -22,7 +22,7 @@ ApiRouter.get("/user/orders", UserController.handleAction("orders"));
 ApiRouter.post("/user/order", UserController.handleAction("order"));
 ApiRouter.post("/manager/reception", ManagerReceptionController.handleAction("reception"));
 ApiRouter.post("/manager/export", ExportRequestController.handleAction("export"));
-ApiRouter.get("/manager/requests", RequestsController.handleAction("requests"));
+ApiRouter.post("/manager/requests", RequestsController.handleAction("requests"));
 ApiRouter.post("/driver/main", MainDriverController.handleAction("main"));
 ApiRouter.post("/driver/orders", AvailableOrdersController.handleAction("orders"));
 ApiRouter.post("/driver/confirm", ConfirmRequestController.handleAction("confirm"));
