@@ -272,6 +272,72 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Driver": {
+				"properties": {
+					"Driver": {
+						"type": "string"
+					},
+					"Point of Departure": {
+						"type": "string"
+					},
+					"Point of Arrival": {
+						"type": "string"
+					},
+					"Type of waste": {
+						"type": "string"
+					},
+					"Subtype": {
+						"type": "string"
+					},
+					"Amount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"Driver",
+					"Point of Departure",
+					"Point of Arrival",
+					"Type of waste",
+					"Subtype",
+					"Amount"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Order": {
+				"properties": {
+					"departure": {
+						"type": "string"
+					},
+					"arrival": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"subtype": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"action": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"departure",
+					"arrival",
+					"type",
+					"subtype",
+					"amount",
+					"action"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -466,7 +532,7 @@
 			}
 		},
 		"/api/manager/requests": {
-			"post": {
+			"get": {
 				"operationId": "Requests",
 				"responses": {
 					"200": {
@@ -479,6 +545,64 @@
 									},
 									"type": "array"
 								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/driver/main": {
+			"post": {
+				"operationId": "Main",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Driver"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/driver/orders": {
+			"post": {
+				"operationId": "Orders",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Order"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/driver/confirm": {
+			"get": {
+				"operationId": "Confirm",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
 							}
 						}
 					}
