@@ -38,6 +38,102 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Reception": {
+				"properties": {
+					"Address": {
+						"type": "string"
+					},
+					"Manager": {
+						"type": "string"
+					},
+					"Paper": {
+						"type": "number",
+						"format": "double"
+					},
+					"Metal": {
+						"type": "number",
+						"format": "double"
+					},
+					"Plastic": {
+						"type": "number",
+						"format": "double"
+					},
+					"Organic": {
+						"type": "number",
+						"format": "double"
+					},
+					"Glass": {
+						"type": "number",
+						"format": "double"
+					},
+					"Battery": {
+						"type": "number",
+						"format": "double"
+					},
+					"Amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"Percentage": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"Address",
+					"Manager",
+					"Percentage"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Transit": {
+				"properties": {
+					"carrier": {
+						"type": "string"
+					},
+					"reception": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"carrier",
+					"reception",
+					"amount"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Material": {
+				"properties": {
+					"type": {
+						"type": "string"
+					},
+					"subtype": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"occupancy": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"type",
+					"subtype",
+					"amount",
+					"occupancy"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -52,9 +148,31 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/api/user/ping": {
-			"get": {
-				"operationId": "Ping",
+		"/api/admin/main": {
+			"post": {
+				"operationId": "Main",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IMainStorage"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/login": {
+			"post": {
+				"operationId": "Login",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -71,9 +189,9 @@
 				"parameters": []
 			}
 		},
-		"/api/admin/main": {
-			"get": {
-				"operationId": "Main",
+		"/api/admin/receptions": {
+			"post": {
+				"operationId": "Receptions",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -81,7 +199,51 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/IMainStorage"
+										"$ref": "#/components/schemas/Reception"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/admin/transit": {
+			"post": {
+				"operationId": "Transit",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Transit"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/manager/reception": {
+			"get": {
+				"operationId": "Reception",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Material"
 									},
 									"type": "array"
 								}
