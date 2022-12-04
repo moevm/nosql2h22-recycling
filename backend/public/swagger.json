@@ -237,6 +237,39 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Order": {
+				"properties": {
+					"departure": {
+						"type": "string"
+					},
+					"arrival": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"subtype": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"action": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"departure",
+					"arrival",
+					"type",
+					"subtype",
+					"amount",
+					"action"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -395,7 +428,7 @@
 			}
 		},
 		"/api/driver/main": {
-			"get": {
+			"post": {
 				"operationId": "Main",
 				"responses": {
 					"200": {
@@ -404,6 +437,28 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/Driver"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/driver/orders": {
+			"get": {
+				"operationId": "Orders",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Order"
+									},
+									"type": "array"
 								}
 							}
 						}
