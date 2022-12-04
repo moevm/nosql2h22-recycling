@@ -30,17 +30,19 @@ export const Login = () => {
         )
             .then(response => response.json())
             .then(content => {
-                userLogged.setUser(content.role);
                 if(content.role === "Admin"){
                     userLogged.stateFunc(true);
+                    userLogged.setUser(email);
                     navigate('/admin_screen')
                 }
                 if(content.role === "Manager"){
                     userLogged.stateFunc(true);
+                    userLogged.setUser(email);
                     navigate('/manager_screen')
                 }
                 if(content.role === "Driver"){
                     userLogged.stateFunc(true);
+                    userLogged.setUser(email);
                     navigate('/carrier_screen')
                 }
             })
