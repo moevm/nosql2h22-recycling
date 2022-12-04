@@ -123,33 +123,101 @@
 			},
 			"Material": {
 				"properties": {
-					"type": {
+					"title": {
 						"type": "string"
 					},
 					"subtype": {
 						"type": "string"
 					},
-					"amount": {
+					"count": {
 						"type": "number",
 						"format": "double"
 					},
-					"occupancy": {
+					"price": {
 						"type": "number",
 						"format": "double"
-					},
-					"request": {
-						"type": "string"
 					}
 				},
 				"required": [
-					"type",
+					"title",
 					"subtype",
-					"amount",
-					"occupancy",
-					"request"
+					"count",
+					"price"
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"History": {
+				"properties": {
+					"status": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"status",
+					"date"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_IOrder.Exclude_keyofIOrder.users__": {
+				"properties": {
+					"status": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"reception": {
+						"$ref": "#/components/schemas/Reception"
+					},
+					"material": {
+						"$ref": "#/components/schemas/Material"
+					},
+					"history": {
+						"$ref": "#/components/schemas/History"
+					}
+				},
+				"required": [
+					"status",
+					"date",
+					"reception",
+					"material",
+					"history"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_IOrder.users_": {
+				"$ref": "#/components/schemas/Pick_IOrder.Exclude_keyofIOrder.users__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"IOrderResponse": {
+				"$ref": "#/components/schemas/Omit_IOrder.users_"
+			},
+			"OrdersResponse": {
+				"properties": {
+					"result": {
+						"items": {
+							"$ref": "#/components/schemas/IOrderResponse"
+						},
+						"type": "array"
+					},
+					"count": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"result",
+					"count"
+				],
+				"type": "object"
 			},
 			"Manager": {
 				"properties": {
@@ -325,6 +393,26 @@
 				"parameters": []
 			}
 		},
+		"/api/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {},
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/admin/receptions": {
 			"post": {
 				"operationId": "Receptions",
@@ -360,6 +448,44 @@
 										"$ref": "#/components/schemas/Transit"
 									},
 									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/user/orders": {
+			"get": {
+				"operationId": "Orders",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/OrdersResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/user/order": {
+			"post": {
+				"operationId": "Order",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
 								}
 							}
 						}
@@ -447,7 +573,7 @@
 			}
 		},
 		"/api/driver/orders": {
-			"get": {
+			"post": {
 				"operationId": "Orders",
 				"responses": {
 					"200": {
@@ -460,6 +586,23 @@
 									},
 									"type": "array"
 								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/driver/confirm": {
+			"get": {
+				"operationId": "Confirm",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
 							}
 						}
 					}
