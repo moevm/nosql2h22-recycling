@@ -23,4 +23,28 @@ export default class AuthorizationController extends BaseController {
 
         return { role: "Not found" };
     }
+
+    @Post("/register")
+    public async register(): Promise<{}> {
+        const {
+            firstName, lastName, login, email,
+        } = this.req.body;
+        const query = { login };
+
+        const res = await user.find(query);
+
+        if (res.length > 0) return {};
+
+        await user.create({
+            email,
+            firstName,
+            lastName,
+            login,
+            loyalty: 0,
+            orders: [],
+            role: "User",
+        });
+
+        return {};
+    }
 }

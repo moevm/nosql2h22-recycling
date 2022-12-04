@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { Express } from "express/ts4.0";
 import swaggerUi from "swagger-ui-express";
+import path from "path";
 import DatabaseManager from "./database/DatabaseManager";
 import ApiRouter from "./routes/ApiRouter";
 import AdminRouter from "./routes/AdminRouter";
@@ -19,8 +20,8 @@ app.use([
     cookieParser(),
 ]);
 
-app.use(cors());
 app.use(express.static("public"));
+app.use(cors());
 
 app.use("/api", ApiRouter);
 app.use("/admin", AdminRouter);
@@ -29,6 +30,10 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(undefined, {
         url: "/swagger.json",
     },
 }));
+
+app.get("*", (req, res, next) => {
+    res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+});
 
 app.use(errorHandler);
 
