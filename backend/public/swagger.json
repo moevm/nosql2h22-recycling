@@ -278,13 +278,13 @@
 					"Driver": {
 						"type": "string"
 					},
-					"Point of Departure": {
+					"PointOfDeparture": {
 						"type": "string"
 					},
-					"Point of Arrival": {
+					"PointOfArrival": {
 						"type": "string"
 					},
-					"Type of waste": {
+					"TypeOfWaste": {
 						"type": "string"
 					},
 					"Subtype": {
@@ -297,9 +297,9 @@
 				},
 				"required": [
 					"Driver",
-					"Point of Departure",
-					"Point of Arrival",
-					"Type of waste",
+					"PointOfDeparture",
+					"PointOfArrival",
+					"TypeOfWaste",
 					"Subtype",
 					"Amount"
 				],
@@ -532,7 +532,7 @@
 			}
 		},
 		"/api/manager/requests": {
-			"get": {
+			"post": {
 				"operationId": "Requests",
 				"responses": {
 					"200": {
@@ -595,7 +595,7 @@
 			}
 		},
 		"/api/driver/confirm": {
-			"get": {
+			"post": {
 				"operationId": "Confirm",
 				"responses": {
 					"200": {

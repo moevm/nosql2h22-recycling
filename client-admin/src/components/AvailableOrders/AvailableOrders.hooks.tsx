@@ -16,12 +16,7 @@ export const useTableData = (data: Array<TableCellAvailableOrders>, show: Dispat
                             <Col>
                                 <Button onClick={() => {
                                     show(true);
-                                }} variant='success' id={`yes-${idx}`}>Yes</Button>
-                            </Col>
-                            <Col>
-                                <Button onClick={() => {
-                                    show(true);
-                                }} variant='danger' id={`no-${idx}`}>No</Button>
+                                }} variant='success' id={idx.toString()}>Yes</Button>
                             </Col>
                         </Row>
                     </Container>];
