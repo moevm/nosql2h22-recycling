@@ -11,10 +11,15 @@ interface Material {
     request: string
 }
 
+interface Manager {
+    reception: string,
+    materials: Array<Material>
+}
+
 @Route("/api/manager")
 export default class ManagerReceptionController extends BaseController {
     @Post("/reception")
-    public async reception(): Promise<Array<Material>> {
+    public async reception(): Promise<Manager> {
         const {
             login, filter, filterValue,
         } = this.req.body;
@@ -25,13 +30,13 @@ export default class ManagerReceptionController extends BaseController {
         const reception = receptionFind[0].reception.address;
         if (filter === "type") {
             findDocs = await order.aggregate(
-                [{ $match: { "reception.address": reception, status: "Created", "material.title": { $regex: filterValue } } },
+                [{ $match: { "reception.address": reception, status: "Created", "material.title": { $regex: filterValue, $options: "i" } } },
                     { $group: { _id: { reception: "$reception.address", type: "$material.title", subtype: "$material.subtype" }, totalELem: { $sum: "$material.count" } } }]
                 ,
             );
         } if (filter === "subtype") {
             findDocs = await order.aggregate(
-                [{ $match: { "reception.address": reception, status: "Created", "material.subtype": { $regex: filterValue } } },
+                [{ $match: { "reception.address": reception, status: "Created", "material.subtype": { $regex: filterValue, $options: "i" } } },
                     { $group: { _id: { reception: "$reception.address", subtype: "$material.subtype", type: "$material.title" }, totalELem: { $sum: "$material.count" } } }]
                 ,
             );
@@ -47,6 +52,6 @@ export default class ManagerReceptionController extends BaseController {
                 request: "",
             });
         }
-        return materials;
+        return { reception, materials };
     }
 }

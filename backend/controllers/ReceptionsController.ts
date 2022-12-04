@@ -29,12 +29,12 @@ export default class MainStorageController extends BaseController {
         const receptions: Array<Reception> = [];
         if (filter === "Reception") {
             findDocs = await order.aggregate(
-                [{ $match: { "reception.address": { $regex: filterValue }, status: "For export" } },
+                [{ $match: { "reception.address": { $regex: filterValue, $options: "i" }, status: "For export" } },
                     { $group: { _id: { reception: "$reception.address", type: "$material.title" }, totalELem: { $sum: "$material.count" } } }]
                 ,
             );
             totals = await order.aggregate(
-                [{ $match: { "reception.address": { $regex: filterValue }, status: "For export" } },
+                [{ $match: { "reception.address": { $regex: filterValue, $options: "i" }, status: "For export" } },
                     { $group: { _id: { reception: "$reception.address" }, total: { $sum: "$material.count" } } }]
                 ,
             );
@@ -43,12 +43,12 @@ export default class MainStorageController extends BaseController {
             if (userData.length === 1) {
                 query = {
                     role: "Manager",
-                    $or: [{ firstName: { $regex: `${userData[0]}` } }, { lastName: { $regex: `${userData[0]}` } }],
+                    $or: [{ firstName: { $regex: `${userData[0]}`, $options: "i" } }, { lastName: { $regex: `${userData[0]}`, $options: "i" } }],
                 };
             } else if (userData.length === 2) {
                 query = {
                     role: "Manager",
-                    $or: [{ firstName: { $regex: `^${userData[0]}$` }, lastName: { $regex: `${userData[1]}` } }, { firstName: { $regex: `${userData[1]}` }, lastName: { $regex: `^${userData[0]}$` } }],
+                    $or: [{ firstName: { $regex: `^${userData[0]}$`, $options: "i" }, lastName: { $regex: `${userData[1]}`, $options: "i" } }, { firstName: { $regex: `${userData[1]}`, $options: "i" }, lastName: { $regex: `^${userData[0]}$`, $options: "i" } }],
                 };
             } else {
                 return [];
