@@ -6,45 +6,46 @@ export type WasteType = {
     subtypes?: Array<String>;
 };
 
-export const useWasteType = (wasteTypes: WasteType[]): ReactNode => {
+export const useWasteType = (wasteTypes: WasteType[], setWasteType: React.Dispatch<React.SetStateAction<string>>): ReactNode => {
     return useMemo(() => {
         return (
             <Dropdown.Menu>
-                { wasteTypes.map((wasteType: WasteType) => {
-                    return (
-                        <Dropdown.Item>
-                            <Dropdown>
-                                <span>
-                                    {wasteType.type}
-                                </span>
-                                <Dropdown.Menu>
-                                    {wasteType?.subtypes?.map((subtype) => {
-                                        return (
-                                            <Dropdown.Item>
-                                                {subtype}
-                                            </Dropdown.Item>
-                                        );
-                                    })}
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </Dropdown.Item>
-                    );
-                }) }
+                {
+                    wasteTypes.map((wasteType: WasteType) => {
+                        return wasteType?.subtypes?.map((subtype) => {
+                            return (
+                                <Dropdown.Item onClick={() => {
+                                    setWasteType(`${wasteType.type} ${subtype}`);
+                                }}
+                                >
+                                    {`${wasteType.type} ${subtype}`}
+                                </Dropdown.Item>
+                            );
+                        });
+                    })
+                }
             </Dropdown.Menu>
         );
-    }, [wasteTypes]);
+    }, [wasteTypes, setWasteType]);
 };
 
-export const useReceptions = (receptions: Array<string>): ReactNode => {
+export const useReceptions = (receptions: Array<string>, setReception: React.Dispatch<React.SetStateAction<string>>): ReactNode => {
     return useMemo(() => {
         return (
             <Dropdown.Menu>
                 {
                     receptions.map((reception) => {
-                        return (<Dropdown.Item>{reception}</Dropdown.Item>);
+                        return (
+                            <Dropdown.Item onClick={() => {
+                                setReception(reception);
+                            }}
+                            >
+                                {reception}
+                            </Dropdown.Item>
+                        );
                     })
                 }
             </Dropdown.Menu>
         );
-    }, [receptions]);
+    }, [receptions, setReception]);
 };

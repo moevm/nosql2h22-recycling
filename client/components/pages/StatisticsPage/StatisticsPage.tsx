@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import DropdownToggle from "react-bootstrap/DropdownToggle";
 import DropdownItem from "react-bootstrap/DropdownItem";
 import DropdownMenu from "react-bootstrap/DropdownMenu";
 import Container from "react-bootstrap/Container";
+import { useSession } from "next-auth/react";
 import { Hero, IHeroProps } from "../../shared/Hero";
 import styles from "./StatisticsPage.module.css";
 import { TableData } from "../../shared/TableData";
+import { server } from "../../../config/axios";
 
 export type IStatisticsPageProps = IHeroProps & {};
 
@@ -123,7 +125,47 @@ export const data: any[] = [
     },
 ];
 
+// @ts-ignore
+export const buildData = (res) => {
+    console.log(res);
+    // @ts-ignore
+    return res?.map((order) => {
+        return {
+            id: (
+                // eslint-disable-next-line no-underscore-dangle
+                <a href={`/order/${order?._id}?amount=${order?.material?.count}&wasteType=${order?.material?.title}&price=${order?.material?.price}`}>
+                    {/* eslint-disable-next-line no-underscore-dangle */}
+                    {order?._id}
+                </a>
+            ),
+            date: order?.date,
+            type_of_waste: order?.material?.title,
+            subtype: order?.material?.subtype,
+            among: `${order?.material?.count} kg`,
+            status: order?.status,
+        };
+    });
+};
+
 export const StatisticsPage = ({ title, description, footer }: IStatisticsPageProps) => {
+    const { data: session, status } = useSession();
+    const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(5);
+    const [total, setTotal] = useState<number>(5);
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        const login = session?.user?.email?.split("@")[0];
+        console.log(login);
+        // @ts-ignore
+        server.get(`/user/orders?login=${login}&page=${page}&perPage=${perPage}`).then((res) => {
+            setTotal(res.data.count);
+            setOrders(buildData(res.data.result));
+        }).catch((e) => {
+            console.error(e);
+        });
+    }, [page, perPage, status]);
+
     return (
         <main>
             <Hero title={title} description={description} footer={footer} />
@@ -152,7 +194,17 @@ export const StatisticsPage = ({ title, description, footer }: IStatisticsPagePr
                         <span> Current loyalty: </span>
                     </div>
                 </div>
-                <TableData tableCells={data} headers={columns} />
+                {(status === "authenticated") && (
+                    <TableData
+                        total={total}
+                        setPage={setPage}
+                        setPerPage={setPerPage}
+                        page={page}
+                        perPage={perPage}
+                        tableCells={orders || []}
+                        headers={columns}
+                    />
+                )}
             </Container>
         </main>
     );

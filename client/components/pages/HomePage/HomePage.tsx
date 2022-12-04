@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from "react-bootstrap/Container";
 import { Hero, IHeroProps } from "../../shared/Hero";
 import { Boilerplate } from "./components/Boilerplate";
@@ -14,13 +14,21 @@ export type IHomePageProps = IHeroProps &
 export const HomePage = ({
     title, description, footer, isLogged, wasteTypes, receptions,
 }: IHomePageProps) => {
+    const [wasteType, setWasteType] = useState<string>("");
+    const [reception, setReception] = useState<string>("");
+
+    const buttons = useWasteType(wasteTypes, setWasteType);
+    const menuItems = useReceptions(receptions, setReception);
+
     return (
         <main>
             <Hero title={title} description={description} footer={footer} />
             {isLogged && (
                 <Boilerplate
-                    buttons={useWasteType(wasteTypes)}
-                    menuItems={useReceptions(receptions)}
+                    buttons={buttons}
+                    menuItems={menuItems}
+                    wasteType={wasteType}
+                    reception={reception}
                 />
             )}
         </main>
