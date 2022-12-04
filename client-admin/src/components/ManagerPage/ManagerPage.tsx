@@ -49,7 +49,6 @@ export const ManagerPage = () => {
                             Requests
                         </ToggleButton>
                     </ButtonGroup>
-                    <h1>Reception: Tikhvin</h1>
                 </Card.Body>
             </Card>
             <>

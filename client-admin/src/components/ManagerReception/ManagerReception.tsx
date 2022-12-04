@@ -13,6 +13,7 @@ export const ManagerReception = () => {
     const [currentData, setData] = useState<Array<TableCellManagerReception>>([]);
     const [searchInput, setSearchInput] = useState("");
     const [isSearching, setIsSearching] = useState(false);
+    const [show, setShow] = useState<boolean>(false);
 
     const userLogged = useContext(UserLogged);
 
@@ -21,6 +22,25 @@ export const ManagerReception = () => {
     const searchHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setSearchParameter(event.target.value);
     };
+
+    const createRequest = (event: any) => {
+        setShow(true);
+        let currentRequest = currentData[parseInt(event.target.id)];
+        fetch('http://localhost:8000/api/manager/export', {
+            method:"POST",
+            headers: new Headers({
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }),
+            body: JSON.stringify({reception: userLogged.reception, type: currentRequest.type, subtype: currentRequest.subtype})
+        })
+            .then(response => response.json())
+            .then(content => {
+                setData(content.materials);
+                userLogged.setReception(content.reception);
+            })
+            .catch(err => console.error(err));
+    }
 
     useEffect(()=>{
         fetch('http://localhost:8000/api/manager/reception', {
@@ -33,7 +53,8 @@ export const ManagerReception = () => {
         })
             .then(response => response.json())
             .then(content => {
-                setData(content);
+                setData(content.materials);
+                userLogged.setReception(content.reception);
             })
             .catch(err => console.error(err));
     }, [])
@@ -59,13 +80,11 @@ export const ManagerReception = () => {
             setIsSearching(true);
             requestForData(debouncedSearchTerm).then(results => {
                 setIsSearching(false);
-                setData(results);
+                setData(results.materials);
             });
         },
         [debouncedSearchTerm]
     );
-
-    const [show, setShow] = useState<boolean>(false);
 
     return (
         <Card>
@@ -96,7 +115,7 @@ export const ManagerReception = () => {
                     </Col>
                 </Row>
             </Card.Body>
-            <TableData tableCells={useTableData(currentData, setShow)} header={columns}/>
+            <TableData tableCells={useTableData(currentData, createRequest)} header={columns}/>
         </Card>
     );
 };

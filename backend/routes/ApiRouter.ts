@@ -19,6 +19,6 @@ ApiRouter.get("/user/orders", UserController.handleAction("orders"));
 ApiRouter.post("/user/order", UserController.handleAction("order"));
 ApiRouter.post("/manager/reception", ManagerReceptionController.handleAction("reception"));
 ApiRouter.post("/manager/export", ExportRequestController.handleAction("export"));
-ApiRouter.get("/manager/requests", RequestsController.handleAction("requests"));
+ApiRouter.post("/manager/requests", RequestsController.handleAction("requests"));
 
 export default ApiRouter;

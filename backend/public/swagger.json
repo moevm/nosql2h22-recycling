@@ -123,14 +123,12 @@
 			},
 			"Material": {
 				"properties": {
-
 					"title": {
 						"type": "string"
 					},
 					"subtype": {
 						"type": "string"
 					},
-
 					"count": {
 						"type": "number",
 						"format": "double"
@@ -145,12 +143,10 @@
 					"subtype",
 					"count",
 					"price"
-
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-
 			"History": {
 				"properties": {
 					"status": {
@@ -164,7 +160,6 @@
 				"required": [
 					"status",
 					"date"
-
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -223,6 +218,60 @@
 					"count"
 				],
 				"type": "object"
+			},
+			"Manager": {
+				"properties": {
+					"reception": {
+						"type": "string"
+					},
+					"materials": {
+						"items": {
+							"$ref": "#/components/schemas/Material"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"reception",
+					"materials"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Request": {
+				"properties": {
+					"req_id": {
+						"type": "string"
+					},
+					"date": {
+						"type": "string"
+					},
+					"type_of_waste": {
+						"type": "number",
+						"format": "double"
+					},
+					"subtype": {
+						"type": "number",
+						"format": "double"
+					},
+					"among": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"req_id",
+					"date",
+					"type_of_waste",
+					"subtype",
+					"among",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -342,7 +391,6 @@
 				"parameters": []
 			}
 		},
-
 		"/api/user/orders": {
 			"get": {
 				"operationId": "Orders",
@@ -353,7 +401,6 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/OrdersResponse"
-
 								}
 							}
 						}
@@ -372,8 +419,65 @@
 						"content": {
 							"application/json": {
 								"schema": {
-
 									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/manager/reception": {
+			"post": {
+				"operationId": "Reception",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Manager"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/manager/export": {
+			"post": {
+				"operationId": "Export",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/manager/requests": {
+			"post": {
+				"operationId": "Requests",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Request"
+									},
+									"type": "array"
 								}
 							}
 						}

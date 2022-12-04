@@ -13,16 +13,25 @@ export const UserLogged = React.createContext({
     stateValue:false,
     stateFunc: (b: boolean)=>{},
     user:'',
-    setUser: (b: string)=>{}
+    setUser: (b: string)=>{},
+    reception: '',
+    setReception: (b:string)=>{},
 });
 
 export const App = () => {
     const [isLogged, setLogged] = useState(false);
     const [user, setUser] = useState('');
+    const [reception, setReception] = useState('');
 
     return (
         <>
-            <UserLogged.Provider value={{stateValue: isLogged, stateFunc:setLogged as ()=>void,user: user,setUser: setUser}}>
+            <UserLogged.Provider value={{stateValue: isLogged,
+                                        stateFunc:setLogged as ()=>void,
+                                        user: user,
+                                        setUser: setUser,
+                                        reception: reception,
+                                        setReception: setReception}}
+            >
                 <header>
                     <AdminNavbar expand="lg" content={useNavbarContent(pages)}/>
                 </header>

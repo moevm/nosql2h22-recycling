@@ -1,4 +1,4 @@
-import { Get, Route } from "tsoa";
+import { Post, Route } from "tsoa";
 import BaseController from "./BaseController";
 import { order } from "../models/Order";
 
@@ -13,11 +13,9 @@ interface Request {
 
 @Route("/api/manager")
 export default class RequestsController extends BaseController {
-    @Get("/requests")
+    @Post("/requests")
     public async requests(): Promise<Array<Request>> {
-        const reception = this.req.query.reception as string;
-        const filter = this.req.query.filter as string;
-        const filterValue = this.req.query.filterValue as string;
+        const { reception, filter, filterValue } = this.req.body;
         let findDocs: Array<any> = [];
         const requests: Array<Request> = [];
         if (filter === "Request ID") {
@@ -25,6 +23,7 @@ export default class RequestsController extends BaseController {
                 {
                     $addFields: {
                         orderID: { $toString: "$_id" },
+                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
                     },
                 },
                 {
@@ -52,6 +51,11 @@ export default class RequestsController extends BaseController {
         } if (filter === "Type of waste") {
             findDocs = await order.aggregate([
                 {
+                    $addFields: {
+                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                    },
+                },
+                {
                     $match: {
                         "reception.address": reception,
                         "material.title": { $regex: filterValue, $options: "i" },
@@ -60,6 +64,11 @@ export default class RequestsController extends BaseController {
             ]);
         } if (filter === "Subtype") {
             findDocs = await order.aggregate([
+                {
+                    $addFields: {
+                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                    },
+                },
                 {
                     $match: {
                         "reception.address": reception,
