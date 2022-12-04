@@ -39,18 +39,6 @@
                 "type": "object",
                 "additionalProperties": false
             },
-            "Answer": {
-                "properties": {
-                    "role": {
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "role"
-                ],
-                "type": "object",
-                "additionalProperties": false
-            },
             "Reception": {
                 "properties": {
                     "Address": {
@@ -99,6 +87,53 @@
                 ],
                 "type": "object",
                 "additionalProperties": false
+            },
+            "Transit": {
+                "properties": {
+                    "carrier": {
+                        "type": "string"
+                    },
+                    "reception": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "required": [
+                    "carrier",
+                    "reception",
+                    "amount"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Material": {
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "subtype": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "occupancy": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "required": [
+                    "type",
+                    "subtype",
+                    "amount",
+                    "occupancy"
+                ],
+                "type": "object",
+                "additionalProperties": false
             }
         },
         "securitySchemes": {}
@@ -144,7 +179,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Answer"
+                                    "type": "string"
                                 }
                             }
                         }
@@ -157,6 +192,72 @@
         "/api/admin/receptions": {
             "post": {
                 "operationId": "Receptions",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Reception"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
+            }
+        },
+        "/api/admin/transit": {
+            "post": {
+                "operationId": "Transit",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Transit"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
+            }
+        },
+        "/api/manager/reception": {
+            "post": {
+                "operationId": "Reception",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Material"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
+            }
+        },
+        "/api/manager/export": {
+            "get": {
+                "operationId": "Export",
                 "responses": {
                     "200": {
                         "description": "Ok",
