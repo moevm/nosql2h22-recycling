@@ -4,7 +4,6 @@ import {TableData} from "../TableData/TableData";
 import {columns, data, header} from "./Reception.content";
 import {CSVLink} from 'react-csv';
 import useDebounce from "./Reception.hooks";
-import { TableCellReceptions } from '../TableData/TableData.types';
 
 export const Receptions = () => {
     const [searchParameter, setSearchParameter] = useState<string>('Reception')
