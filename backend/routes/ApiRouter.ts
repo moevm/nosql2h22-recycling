@@ -6,6 +6,7 @@ import TransitController from "../controllers/TransitController";
 import ManagerReceptionController from "../controllers/ManagerReceptionController";
 import ExportRequestController from "../controllers/ExportRequestController";
 import RequestsController from "../controllers/RequestsController";
+import MainDriverController from "../controllers/MainDriverController";
 
 const ApiRouter: Router = express.Router();
 
@@ -16,5 +17,6 @@ ApiRouter.post("/admin/transit", TransitController.handleAction("transit"));
 ApiRouter.post("/manager/reception", ManagerReceptionController.handleAction("reception"));
 ApiRouter.post("/manager/export", ExportRequestController.handleAction("export"));
 ApiRouter.get("/manager/requests", RequestsController.handleAction("requests"));
+ApiRouter.post("/driver/main", MainDriverController.handleAction("main"));
 
 export default ApiRouter;

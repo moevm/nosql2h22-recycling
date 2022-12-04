@@ -204,6 +204,39 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Driver": {
+				"properties": {
+					"Driver": {
+						"type": "string"
+					},
+					"Point of Departure": {
+						"type": "string"
+					},
+					"Point of Arrival": {
+						"type": "string"
+					},
+					"Type of waste": {
+						"type": "string"
+					},
+					"Subtype": {
+						"type": "string"
+					},
+					"Amount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"Driver",
+					"Point of Departure",
+					"Point of Arrival",
+					"Type of waste",
+					"Subtype",
+					"Amount"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -352,6 +385,25 @@
 										"$ref": "#/components/schemas/Request"
 									},
 									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/driver/main": {
+			"get": {
+				"operationId": "Main",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Driver"
 								}
 							}
 						}
