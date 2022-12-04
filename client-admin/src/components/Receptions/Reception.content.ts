@@ -1,7 +1,6 @@
 import {TableCellReceptions} from "../TableData/TableData.types";
 
 export const header = [
-    { label: "ID", key: "id" },
     { label: "Reception", key: "reception" },
     { label: "Manager", key: "manager" },
     { label: "Paper", key: "paper" },
@@ -14,40 +13,35 @@ export const header = [
 
 export const columns = [
     {
-        dataField: "id",
-        text: "ID",
-        sort: true
-    },
-    {
-        dataField: "reception",
+        dataField: "Address",
         text: "Reception",
     },
     {
-        dataField: "manager",
+        dataField: "Manager",
         text: "Manager"
     },
     {
-        dataField: "paper",
+        dataField: "Paper",
         text: "Paper",
     },
     {
-        dataField: "glass",
+        dataField: "Glass",
         text: "Glass",
     },
     {
-        dataField: "plastic",
+        dataField: "Plastic",
         text: "Plastic",
     },
     {
-        dataField: "metal",
+        dataField: "Metal",
         text: "Metal",
     },
     {
-        dataField: "amount",
+        dataField: "Amount",
         text: "Amount of waste",
     },
     {
-        dataField: "percentage",
+        dataField: "Percentage",
         text: "Percentage"
     }
 ];

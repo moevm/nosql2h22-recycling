@@ -1,14 +1,17 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Form, Container, Row, Col, Button} from "react-bootstrap";
 import {TableData} from "../TableData/TableData";
 import {columns, data, header} from "./Reception.content";
 import {CSVLink} from 'react-csv';
+import useDebounce from "./Reception.hooks";
+import { TableCellReceptions } from '../TableData/TableData.types';
 
 export const Receptions = () => {
-    const [searchParameter, setSearchParameter] = useState<string>('reception')
+    const [searchParameter, setSearchParameter] = useState<string>('Reception')
     const [currentData, setData] = useState(data);
     const [currentCols, setCols] = useState(columns);
     const [searchInput, setSearchInput] = useState("");
+    const [isSearching, setIsSearching] = useState(false);
 
     const searchHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setSearchParameter(event.target.value);
@@ -18,14 +21,63 @@ export const Receptions = () => {
         setSearchInput(event.currentTarget.value);
     };
 
+    const debouncedSearchTerm = useDebounce(searchInput, 500);
+
+    useEffect(
+        () => {
+            fetch('http://localhost:8000/api/admin/receptions', {
+                    method:"POST",
+                    headers: new Headers({
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    }),
+                    body: JSON.stringify({filter: searchParameter, filterValue: ''})
+                }
+            )
+                .then(response => response.json())
+                .then(content => {
+                    setData(content);
+                })
+                .catch(err => console.error(err));
+        },
+        []
+    );
+
+    const requestForData = (request: string) =>{
+        return fetch('http://localhost:8000/api/admin/receptions', {
+            method:"POST",
+            headers: new Headers({
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }),
+            body: JSON.stringify({filter: searchParameter, filterValue: request})
+        })
+            .then(r => r.json())
+            .catch(error => {
+                console.error(error);
+                return [];
+            });
+    }
+
+    useEffect(
+        () => {
+            setIsSearching(true);
+            requestForData(debouncedSearchTerm).then(results => {
+                setIsSearching(false);
+                setData(results);
+            });
+        },
+        [debouncedSearchTerm]
+    );
+
     return (
         <>
             <Container style={{width: '90vh', margin:'1vh 0vh 0vh 0vh'}}>
                 <Row>
                     <Col xs lg="3">
                         <Form.Select onChange={searchHandler}  aria-label="Choose parameter of search">
-                            <option value='reception'>Reception</option>
-                            <option value='manager'>Manager</option>
+                            <option value='Reception'>Reception</option>
+                            <option value='Manager'>Manager</option>
                         </Form.Select>
                     </Col>
                     <Col lg="4">

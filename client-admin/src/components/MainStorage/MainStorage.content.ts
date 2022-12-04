@@ -2,30 +2,30 @@ import {TableCellStorage} from "../TableData/TableData.types";
 
 export const columns = [
     {
-        dataField: "id",
+        dataField: "ID",
         text: "ID",
         sort: true
     },
     {
-        dataField: "date",
+        dataField: "Date",
         text: "Date",
         sort: true
     },
     {
-        dataField: "type_of_waste",
+        dataField: "Type",
         text: "Type of Waste"
     },
     {
-        dataField: "subtype",
+        dataField: "SubType",
         text: "SubType",
     },
     {
-        dataField: "among",
-        text: "Among of waste",
+        dataField: "Amount",
+        text: "Amount of waste",
         sort: true
     },
     {
-        dataField: "status",
+        dataField: "Status",
         text: "Status",
     }
 ];

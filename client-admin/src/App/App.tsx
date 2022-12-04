@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useState} from 'react';
+import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import { AdminNavbar } from "../components/Navbar";
 import { MainPage } from "../components/MainPage/MainPage";
 import {useNavbarContent} from "./App.hooks";
@@ -9,11 +9,17 @@ import {AdminPage} from "../components/AdminPage/AdminPage";
 import {ManagerPage} from "../components/ManagerPage/ManagerPage";
 import {CarrierPage} from "../components/CarrierPage/CarrierPage";
 
-export const UserLogged = React.createContext({stateValue:false,stateFunc: (b: boolean)=>{},user:'', setUser: (b: string)=>{}});
+export const UserLogged = React.createContext({
+    stateValue:false,
+    stateFunc: (b: boolean)=>{},
+    user:'',
+    setUser: (b: string)=>{}
+});
 
 export const App = () => {
     const [isLogged, setLogged] = useState(false);
     const [user, setUser] = useState('');
+
     return (
         <>
             <UserLogged.Provider value={{stateValue: isLogged, stateFunc:setLogged as ()=>void,user: user,setUser: setUser}}>
