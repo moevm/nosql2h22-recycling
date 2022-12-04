@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 
 interface IUser {
-    "_id": Schema.Types.ObjectId,
     "login": string,
     "password": string,
     "email": string,
@@ -13,7 +12,6 @@ interface IUser {
 }
 
 const userSchema = new Schema<IUser>({
-    _id: Schema.Types.ObjectId,
     login: Schema.Types.String,
     password: Schema.Types.String,
     email: Schema.Types.String,

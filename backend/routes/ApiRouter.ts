@@ -8,6 +8,7 @@ const ApiRouter: Router = express.Router();
 
 ApiRouter.post("/admin/main", MainStorageController.handleAction("main"));
 ApiRouter.post("/login", AuthorizationController.handleAction("login"));
+ApiRouter.post("/register", AuthorizationController.handleAction("register"));
 ApiRouter.post("/admin/receptions", ReceptionsController.handleAction("receptions"));
 ApiRouter.post("/admin/transit", TransitController.handleAction("transit"));
 

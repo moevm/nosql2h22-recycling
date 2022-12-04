@@ -99,6 +99,27 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Transit": {
+				"properties": {
+					"carrier": {
+						"type": "string"
+					},
+					"reception": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"carrier",
+					"reception",
+					"amount"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -154,6 +175,26 @@
 				"parameters": []
 			}
 		},
+		"/api/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {},
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
 		"/api/admin/receptions": {
 			"post": {
 				"operationId": "Receptions",
@@ -165,6 +206,28 @@
 								"schema": {
 									"items": {
 										"$ref": "#/components/schemas/Reception"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/admin/transit": {
+			"post": {
+				"operationId": "Transit",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Transit"
 									},
 									"type": "array"
 								}
