@@ -18,7 +18,6 @@ interface History {
 }
 
 interface IOrder {
-    "_id": Schema.Types.ObjectId,
     "users": Array<Schema.Types.ObjectId>,
     "status": string,
     "date": Date,
@@ -28,8 +27,7 @@ interface IOrder {
 }
 
 const orderSchema = new Schema<IOrder>({
-    _id: Schema.Types.ObjectId,
-    users: Schema.Types.Array,
+    users: [{ type: Schema.Types.ObjectId, ref: "User" }],
     status: Schema.Types.String,
     date: Schema.Types.Date,
     reception: {
