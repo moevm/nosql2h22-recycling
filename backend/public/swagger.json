@@ -120,6 +120,36 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Material": {
+				"properties": {
+					"type": {
+						"type": "string"
+					},
+					"subtype": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"occupancy": {
+						"type": "number",
+						"format": "double"
+					},
+					"request": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"type",
+					"subtype",
+					"amount",
+					"occupancy",
+					"request"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -208,6 +238,28 @@
 								"schema": {
 									"items": {
 										"$ref": "#/components/schemas/Transit"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/manager/reception": {
+			"post": {
+				"operationId": "Reception",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Material"
 									},
 									"type": "array"
 								}

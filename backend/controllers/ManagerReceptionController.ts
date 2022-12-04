@@ -7,7 +7,8 @@ interface Material {
     type: string,
     subtype: string,
     amount: number,
-    occupancy: number
+    occupancy: number,
+    request: string
 }
 
 @Route("/api/manager")
@@ -43,6 +44,7 @@ export default class ManagerReceptionController extends BaseController {
                 subtype: findDocs[i]._id.subtype,
                 amount: findDocs[i].totalELem,
                 occupancy: findDocs[i].totalELem / 100,
+                request: "",
             });
         }
         return materials;
