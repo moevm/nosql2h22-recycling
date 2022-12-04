@@ -1,228 +1,286 @@
 {
-	"components": {
-		"examples": {},
-		"headers": {},
-		"parameters": {},
-		"requestBodies": {},
-		"responses": {},
-		"schemas": {
-			"IMainStorage": {
-				"properties": {
-					"ID": {
-						"type": "string"
-					},
-					"Date": {
-						"type": "string"
-					},
-					"Type": {
-						"type": "string"
-					},
-					"SubType": {
-						"type": "string"
-					},
-					"Amount": {
-						"type": "number",
-						"format": "double"
-					},
-					"Status": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"ID",
-					"Date",
-					"Type",
-					"SubType",
-					"Amount",
-					"Status"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Answer": {
-				"properties": {
-					"role": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"role"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Reception": {
-				"properties": {
-					"Address": {
-						"type": "string"
-					},
-					"Manager": {
-						"type": "string"
-					},
-					"Paper": {
-						"type": "number",
-						"format": "double"
-					},
-					"Metal": {
-						"type": "number",
-						"format": "double"
-					},
-					"Plastic": {
-						"type": "number",
-						"format": "double"
-					},
-					"Organic": {
-						"type": "number",
-						"format": "double"
-					},
-					"Glass": {
-						"type": "number",
-						"format": "double"
-					},
-					"Battery": {
-						"type": "number",
-						"format": "double"
-					},
-					"Amount": {
-						"type": "number",
-						"format": "double"
-					},
-					"Percentage": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"Address",
-					"Manager",
-					"Percentage"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Transit": {
-				"properties": {
-					"carrier": {
-						"type": "string"
-					},
-					"reception": {
-						"type": "string"
-					},
-					"amount": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"carrier",
-					"reception",
-					"amount"
-				],
-				"type": "object",
-				"additionalProperties": false
-			}
-		},
-		"securitySchemes": {}
-	},
-	"info": {
-		"title": "nosql2h22-recycling",
-		"version": "1.0.0",
-		"license": {
-			"name": "ISC"
-		},
-		"contact": {}
-	},
-	"openapi": "3.0.0",
-	"paths": {
-		"/api/admin/main": {
-			"post": {
-				"operationId": "Main",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IMainStorage"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/login": {
-			"post": {
-				"operationId": "Login",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Answer"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/admin/receptions": {
-			"post": {
-				"operationId": "Receptions",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Reception"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
-		"/api/admin/transit": {
-			"post": {
-				"operationId": "Transit",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Transit"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		}
-	},
-	"servers": [
-		{
-			"url": "/"
-		}
-	]
+    "components": {
+        "examples": {},
+        "headers": {},
+        "parameters": {},
+        "requestBodies": {},
+        "responses": {},
+        "schemas": {
+            "IMainStorage": {
+                "properties": {
+                    "ID": {
+                        "type": "string"
+                    },
+                    "Date": {
+                        "type": "string"
+                    },
+                    "Type": {
+                        "type": "string"
+                    },
+                    "SubType": {
+                        "type": "string"
+                    },
+                    "Amount": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "Status": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "ID",
+                    "Date",
+                    "Type",
+                    "SubType",
+                    "Amount",
+                    "Status"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Reception": {
+                "properties": {
+                    "Address": {
+                        "type": "string"
+                    },
+                    "Manager": {
+                        "type": "string"
+                    },
+                    "Paper": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "Metal": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "Plastic": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "Organic": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "Glass": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "Battery": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "Amount": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "Percentage": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "required": [
+                    "Address",
+                    "Manager",
+                    "Percentage"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Transit": {
+                "properties": {
+                    "carrier": {
+                        "type": "string"
+                    },
+                    "reception": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "required": [
+                    "carrier",
+                    "reception",
+                    "amount"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            },
+            "Material": {
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "subtype": {
+                        "type": "string"
+                    },
+                    "amount": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "occupancy": {
+                        "type": "number",
+                        "format": "double"
+                    }
+                },
+                "required": [
+                    "type",
+                    "subtype",
+                    "amount",
+                    "occupancy"
+                ],
+                "type": "object",
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {}
+    },
+    "info": {
+        "title": "nosql2h22-recycling",
+        "version": "1.0.0",
+        "license": {
+            "name": "ISC"
+        },
+        "contact": {}
+    },
+    "openapi": "3.0.0",
+    "paths": {
+        "/api/admin/main": {
+            "post": {
+                "operationId": "Main",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/IMainStorage"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
+            }
+        },
+        "/api/login": {
+            "post": {
+                "operationId": "Login",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
+            }
+        },
+        "/api/admin/receptions": {
+            "post": {
+                "operationId": "Receptions",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Reception"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
+            }
+        },
+        "/api/admin/transit": {
+            "post": {
+                "operationId": "Transit",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Transit"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
+            }
+        },
+        "/api/manager/reception": {
+            "post": {
+                "operationId": "Reception",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Material"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
+            }
+        },
+        "/api/manager/export": {
+            "get": {
+                "operationId": "Export",
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "items": {
+                                        "$ref": "#/components/schemas/Reception"
+                                    },
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [],
+                "parameters": []
+            }
+        }
+    },
+    "servers": [
+        {
+            "url": "/"
+        }
+    ]
 }
