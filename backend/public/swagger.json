@@ -123,106 +123,153 @@
 			},
 			"Material": {
 				"properties": {
-
-					"title": {
+					"type": {
 						"type": "string"
 					},
 					"subtype": {
 						"type": "string"
 					},
-
-					"count": {
+					"amount": {
 						"type": "number",
 						"format": "double"
 					},
-					"price": {
+					"occupancy": {
 						"type": "number",
 						"format": "double"
+					},
+					"request": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"title",
+					"type",
 					"subtype",
-					"count",
-					"price"
-
+					"amount",
+					"occupancy",
+					"request"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-
-			"History": {
+			"Manager": {
 				"properties": {
-					"status": {
-						"type": "string"
-					},
-					"date": {
-						"type": "string",
-						"format": "date-time"
-					}
-				},
-				"required": [
-					"status",
-					"date"
-
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Pick_IOrder.Exclude_keyofIOrder.users__": {
-				"properties": {
-					"status": {
-						"type": "string"
-					},
-					"date": {
-						"type": "string",
-						"format": "date-time"
-					},
 					"reception": {
-						"$ref": "#/components/schemas/Reception"
+						"type": "string"
 					},
-					"material": {
-						"$ref": "#/components/schemas/Material"
-					},
-					"history": {
-						"$ref": "#/components/schemas/History"
-					}
-				},
-				"required": [
-					"status",
-					"date",
-					"reception",
-					"material",
-					"history"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"Omit_IOrder.users_": {
-				"$ref": "#/components/schemas/Pick_IOrder.Exclude_keyofIOrder.users__",
-				"description": "Construct a type with the properties of T except for those in type K."
-			},
-			"IOrderResponse": {
-				"$ref": "#/components/schemas/Omit_IOrder.users_"
-			},
-			"OrdersResponse": {
-				"properties": {
-					"result": {
+					"materials": {
 						"items": {
-							"$ref": "#/components/schemas/IOrderResponse"
+							"$ref": "#/components/schemas/Material"
 						},
 						"type": "array"
+					}
+				},
+				"required": [
+					"reception",
+					"materials"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Request": {
+				"properties": {
+					"req_id": {
+						"type": "string"
 					},
-					"count": {
+					"date": {
+						"type": "string"
+					},
+					"type_of_waste": {
+						"type": "number",
+						"format": "double"
+					},
+					"subtype": {
+						"type": "number",
+						"format": "double"
+					},
+					"among": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"req_id",
+					"date",
+					"type_of_waste",
+					"subtype",
+					"among",
+					"status"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Driver": {
+				"properties": {
+					"Driver": {
+						"type": "string"
+					},
+					"Point of Departure": {
+						"type": "string"
+					},
+					"Point of Arrival": {
+						"type": "string"
+					},
+					"Type of waste": {
+						"type": "string"
+					},
+					"Subtype": {
+						"type": "string"
+					},
+					"Amount": {
 						"type": "number",
 						"format": "double"
 					}
 				},
 				"required": [
-					"result",
-					"count"
+					"Driver",
+					"Point of Departure",
+					"Point of Arrival",
+					"Type of waste",
+					"Subtype",
+					"Amount"
 				],
-				"type": "object"
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Order": {
+				"properties": {
+					"departure": {
+						"type": "string"
+					},
+					"arrival": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"subtype": {
+						"type": "string"
+					},
+					"amount": {
+						"type": "number",
+						"format": "double"
+					},
+					"action": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"departure",
+					"arrival",
+					"type",
+					"subtype",
+					"amount",
+					"action"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -278,26 +325,6 @@
 				"parameters": []
 			}
 		},
-		"/api/register": {
-			"post": {
-				"operationId": "Register",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					}
-				},
-				"security": [],
-				"parameters": []
-			}
-		},
 		"/api/admin/receptions": {
 			"post": {
 				"operationId": "Receptions",
@@ -342,18 +369,16 @@
 				"parameters": []
 			}
 		},
-
-		"/api/user/orders": {
-			"get": {
-				"operationId": "Orders",
+		"/api/manager/reception": {
+			"post": {
+				"operationId": "Reception",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/OrdersResponse"
-
+									"$ref": "#/components/schemas/Manager"
 								}
 							}
 						}
@@ -363,17 +388,36 @@
 				"parameters": []
 			}
 		},
-		"/api/user/order": {
+		"/api/manager/export": {
 			"post": {
-				"operationId": "Order",
+				"operationId": "Export",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/manager/requests": {
+			"get": {
+				"operationId": "Requests",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-
-									"type": "string"
+									"items": {
+										"$ref": "#/components/schemas/Request"
+									},
+									"type": "array"
 								}
 							}
 						}
@@ -384,7 +428,7 @@
 			}
 		},
 		"/api/driver/main": {
-			"get": {
+			"post": {
 				"operationId": "Main",
 				"responses": {
 					"200": {
@@ -393,6 +437,28 @@
 							"application/json": {
 								"schema": {
 									"$ref": "#/components/schemas/Driver"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/driver/orders": {
+			"get": {
+				"operationId": "Orders",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Order"
+									},
+									"type": "array"
 								}
 							}
 						}
