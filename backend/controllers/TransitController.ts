@@ -20,7 +20,7 @@ export default class MainStorageController extends BaseController {
         let findDocs: Array<any> = [];
         const receptions: Array<Transit> = [];
         if (filter === "Reception") {
-            findDocs = await order.find({ "reception.address": { $regex: filterValue }, status: "In delivery" }, {
+            findDocs = await order.find({ "reception.address": { $regex: filterValue, $options: "i" }, status: "In delivery" }, {
                 users: 1, "reception.address": 1, "material.count": 1, _id: 0,
             });
         } if (filter === "Carrier") {
@@ -28,12 +28,12 @@ export default class MainStorageController extends BaseController {
             if (userData.length === 1) {
                 query = {
                     role: "Driver",
-                    $or: [{ firstName: { $regex: `${userData[0]}` } }, { lastName: { $regex: `${userData[0]}` } }],
+                    $or: [{ firstName: { $regex: `${userData[0]}`, $options: "i" } }, { lastName: { $regex: `${userData[0]}`, $options: "i" } }],
                 };
             } else if (userData.length === 2) {
                 query = {
                     role: "Driver",
-                    $or: [{ firstName: { $regex: `^${userData[0]}$` }, lastName: { $regex: `${userData[1]}` } }, { firstName: { $regex: `${userData[1]}` }, lastName: { $regex: `^${userData[0]}$` } }],
+                    $or: [{ firstName: { $regex: `^${userData[0]}$`, $options: "i" }, lastName: { $regex: `${userData[1]}`, $options: "i" } }, { firstName: { $regex: `${userData[1]}`, $options: "i" }, lastName: { $regex: `^${userData[0]}$`, $options: "i" } }],
                 };
             } else {
                 return [];
