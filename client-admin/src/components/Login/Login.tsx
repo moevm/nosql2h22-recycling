@@ -17,22 +17,34 @@ export const Login = () => {
         navigate('/');
         setShow(false)
     };
+
     const handleLogin = () => {
-        if(email === "admin" && password === "admin"){
-            userLogged.stateFunc(true);
-            userLogged.setUser('Admin');
-            navigate('/admin_screen')
-        }
-        if(email === "manager" && password === "manager"){
-            userLogged.stateFunc(true);
-            userLogged.setUser('Manager');
-            navigate('/manager_screen')
-        }
-        if(email === "carrier" && password === "carrier"){
-            userLogged.stateFunc(true);
-            userLogged.setUser('Carrier');
-            navigate('/carrier_screen')
-        }
+        fetch('http://localhost:8000/api/login', {
+                method:"POST",
+                headers: new Headers({
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                }),
+                body: JSON.stringify({login: email, password: password})
+            }
+        )
+            .then(response => response.json())
+            .then(content => {
+                userLogged.setUser(content.role);
+                if(content.role === "Admin"){
+                    userLogged.stateFunc(true);
+                    navigate('/admin_screen')
+                }
+                if(content.role === "Manager"){
+                    userLogged.stateFunc(true);
+                    navigate('/manager_screen')
+                }
+                if(content.role === "Driver"){
+                    userLogged.stateFunc(true);
+                    navigate('/carrier_screen')
+                }
+            })
+            .catch(err => console.error(err));
     }
 
     const savePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
