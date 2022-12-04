@@ -8,7 +8,7 @@ interface IUser {
     "firstName": string,
     "lastName": string,
     "loyalty": number,
-    "orders": Array<Schema.Types.ObjectId>
+    "orders": [{ type: Schema.Types.ObjectId, ref: "Order" }]
 }
 
 const userSchema = new Schema<IUser>({
