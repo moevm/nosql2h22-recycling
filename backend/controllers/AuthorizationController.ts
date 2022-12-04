@@ -27,15 +27,14 @@ export default class AuthorizationController extends BaseController {
     @Post("/register")
     public async register(): Promise<{}> {
         const {
-            firstName, lastName, login, email, id,
+            firstName, lastName, login, email,
         } = this.req.body;
         const query = { login };
-        console.log("called");
-        console.log(query);
+
         const res = await user.find(query);
-        console.log(res);
+
         if (res.length > 0) return {};
-        console.log("creation");
+
         await user.create({
             email,
             firstName,
