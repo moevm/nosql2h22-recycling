@@ -1,4 +1,4 @@
-import {TableCellCarrier, TableCellManagerReception} from "../TableData/TableData.types";
+import {TableCellManagerReception} from "../TableData/TableData.types";
 
 export const columns = [
     {

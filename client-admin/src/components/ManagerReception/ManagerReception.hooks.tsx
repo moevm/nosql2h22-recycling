@@ -1,6 +1,6 @@
 import {TableCellManagerReception} from "../TableData/TableData.types";
-import {Button, Container, Row, Col} from "react-bootstrap";
-import React, {Dispatch, SetStateAction, useMemo} from "react";
+import {Button} from "react-bootstrap";
+import React, {Dispatch, SetStateAction, useEffect, useMemo, useState} from "react";
 
 export const useTableData = (data: Array<TableCellManagerReception>, show: Dispatch<SetStateAction<boolean>>) => {
 
@@ -19,4 +19,22 @@ export const useTableData = (data: Array<TableCellManagerReception>, show: Dispa
             }));
         });
     }, [data]);
+}
+
+export default function useDebounce(value: string, delay: number) {
+    const [debouncedValue, setDebouncedValue] = useState(value);
+
+    useEffect(
+        () => {
+            const handler = setTimeout(() => {
+                setDebouncedValue(value);
+            }, delay);
+            return () => {
+                clearTimeout(handler);
+            };
+        },
+        [value]
+    );
+
+    return debouncedValue;
 }
