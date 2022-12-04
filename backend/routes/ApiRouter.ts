@@ -7,6 +7,7 @@ import UserController from "../controllers/UserController";
 import ManagerReceptionController from "../controllers/ManagerReceptionController";
 import ExportRequestController from "../controllers/ExportRequestController";
 import RequestsController from "../controllers/RequestsController";
+import MainDriverController from "../controllers/MainDriverController";
 
 const ApiRouter: Router = express.Router();
 
@@ -20,5 +21,6 @@ ApiRouter.post("/user/order", UserController.handleAction("order"));
 ApiRouter.post("/manager/reception", ManagerReceptionController.handleAction("reception"));
 ApiRouter.post("/manager/export", ExportRequestController.handleAction("export"));
 ApiRouter.get("/manager/requests", RequestsController.handleAction("requests"));
+ApiRouter.post("/driver/main", MainDriverController.handleAction("main"));
 
 export default ApiRouter;
