@@ -4,6 +4,7 @@ import AuthorizationController from "../controllers/AuthorizationController";
 import ReceptionsController from "../controllers/ReceptionsController";
 import TransitController from "../controllers/TransitController";
 import ManagerReceptionController from "../controllers/ManagerReceptionController";
+import ExportRequestController from "../controllers/ExportRequestController";
 
 const ApiRouter: Router = express.Router();
 
@@ -12,5 +13,6 @@ ApiRouter.post("/login", AuthorizationController.handleAction("login"));
 ApiRouter.post("/admin/receptions", ReceptionsController.handleAction("receptions"));
 ApiRouter.post("/admin/transit", TransitController.handleAction("transit"));
 ApiRouter.post("/manager/reception", ManagerReceptionController.handleAction("reception"));
+ApiRouter.post("/manager/export", ExportRequestController.handleAction("export"));
 
 export default ApiRouter;
