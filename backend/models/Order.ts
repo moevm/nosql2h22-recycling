@@ -23,7 +23,7 @@ interface IOrder {
     "date": Date,
     "reception": Reception,
     "material": Material,
-    "history": History
+    "history": Array<History>
 }
 
 const orderSchema = new Schema<IOrder>({
