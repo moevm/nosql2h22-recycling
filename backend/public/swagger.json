@@ -121,6 +121,47 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Pick_IUser.Exclude_keyofIUser.orders__": {
+				"properties": {
+					"login": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"loyalty": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"login",
+					"password",
+					"email",
+					"role",
+					"firstName",
+					"lastName",
+					"loyalty"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_IUser.orders_": {
+				"$ref": "#/components/schemas/Pick_IUser.Exclude_keyofIUser.orders__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
 			"Material": {
 				"properties": {
 					"title": {
@@ -451,6 +492,30 @@
 										"$ref": "#/components/schemas/Transit"
 									},
 									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/user": {
+			"get": {
+				"operationId": "User",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Omit_IUser.orders_"
+										}
+									],
+									"nullable": true
 								}
 							}
 						}
