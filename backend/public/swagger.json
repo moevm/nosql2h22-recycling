@@ -180,7 +180,10 @@
 						"$ref": "#/components/schemas/Material"
 					},
 					"history": {
-						"$ref": "#/components/schemas/History"
+						"items": {
+							"$ref": "#/components/schemas/History"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -532,7 +535,7 @@
 			}
 		},
 		"/api/manager/requests": {
-			"get": {
+			"post": {
 				"operationId": "Requests",
 				"responses": {
 					"200": {
@@ -595,7 +598,7 @@
 			}
 		},
 		"/api/driver/confirm": {
-			"get": {
+			"post": {
 				"operationId": "Confirm",
 				"responses": {
 					"200": {
@@ -603,6 +606,25 @@
 						"content": {
 							"application/json": {
 								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/order": {
+			"get": {
+				"operationId": "Order",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Order"
+								}
 							}
 						}
 					}

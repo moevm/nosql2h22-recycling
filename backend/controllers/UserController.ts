@@ -23,7 +23,8 @@ export default class UserController extends BaseController {
 
         if (!currentUser) throw new Error("No user found");
 
-        const orders = await order.aggregate<IOrder>([{ $match: { _id: { $in: currentUser.orders } } }]).skip(skip).limit(limit);
+        const orders = await order.aggregate<IOrder>([
+            { $match: { _id: { $in: currentUser.orders } } }]).skip(skip).limit(limit);
 
         return {
             count: currentUser.orders.length,
@@ -43,23 +44,20 @@ export default class UserController extends BaseController {
         if (!currentUser) throw new Error("No user found");
 
         const receptionOrders = await order.aggregate(
-            [{ $match: { "reception.address": { $regex: reception } } },
+            [{ $match: { "reception.address": { $regex: reception }, status: { $in: ["Created", "For export"] } } },
                 { $group: { _id: { reception: "$reception.address" }, total: { $sum: "$material.count" } } }]
             ,
         );
-
         if (!receptionOrders) throw new Error("No receptions found");
-        // @ts-ignore
-        const newTotal = Number(receptionOrders.total || 10000) - Number(count);
-
-        if (newTotal < 0) throw new Error("Cannot hold waste");
+        const maxLimit = Number(10000 - receptionOrders[0].total);
+        if (maxLimit < Number(count)) throw new Error("Cannot hold waste");
 
         const res = await order.create({
             date: new Date().toDateString(),
-            history: {
+            history: [{
                 status: "Created",
-                date: new Date().toDateString(),
-            },
+                date: new Date(),
+            }],
             material: {
                 title: material,
                 subtype,
@@ -78,7 +76,6 @@ export default class UserController extends BaseController {
         if (!res) throw new Error("Creation failed");
         // eslint-disable-next-line no-underscore-dangle
         await user.updateOne({ _id: currentUser._id }, { $push: { orders: res._id } });
-
         return "ok";
     }
 }

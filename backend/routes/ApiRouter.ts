@@ -10,6 +10,7 @@ import RequestsController from "../controllers/RequestsController";
 import MainDriverController from "../controllers/MainDriverController";
 import AvailableOrdersController from "../controllers/AvailableOrdersController";
 import ConfirmRequestController from "../controllers/ConfirmRequestController";
+import OrderController from "../controllers/OrderController";
 
 const ApiRouter: Router = express.Router();
 
@@ -20,6 +21,7 @@ ApiRouter.post("/admin/receptions", ReceptionsController.handleAction("reception
 ApiRouter.post("/admin/transit", TransitController.handleAction("transit"));
 ApiRouter.get("/user/orders", UserController.handleAction("orders"));
 ApiRouter.post("/user/order", UserController.handleAction("order"));
+ApiRouter.get("/order", OrderController.handleAction("order"));
 ApiRouter.post("/manager/reception", ManagerReceptionController.handleAction("reception"));
 ApiRouter.post("/manager/export", ExportRequestController.handleAction("export"));
 ApiRouter.post("/manager/requests", RequestsController.handleAction("requests"));
