@@ -22,7 +22,6 @@ export const CurrentOrder = () => {
                 .then(response => response.json())
                 .then(content => {
                     setOrder(content);
-                    console.log(content);
                 })
                 .catch(err => console.error(err));
         },

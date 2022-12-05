@@ -308,6 +308,9 @@
 			},
 			"Order": {
 				"properties": {
+					"orderID": {
+						"type": "string"
+					},
 					"departure": {
 						"type": "string"
 					},
@@ -329,6 +332,7 @@
 					}
 				},
 				"required": [
+					"orderID",
 					"departure",
 					"arrival",
 					"type",

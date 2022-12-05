@@ -1,8 +1,10 @@
 import {TableCellAvailableOrders} from "../TableData/TableData.types";
-import {Button} from "react-bootstrap";
-
 
 export const columns = [
+    {
+        dataField: "orderID",
+        text: "Order ID"
+    },
     {
         dataField: "departure",
         text: "Point of Departure",

@@ -1,6 +1,6 @@
 import {TableCellManagerReception} from "../TableData/TableData.types";
 import {Button} from "react-bootstrap";
-import React, {Dispatch, SetStateAction, useEffect, useMemo, useState} from "react";
+import React, { useEffect, useMemo, useState} from "react";
 
 export const useTableData = (data: Array<TableCellManagerReception>, show: any) => {
     return useMemo(() => {

@@ -1,8 +1,8 @@
 import {TableCellAvailableOrders} from "../TableData/TableData.types";
 import {Button, Container, Row, Col} from "react-bootstrap";
-import React, {Dispatch, SetStateAction, useMemo} from "react";
+import React, {useMemo} from "react";
 
-export const useTableData = (data: Array<TableCellAvailableOrders>, show: Dispatch<SetStateAction<boolean>>) => {
+export const useTableData = (data: Array<TableCellAvailableOrders>, show: any) => {
 
     return useMemo(() => {
         return data.map((elem,idx) => {
@@ -14,9 +14,7 @@ export const useTableData = (data: Array<TableCellAvailableOrders>, show: Dispat
                     return [key, <Container>
                         <Row>
                             <Col>
-                                <Button onClick={() => {
-                                    show(true);
-                                }} variant='success' id={idx.toString()}>Yes</Button>
+                                <Button onClick={show} variant='success' id={idx.toString()}>Yes</Button>
                             </Col>
                         </Row>
                     </Container>];
@@ -24,3 +22,5 @@ export const useTableData = (data: Array<TableCellAvailableOrders>, show: Dispat
             });
     }, [data]);
 }
+
+
