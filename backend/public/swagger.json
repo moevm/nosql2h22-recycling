@@ -421,7 +421,7 @@
 	"openapi": "3.0.0",
 	"paths": {
 		"/api/admin/main": {
-			"get": {
+			"post": {
 				"operationId": "Main",
 				"responses": {
 					"200": {
