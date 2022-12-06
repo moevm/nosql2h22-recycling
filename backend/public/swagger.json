@@ -281,13 +281,13 @@
 					"Driver": {
 						"type": "string"
 					},
-					"Point of Departure": {
+					"PointOfDeparture": {
 						"type": "string"
 					},
-					"Point of Arrival": {
+					"PointOfArrival": {
 						"type": "string"
 					},
-					"Type of waste": {
+					"TypeOfWaste": {
 						"type": "string"
 					},
 					"Subtype": {
@@ -300,9 +300,9 @@
 				},
 				"required": [
 					"Driver",
-					"Point of Departure",
-					"Point of Arrival",
-					"Type of waste",
+					"PointOfDeparture",
+					"PointOfArrival",
+					"TypeOfWaste",
 					"Subtype",
 					"Amount"
 				],
@@ -311,6 +311,9 @@
 			},
 			"Order": {
 				"properties": {
+					"orderID": {
+						"type": "string"
+					},
 					"departure": {
 						"type": "string"
 					},
@@ -332,6 +335,7 @@
 					}
 				},
 				"required": [
+					"orderID",
 					"departure",
 					"arrival",
 					"type",

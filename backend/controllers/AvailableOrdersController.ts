@@ -3,6 +3,7 @@ import BaseController from "./BaseController";
 import { order } from "../models/Order";
 
 interface Order {
+    orderID: string,
     departure: string,
     arrival: string,
     type: string,
@@ -27,8 +28,10 @@ export default class AvailableOrdersController extends BaseController {
         }
         for (let i = 0; i < findDocs.length; i += 1) {
             orders.push({
+                // eslint-disable-next-line no-underscore-dangle
+                orderID: findDocs[i]._id.toString(),
                 action: "",
-                amount: findDocs[i].material.amount,
+                amount: findDocs[i].material.count,
                 arrival: "Storage",
                 departure: findDocs[i].reception.address,
                 subtype: findDocs[i].material.subtype,

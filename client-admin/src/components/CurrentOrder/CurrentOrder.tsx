@@ -1,8 +1,32 @@
-import React from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Card, Table} from "react-bootstrap";
 import {dataCurrentOrder} from "./CurrentOrder.content";
+import {UserLogged} from "../../App";
 
 export const CurrentOrder = () => {
+    const [currentOrder, setOrder] = useState<any>({});
+
+    const userLogged = useContext(UserLogged);
+
+    useEffect(
+        () => {
+            fetch('http://localhost:8000/api/driver/main', {
+                    method:"POST",
+                    headers: new Headers({
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    }),
+                    body: JSON.stringify({login: userLogged.user})
+                }
+            )
+                .then(response => response.json())
+                .then(content => {
+                    setOrder(content);
+                })
+                .catch(err => console.error(err));
+        },
+        []
+    );
 
     return (
         <Card>
@@ -15,10 +39,10 @@ export const CurrentOrder = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {dataCurrentOrder.map((elem) =>(
+                        {Object.keys(currentOrder).map((elem) =>(
                             <tr>
-                                <td>{elem.parameter}</td>
-                                <td>{elem.value}</td>
+                                <td>{elem}</td>
+                                <td>{currentOrder[elem]}</td>
                             </tr>
                         ))}
                     </tbody>
