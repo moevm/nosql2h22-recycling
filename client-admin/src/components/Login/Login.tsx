@@ -1,13 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Form, Modal} from "react-bootstrap";
+import {Button, Form, Modal, Card} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import './Login.css'
 import {UserLogged} from "../../App";
 
 export const Login = () => {
     const [show, setShow] = useState<boolean>(true);
-    const [email, setEmail] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
+    const [email, setEmail] = useState<string>('');
+    const [password, setPassword] = useState<string>('');
+    const [visibility,setVisible] = useState(false);
 
     const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ export const Login = () => {
 
     useEffect(()=>{
         localStorage.setItem("user","");
-    })
+    },[])
 
     const handleLogin = () => {
         fetch('http://localhost:8000/api/login', {
@@ -51,6 +52,9 @@ export const Login = () => {
                     userLogged.setUser(email);
                     localStorage.setItem("user",email);
                     navigate('/carrier_screen')
+                }else{
+                    console.log(content, visibility);
+                    setVisible(true);
                 }
             })
             .catch(err => console.error(err));
@@ -63,6 +67,7 @@ export const Login = () => {
     const saveEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
     }
+
 
     return (
         <Modal show={show} onHide={handleClose} className='modal-styles'>
@@ -92,6 +97,17 @@ export const Login = () => {
                         />
                     </Form.Group>
                 </Form>
+                {
+                    visibility && <Card bg='danger' text='white'>
+                        <Card.Body>
+                            <Card.Title>Authorization failed</Card.Title>
+                            <Card.Text>
+                                Wrong login or password. Try again.
+                            </Card.Text>
+                        </Card.Body>
+
+                    </Card>
+                }
             </Modal.Body>
             <Modal.Footer className='footer'>
                 <Button variant="primary" onClick={handleLogin}>

@@ -73,16 +73,15 @@ export const AvailableOrders = () => {
         <Card>
             <Modal show={show} onHide={() => { setShow(false) }}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal title</Modal.Title>
+                    <Modal.Title>Information alert</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p>Something happened</p>
+                    <p>Request has accepted</p>
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button variant="secondary">Close</Button>
-                    <Button variant="primary">Save changes</Button>
+                    <Button onClick={()=>{setShow(false)}} variant="secondary">Close</Button>
                 </Modal.Footer>
             </Modal>
             <Card.Body>
