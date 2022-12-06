@@ -39,6 +39,26 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Orders": {
+				"properties": {
+					"countOrders": {
+						"type": "number",
+						"format": "double"
+					},
+					"orders": {
+						"items": {
+							"$ref": "#/components/schemas/IMainStorage"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"countOrders",
+					"orders"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Answer": {
 				"properties": {
 					"role": {
@@ -356,7 +376,7 @@
 	"openapi": "3.0.0",
 	"paths": {
 		"/api/admin/main": {
-			"post": {
+			"get": {
 				"operationId": "Main",
 				"responses": {
 					"200": {
@@ -364,10 +384,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IMainStorage"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/Orders"
 								}
 							}
 						}

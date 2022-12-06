@@ -14,7 +14,9 @@ export type OrdersResponse = {
 export default class UserController extends BaseController {
     @Get("/orders")
     public async orders(): Promise<OrdersResponse> {
-        const { login, page, perPage } = this.req.query;
+        const {
+            login, filter, page, perPage,
+        } = this.req.query;
 
         const skip = (Number(page) - 1) * Number(perPage);
         const limit = skip + Number(perPage);
@@ -23,8 +25,7 @@ export default class UserController extends BaseController {
 
         if (!currentUser) throw new Error("No user found");
 
-        const orders = await order.aggregate<IOrder>([
-            { $match: { _id: { $in: currentUser.orders } } }]).skip(skip).limit(limit);
+        const orders = await order.aggregate<IOrder>([{ $match: { _id: { $in: currentUser.orders }, "material.title": { $regex: filter, $options: "i" } } }]).skip(skip).limit(limit);
 
         return {
             count: currentUser.orders.length,
@@ -53,7 +54,7 @@ export default class UserController extends BaseController {
         if (maxLimit < Number(count)) throw new Error("Cannot hold waste");
 
         const res = await order.create({
-            date: new Date().toDateString(),
+            date: new Date(),
             history: [{
                 status: "Created",
                 date: new Date(),
