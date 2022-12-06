@@ -12,19 +12,35 @@ interface Order {
     action: string
 }
 
+interface Orders {
+    countOrders: number,
+    orders: Array<Order>
+}
+
 @Route("/api/driver")
 export default class AvailableOrdersController extends BaseController {
     @Post("/orders")
-    public async orders(): Promise<Array<Order>> {
-        const { filter, filterValue } = this.req.body;
+    public async orders(): Promise<Orders> {
+        const {
+            filter, filterValue, page, perPage,
+        } = this.req.body;
         let findDocs: Array<any> = [];
         const orders: Array<Order> = [];
+        let skip: number;
+        let limit: number;
+        if (perPage === "All") {
+            skip = 0;
+            limit = 0;
+        } else {
+            skip = (Number(page) - 1) * Number(perPage);
+            limit = Number(perPage);
+        }
         if (filter === "Point of Departure") {
-            findDocs = await order.aggregate([{ $match: { "reception.address": { $regex: filterValue, $options: "i" }, status: "For export" } }]);
+            findDocs = await order.aggregate([{ $match: { "reception.address": { $regex: filterValue, $options: "i" }, status: "For export" } }]).skip(skip).limit(limit);
         } if (filter === "Type of waste") {
-            findDocs = await order.aggregate([{ $match: { "material.title": { $regex: filterValue, $options: "i" }, status: "For export" } }]);
+            findDocs = await order.aggregate([{ $match: { "material.title": { $regex: filterValue, $options: "i" }, status: "For export" } }]).skip(skip).limit(limit);
         } if (filter === "Subtype") {
-            findDocs = await order.aggregate([{ $match: { "material.subtype": { $regex: filterValue, $options: "i" }, status: "For export" } }]);
+            findDocs = await order.aggregate([{ $match: { "material.subtype": { $regex: filterValue, $options: "i" }, status: "For export" } }]).skip(skip).limit(limit);
         }
         for (let i = 0; i < findDocs.length; i += 1) {
             orders.push({
@@ -38,6 +54,7 @@ export default class AvailableOrdersController extends BaseController {
                 type: findDocs[i].material.title,
             });
         }
-        return orders;
+        const countOrders = findDocs.length;
+        return { countOrders, orders };
     }
 }

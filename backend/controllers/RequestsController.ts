@@ -11,13 +11,29 @@ interface Request {
     status: string
 }
 
+interface Requests {
+    countRequests: number,
+    requests: Array<Request>
+}
+
 @Route("/api/manager")
 export default class RequestsController extends BaseController {
     @Post("/requests")
-    public async requests(): Promise<Array<Request>> {
-        const { reception, filter, filterValue } = this.req.body;
+    public async requests(): Promise<Requests> {
+        const {
+            reception, filter, filterValue, page, perPage,
+        } = this.req.body;
+        let skip: number;
+        let limit: number;
         let findDocs: Array<any> = [];
         const requests: Array<Request> = [];
+        if (perPage === "All") {
+            skip = 0;
+            limit = 0;
+        } else {
+            skip = (Number(page) - 1) * Number(perPage);
+            limit = Number(perPage);
+        }
         if (filter === "Request ID") {
             findDocs = await order.aggregate([
                 {
@@ -32,7 +48,7 @@ export default class RequestsController extends BaseController {
                         orderID: { $regex: filterValue, $options: "i" },
                     },
                 },
-            ]);
+            ]).skip(skip).limit(limit);
         } if (filter === "Date") {
             findDocs = await order.aggregate([
                 {
@@ -47,7 +63,7 @@ export default class RequestsController extends BaseController {
                         dateUTC: { $regex: filterValue, $options: "i" },
                     },
                 },
-            ]);
+            ]).skip(skip).limit(limit);
         } if (filter === "Type of waste") {
             findDocs = await order.aggregate([
                 {
@@ -61,7 +77,7 @@ export default class RequestsController extends BaseController {
                         "material.title": { $regex: filterValue, $options: "i" },
                     },
                 },
-            ]);
+            ]).skip(skip).limit(limit);
         } if (filter === "Subtype") {
             findDocs = await order.aggregate([
                 {
@@ -75,8 +91,9 @@ export default class RequestsController extends BaseController {
                         "material.subtype": { $regex: filterValue, $options: "i" },
                     },
                 },
-            ]);
+            ]).skip(skip).limit(limit);
         }
+        const countRequests = findDocs.length;
         for (let i = 0; i < findDocs.length; i += 1) {
             requests.push({
                 among: findDocs[i].material.count,
@@ -88,6 +105,6 @@ export default class RequestsController extends BaseController {
                 type_of_waste: findDocs[i].material.title,
             });
         }
-        return requests;
+        return { countRequests, requests };
     }
 }

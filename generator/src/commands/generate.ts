@@ -9,6 +9,7 @@ export default class Generate extends Command {
     'G. St. Petersburg, Torzhkovskaya street, 123',
     'G. St. Petersburg, Prosveshcheniya avenue, 565',
     'G. St. Petersburg, Mebelny lane, 14',
+    'G. St. Petersburg, Mebelny lane, 14',
     'G. St. Petersburg, Lesnaya street, 113',
     'G. St. Petersburg, Lenskaya street, 65',
     'G. St. Petersburg, Veteranov Avenue, 117',
@@ -312,16 +313,23 @@ export default class Generate extends Command {
     for (let i = 0; i < 15; i++) {
       managers.push(this.generateUser(i, 'Manager'));
     }
-    let admin = this.generateUser(1, 'Admin');
+    let admin = this.generateUser(0, 'Admin');
     return {users: users, drivers: drivers, managers: managers, admin: admin};
   }
 
   public generateUser(i: number, role: string) {
     let name = this.generateName();
     let surname = this.generateSurname();
+    let password: string;
+    if (i === 0) {
+      password = role.toLowerCase();
+    }
+    else {
+      password = this.generatePassword();
+    }
     return {
       "_id": new mongoose.Types.ObjectId(), "login": this.generateLogin(name, surname, i),
-      "password": this.generatePassword(), "email": this.generateEmail(name, surname, i), "role": role,
+      "password": password, "email": this.generateEmail(name, surname, i), "role": role,
       "firstName": name, "lastName": surname, "loyalty": this.getRandomInt(5) + 1, "orders": []
 
     };

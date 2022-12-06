@@ -16,17 +16,31 @@ interface Reception {
     Percentage: number
 }
 
+interface Receptions {
+    countReceptions: number,
+    receptions: Array<Reception>
+}
+
 @Route("/api/admin")
 export default class MainStorageController extends BaseController {
     @Post("/receptions")
-    public async receptions(): Promise<Array<Reception>> {
+    public async receptions(): Promise<Receptions> {
         const {
-            filter, filterValue,
+            filter, filterValue, page, perPage,
         } = this.req.body;
         let query: {};
         let findDocs: Array<any> = [];
         let totals: Array<any> = [];
+        let skip: number;
+        let limit: number;
         const receptions: Array<Reception> = [];
+        if (perPage === "All") {
+            skip = 0;
+            limit = 0;
+        } else {
+            skip = (Number(page) - 1) * Number(perPage);
+            limit = Number(perPage);
+        }
         if (filter === "Reception") {
             findDocs = await order.aggregate(
                 [{ $match: { "reception.address": { $regex: filterValue, $options: "i" }, status: "For export" } },
@@ -51,11 +65,11 @@ export default class MainStorageController extends BaseController {
                     $or: [{ firstName: { $regex: `^${userData[0]}$`, $options: "i" }, lastName: { $regex: `${userData[1]}`, $options: "i" } }, { firstName: { $regex: `${userData[1]}`, $options: "i" }, lastName: { $regex: `^${userData[0]}$`, $options: "i" } }],
                 };
             } else {
-                return [];
+                return { countReceptions: 0, receptions: [] };
             }
             const findUsers = await user.find(query, { orders: 1, _id: 0 });
             if (findUsers.length === 0) {
-                return [];
+                return { countReceptions: 0, receptions: [] };
             }
             for (let i = 0; i < findUsers.length; i += 1) {
                 // eslint-disable-next-line no-await-in-loop
@@ -72,7 +86,8 @@ export default class MainStorageController extends BaseController {
                 ));
             }
         }
-        for (let i = 0; i < totals.length; i += 1) {
+        const countReceptions = totals.length;
+        for (let i = skip; i < skip + limit; i += 1) {
             // eslint-disable-next-line no-underscore-dangle,no-await-in-loop
             const users = await order.find({ "reception.address": totals[i]._id.reception }, { users: 1, _id: 0 }).limit(1);
             // eslint-disable-next-line no-await-in-loop
@@ -94,6 +109,6 @@ export default class MainStorageController extends BaseController {
                 }
             }
         }
-        return receptions;
+        return { countReceptions, receptions };
     }
 }
