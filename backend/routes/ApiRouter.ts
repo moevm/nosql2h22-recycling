@@ -11,6 +11,7 @@ import MainDriverController from "../controllers/MainDriverController";
 import AvailableOrdersController from "../controllers/AvailableOrdersController";
 import ConfirmRequestController from "../controllers/ConfirmRequestController";
 import OrderController from "../controllers/OrderController";
+import FinishOrderController from "../controllers/FinishOrderController";
 
 const ApiRouter: Router = express.Router();
 
@@ -29,5 +30,6 @@ ApiRouter.post("/manager/requests", RequestsController.handleAction("requests"))
 ApiRouter.post("/driver/main", MainDriverController.handleAction("main"));
 ApiRouter.post("/driver/orders", AvailableOrdersController.handleAction("orders"));
 ApiRouter.post("/driver/confirm", ConfirmRequestController.handleAction("confirm"));
+ApiRouter.post("/driver/finish", FinishOrderController.handleAction("finish"));
 
 export default ApiRouter;
