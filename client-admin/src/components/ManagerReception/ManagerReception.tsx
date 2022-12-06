@@ -93,16 +93,15 @@ export const ManagerReception = () => {
         <Card>
             <Modal show={show} onHide={() => { setShow(false) }}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal title</Modal.Title>
+                    <Modal.Title>Information alert</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p>Something happened</p>
+                    <p>Request has created/</p>
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button variant="secondary">Close</Button>
-                    <Button variant="primary">Save changes</Button>
+                    <Button onClick={()=>{setShow(false)}} variant="secondary">Close</Button>
                 </Modal.Footer>
             </Modal>
             <Card.Body style={{width: '90vh', padding:'1vh', margin:'1vh 0vh 0vh 0vh'}}>
