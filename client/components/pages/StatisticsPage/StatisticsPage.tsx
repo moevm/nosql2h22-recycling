@@ -162,7 +162,7 @@ export const StatisticsPage = ({ title, description, footer }: IStatisticsPagePr
         }).catch((err) => {
             console.error(err);
         });
-    }, []);
+    }, [session]);
 
     useEffect(() => {
         const login = session?.user?.email?.split("@")[0];
