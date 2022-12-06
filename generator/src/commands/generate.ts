@@ -30,17 +30,19 @@ export default class Generate extends Command {
       char: 'o',
       description: 'type:number, number of orders for each user',
       required: true
-    })
+    }),
+    host: Flags.string({char: 'h', description: 'type: string, database host'}),
+    database: Flags.string({char: 'd', description: 'type: string, database name'}),
   }
 
   static args = [{name: 'file'}]
 
   public async run(): Promise<void> {
     const {args, flags} = await this.parse(Generate)
-    const url = `mongodb://localhost:${flags.port}/Recycling`;
+    const url = `mongodb://${flags.host || "localhost"}:${flags.port}/${flags.database || "Recycling"}`;
     this.initConnection(url)
       .then((res) => {
-        console.log(`Connected to database Recycling on port ${flags.port}`);
+        console.log(`Connected to database ${flags.database || "Recycling"} on port ${flags.port}`);
         this.insertData(flags.count_of_users, flags.order_per_person)
           .then((res) =>{
             this.endConnection()
