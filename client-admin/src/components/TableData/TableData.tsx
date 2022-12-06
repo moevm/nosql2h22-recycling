@@ -17,26 +17,34 @@ export type TableDataProps = {
         Array<TableCellCurrentOrder> |
         Array<TableCellAvailableOrders>;
     header: header[];
+    page: number;
+    perPage: number;
+    total: number;
+    setPage: React.Dispatch<React.SetStateAction<number>>;
+    setPerPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export const TableData = ({tableCells, header}: TableDataProps  ) => {
+export const TableData = ({tableCells, header, page, perPage, total, setPerPage, setPage,}: TableDataProps  ) => {
+    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const handleTableChange = (type, { page, sizePerPage }) => {
+        setTimeout(() => {
+            setPage(page);
+            setPerPage(sizePerPage);
+        }, 500);
+    };
+
     return (
         <div style = {{width:'200vh', margin:'0vh 0vh 0vh 1vh'}}>
             <BootstrapTable
                 hover
-                striped
-                bordered
+                remote
                 bootstrap4
                 keyField="id"
                 data={tableCells}
                 columns={header}
-                pagination={paginationFactory({ sizePerPageList: [ {
-                        text: '5', value: 5
-                    }, {
-                        text: '7', value: 7
-                    }, {
-                        text: 'All', value: tableCells.length
-                    } ]})}
+                pagination={paginationFactory({ page, sizePerPage: perPage, totalSize: total })}
+                onTableChange={handleTableChange}
             />
         </div>
     );

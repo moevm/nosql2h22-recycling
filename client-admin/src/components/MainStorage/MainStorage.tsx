@@ -7,8 +7,12 @@ import Container from "react-bootstrap/Container";
 
 export const MainStorage = () => {
     const [selectedType, setSelectedType] = useState<string>('All');
-    const [selectedSubType, setSubType] = useState<string>('All')
-    const [currectData, setData] = useState<Array<any>>([])
+    const [selectedSubType, setSubType] = useState<string>('All');
+    const [currentData, setData] = useState<Array<any>>([]);
+    const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(5);
+    const [total, setTotal] = useState<number>(5);
+
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
     };
@@ -20,12 +24,14 @@ export const MainStorage = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({type:selectedType, subType: selectedSubType})
+            body: JSON.stringify({type:selectedType, subType: selectedSubType, page: page, perPage:perPage})
         }
         )
             .then(response => response.json())
             .then(content => {
-                setData(content);
+                setData(content.orders);
+                setTotal(content.countOrders)
+                console.log(content.orders);
             })
             .catch(err => console.error(err));
     }
@@ -36,7 +42,7 @@ export const MainStorage = () => {
 
     useEffect(() => {
         getData();
-    }, [selectedType, selectedSubType])
+    }, [selectedType, selectedSubType,page, perPage,])
 
     const showSubtypes = () => {
         switch(selectedType){
@@ -133,7 +139,15 @@ export const MainStorage = () => {
                     {showSubtypes()}
                 </Container>
             </div>
-            <TableData tableCells={currectData} header={columns}/>
+            <TableData
+                total={total}
+                setPage={setPage}
+                setPerPage={setPerPage}
+                page={page}
+                perPage={perPage}
+                tableCells={currentData}
+                header={columns}
+            />
         </>
     );
 };

@@ -12,6 +12,9 @@ export const AvailableOrders = () => {
     const [currentData, setData] = useState([]);
     const [searchInput, setSearchInput] = useState("");
     const [isSearching, setIsSearching] = useState(false);
+    const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(5);
+    const [total, setTotal] = useState<number>(5);
 
     const userLogged = useContext(UserLogged);
 
@@ -25,7 +28,6 @@ export const AvailableOrders = () => {
         setShow(true);
         let currentRequest = currentData[parseInt(event.target.id)];
         console.log(currentRequest)
-
 
         fetch('http://localhost:8000/api/driver/confirm', {
             method:"POST",
@@ -103,7 +105,14 @@ export const AvailableOrders = () => {
                     </Row>
                 </Container>
             </Card.Body>
-            <TableData tableCells={useTableData(currentData, acceptRequest)} header={columns}/>
+            <TableData tableCells={useTableData(currentData, acceptRequest)}
+                       header={columns}
+                       total={total}
+                       setPage={setPage}
+                       setPerPage={setPerPage}
+                       page={page}
+                       perPage={perPage}
+            />
         </Card>
     )
 }

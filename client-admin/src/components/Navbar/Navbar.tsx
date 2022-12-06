@@ -13,13 +13,23 @@ export const AdminNavbar = ({content, ...rest}: IAdminNavbarProps) => {
     const userLogged = useContext(UserLogged);
 
     const showLoginLogout = () => {
-       if(userLogged.stateValue){
+       if(localStorage.getItem("user") !== ""){
            return (
-               <button className='button-logout'>Log Out</button>
+               <>
+                   <h3 className='user-name'>{localStorage.getItem("user")}</h3>
+                   <a href="/login">
+                       <button className='button-logout'>Log Out</button>
+                   </a>
+               </>
+
            )
        }else{
            return(
-               <button className='button-login'>Log In</button>
+               <>
+                   <a href="/login">
+                       <button className='button-login'>Log In</button>
+                   </a>
+               </>
            )
        }
     }
@@ -29,10 +39,7 @@ export const AdminNavbar = ({content, ...rest}: IAdminNavbarProps) => {
             <h4>Recycle Admin</h4>
             <Container>
                 <span>{content}</span>
-                <h3 className='user-name'>{userLogged.user}</h3>
-                <a href="/login">
-                    {showLoginLogout()}
-                </a>
+                {showLoginLogout()}
             </Container>
         </Navbar>
     );
