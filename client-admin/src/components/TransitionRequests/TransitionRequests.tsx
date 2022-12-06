@@ -11,6 +11,9 @@ export const TransitionRequests = () => {
     const [currentData, setData] = useState<Array<TableCellManagerReception>>([]);
     const [searchInput, setSearchInput] = useState("");
     const [isSearching, setIsSearching] = useState(false);
+    const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(5);
+    const [total, setTotal] = useState<number>(5);
 
     const userLogged = useContext(UserLogged);
 
@@ -86,7 +89,15 @@ export const TransitionRequests = () => {
                         </Col>
                     </Row>
                 </Card.Body>
-                <TableData tableCells={currentData} header={columns}/>
+                <TableData
+                    total={total}
+                    setPage={setPage}
+                    setPerPage={setPerPage}
+                    page={page}
+                    perPage={perPage}
+                    tableCells={currentData}
+                    header={columns}
+                />
             </Card>
         </>
     );

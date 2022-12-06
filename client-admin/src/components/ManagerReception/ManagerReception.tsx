@@ -14,6 +14,9 @@ export const ManagerReception = () => {
     const [searchInput, setSearchInput] = useState("");
     const [isSearching, setIsSearching] = useState(false);
     const [show, setShow] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(5);
+    const [total, setTotal] = useState<number>(5);
 
     const userLogged = useContext(UserLogged);
 
@@ -115,7 +118,14 @@ export const ManagerReception = () => {
                     </Col>
                 </Row>
             </Card.Body>
-            <TableData tableCells={useTableData(currentData, createRequest)} header={columns}/>
+            <TableData tableCells={useTableData(currentData, createRequest)}
+                       header={columns}
+                       total={total}
+                       setPage={setPage}
+                       setPerPage={setPerPage}
+                       page={page}
+                       perPage={perPage}
+            />
         </Card>
     );
 };

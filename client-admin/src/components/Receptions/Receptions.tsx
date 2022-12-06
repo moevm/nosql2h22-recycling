@@ -11,6 +11,9 @@ export const Receptions = () => {
     const [currentCols, setCols] = useState(columns);
     const [searchInput, setSearchInput] = useState("");
     const [isSearching, setIsSearching] = useState(false);
+    const [page, setPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(5);
+    const [total, setTotal] = useState<number>(5);
 
     const searchHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setSearchParameter(event.target.value);
@@ -93,7 +96,15 @@ export const Receptions = () => {
                 </Row>
             </Container>
             <div style={{margin: '3vh 0vh 0vh 0vh'}}>
-                <TableData  header={currentCols} tableCells={currentData}/>
+                <TableData
+                    total={total}
+                    setPage={setPage}
+                    setPerPage={setPerPage}
+                    page={page}
+                    perPage={perPage}
+                    tableCells={currentData}
+                    header={columns}
+                />
             </div>
         </>
     );

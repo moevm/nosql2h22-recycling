@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Form, Modal} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import './Login.css'
@@ -18,6 +18,10 @@ export const Login = () => {
         setShow(false)
     };
 
+    useEffect(()=>{
+        localStorage.setItem("user","");
+    })
+
     const handleLogin = () => {
         fetch('http://localhost:8000/api/login', {
                 method:"POST",
@@ -33,16 +37,19 @@ export const Login = () => {
                 if(content.role === "Admin"){
                     userLogged.stateFunc(true);
                     userLogged.setUser(email);
+                    localStorage.setItem("user",email);
                     navigate('/admin_screen')
                 }
                 if(content.role === "Manager"){
                     userLogged.stateFunc(true);
                     userLogged.setUser(email);
+                    localStorage.setItem("user",email);
                     navigate('/manager_screen')
                 }
                 if(content.role === "Driver"){
                     userLogged.stateFunc(true);
                     userLogged.setUser(email);
+                    localStorage.setItem("user",email);
                     navigate('/carrier_screen')
                 }
             })
