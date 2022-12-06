@@ -39,6 +39,26 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Orders": {
+				"properties": {
+					"countOrders": {
+						"type": "number",
+						"format": "double"
+					},
+					"orders": {
+						"items": {
+							"$ref": "#/components/schemas/IMainStorage"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"countOrders",
+					"orders"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Answer": {
 				"properties": {
 					"role": {
@@ -409,10 +429,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IMainStorage"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/Orders"
 								}
 							}
 						}
