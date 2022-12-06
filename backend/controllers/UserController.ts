@@ -1,7 +1,7 @@
 import { Get, Route, Post } from "tsoa";
 import BaseController from "./BaseController";
 import { IOrder, order } from "../models/Order";
-import { user } from "../models/User";
+import { IUser, user } from "../models/User";
 
 export type IOrderResponse = Omit<IOrder, "users">;
 
@@ -12,6 +12,15 @@ export type OrdersResponse = {
 
 @Route("api/user")
 export default class UserController extends BaseController {
+    @Get("/")
+    public async user(): Promise<Omit<IUser, "orders"> | null> {
+        const { login } = this.req.query;
+
+        const currentUser = await user.findOne({ login });
+
+        return currentUser;
+    }
+
     @Get("/orders")
     public async orders(): Promise<OrdersResponse> {
         const { login, page, perPage } = this.req.query;

@@ -15,10 +15,10 @@ export const useWasteType = (wasteTypes: WasteType[], setWasteType: React.Dispat
                         return wasteType?.subtypes?.map((subtype) => {
                             return (
                                 <Dropdown.Item onClick={() => {
-                                    setWasteType(`${wasteType.type} ${subtype}`);
+                                    setWasteType(`${wasteType.type},${subtype}`);
                                 }}
                                 >
-                                    {`${wasteType.type} ${subtype}`}
+                                    {`${wasteType.type},${subtype}`}
                                 </Dropdown.Item>
                             );
                         });

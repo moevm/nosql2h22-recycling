@@ -153,6 +153,16 @@ export const StatisticsPage = ({ title, description, footer }: IStatisticsPagePr
     const [perPage, setPerPage] = useState<number>(5);
     const [total, setTotal] = useState<number>(5);
     const [orders, setOrders] = useState([]);
+    const [loyalty, setLoyalty] = useState(0);
+
+    useEffect(() => {
+        const login = session?.user?.email?.split("@")[0];
+        server.get(`/user?login=${login}`).then((res) => {
+            setLoyalty(res.data.loyalty);
+        }).catch((err) => {
+            console.error(err);
+        });
+    }, []);
 
     useEffect(() => {
         const login = session?.user?.email?.split("@")[0];
@@ -191,7 +201,11 @@ export const StatisticsPage = ({ title, description, footer }: IStatisticsPagePr
                         </DropdownMenu>
                     </Dropdown>
                     <div>
-                        <span> Current loyalty: </span>
+                        <span>
+                            Current loyalty:
+                            {" "}
+                            {loyalty}
+                        </span>
                     </div>
                 </div>
                 {(status === "authenticated") && (
