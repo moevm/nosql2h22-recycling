@@ -15,11 +15,11 @@ export const columns = [
     },
     {
         dataField: "type",
-        text: "Point of Departure",
+        text: "Type of waste",
     },
     {
         dataField: "subtype",
-        text: "Point of Arrival",
+        text: "Subtype",
     },
     {
         dataField: "amount",

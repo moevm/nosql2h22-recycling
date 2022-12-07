@@ -33,12 +33,13 @@ export const Receptions = () => {
                         Accept: 'application/json',
                         'Content-Type': 'application/json'
                     }),
-                    body: JSON.stringify({filter: searchParameter, filterValue: ''})
+                    body: JSON.stringify({filter: searchParameter, filterValue: '', page: page, perPage:perPage})
                 }
             )
                 .then(response => response.json())
                 .then(content => {
-                    setData(content);
+                    setData(content.receptions);
+                    setTotal(content.countReceptions);
                 })
                 .catch(err => console.error(err));
         },
@@ -52,7 +53,7 @@ export const Receptions = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({filter: searchParameter, filterValue: request})
+            body: JSON.stringify({filter: searchParameter, filterValue: request, page: page, perPage:perPage})
         })
             .then(r => r.json())
             .catch(error => {
@@ -66,10 +67,11 @@ export const Receptions = () => {
             setIsSearching(true);
             requestForData(debouncedSearchTerm).then(results => {
                 setIsSearching(false);
-                setData(results);
+                setData(results.receptions);
+                setTotal(results.countReceptions);
             });
         },
-        [debouncedSearchTerm]
+        [debouncedSearchTerm, page, perPage]
     );
 
     return (

@@ -30,8 +30,7 @@ export const MainStorage = () => {
             .then(response => response.json())
             .then(content => {
                 setData(content.orders);
-                setTotal(content.countOrders)
-                console.log(content.orders);
+                setTotal(content.countOrders);
             })
             .catch(err => console.error(err));
     }
@@ -42,7 +41,7 @@ export const MainStorage = () => {
 
     useEffect(() => {
         getData();
-    }, [selectedType, selectedSubType,page, perPage,])
+    }, [selectedType, selectedSubType,page, perPage])
 
     const showSubtypes = () => {
         switch(selectedType){

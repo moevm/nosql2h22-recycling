@@ -65,6 +65,9 @@ export default class MainStorageController extends BaseController {
         }
         const countTransits = findDocs.length;
         for (let i = skip; i < skip + limit; i += 1) {
+            if (i >= countTransits) {
+                break;
+            }
             // eslint-disable-next-line no-await-in-loop
             const carrier = await user.find({ role: "Driver", _id: { $in: findDocs[i].users } }, { firstName: 1, lastName: 1, _id: 0 });
             transits.push({

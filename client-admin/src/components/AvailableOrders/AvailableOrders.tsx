@@ -36,7 +36,7 @@ export const AvailableOrders = () => {
                 'Content-Type': 'application/json'
             }),
             // @ts-ignore
-            body: JSON.stringify({orderID: currentRequest.orderID, login: userLogged.user})
+            body: JSON.stringify({orderID: currentRequest.orderID, login: localStorage.getItem("user")})
         })
             .then(response => response.json())
             .catch(err => console.error(err));
@@ -49,7 +49,7 @@ export const AvailableOrders = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({filter: searchParameter, filterValue: request})
+            body: JSON.stringify({filter: searchParameter, filterValue: request, page:page, perPage:perPage})
         })
             .then(r => r.json())
             .catch(error => {
@@ -63,10 +63,11 @@ export const AvailableOrders = () => {
             setIsSearching(true);
             requestForData(debouncedSearchTerm).then(results => {
                 setIsSearching(false);
-                setData(results);
+                setData(results.orders);
+                setTotal(results.countOrders);
             });
         },
-        [debouncedSearchTerm]
+        [debouncedSearchTerm, page, perPage]
     );
 
     return (

@@ -44,6 +44,27 @@ export const TransitionRequests = () => {
 
     const debouncedSearchTerm = useDebounce(searchInput, 500);
 
+    useEffect(
+        () => {
+            fetch('http://localhost:8000/api/manager/requests', {
+                    method:"POST",
+                    headers: new Headers({
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    }),
+                    body: JSON.stringify({filter: searchParameter, filterValue: '', page: page, perPage:perPage})
+                }
+            )
+                .then(response => response.json())
+                .then(content => {
+                    setData(content.requests);
+                    setTotal(content.countRequests);
+                })
+                .catch(err => console.error(err));
+        },
+        []
+    );
+
     const requestForData = (request: string) =>{
         return fetch('http://localhost:8000/api/manager/requests', {
             method:"POST",
@@ -51,7 +72,7 @@ export const TransitionRequests = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({reception: userLogged.reception, filter: searchParameter, filterValue: request})
+            body: JSON.stringify({reception: localStorage.getItem("reception"), filter: searchParameter, filterValue: request, page:page, perPage:perPage})
         })
             .then(r => r.json())
             .catch(error => {
@@ -65,10 +86,11 @@ export const TransitionRequests = () => {
             setIsSearching(true);
             requestForData(debouncedSearchTerm).then(results => {
                 setIsSearching(false);
-                setData(results);
+                setData(results.requests);
+                setTotal(results.countRequests);
             });
         },
-        [debouncedSearchTerm]
+        [debouncedSearchTerm, page,perPage]
     );
 
     return (

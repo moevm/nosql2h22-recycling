@@ -27,6 +27,7 @@ export default class RequestsController extends BaseController {
         let limit: number;
         let findDocs: Array<any> = [];
         const requests: Array<Request> = [];
+        let countRequests: number = 0;
         if (perPage === "All") {
             skip = 0;
             limit = 0;
@@ -49,6 +50,21 @@ export default class RequestsController extends BaseController {
                     },
                 },
             ]).skip(skip).limit(limit);
+            const allFindDocs = await order.aggregate([
+                {
+                    $addFields: {
+                        orderID: { $toString: "$_id" },
+                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                    },
+                },
+                {
+                    $match: {
+                        "reception.address": reception,
+                        orderID: { $regex: filterValue, $options: "i" },
+                    },
+                },
+            ]);
+            countRequests = allFindDocs.length;
         } if (filter === "Date") {
             findDocs = await order.aggregate([
                 {
@@ -64,6 +80,21 @@ export default class RequestsController extends BaseController {
                     },
                 },
             ]).skip(skip).limit(limit);
+            const allFindDocs = await order.aggregate([
+                {
+                    $addFields: {
+                        dateUTC: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
+                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                    },
+                },
+                {
+                    $match: {
+                        "reception.address": reception,
+                        dateUTC: { $regex: filterValue, $options: "i" },
+                    },
+                },
+            ]);
+            countRequests = allFindDocs.length;
         } if (filter === "Type of waste") {
             findDocs = await order.aggregate([
                 {
@@ -78,6 +109,20 @@ export default class RequestsController extends BaseController {
                     },
                 },
             ]).skip(skip).limit(limit);
+            const allFindDocs = await order.aggregate([
+                {
+                    $addFields: {
+                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                    },
+                },
+                {
+                    $match: {
+                        "reception.address": reception,
+                        "material.title": { $regex: filterValue, $options: "i" },
+                    },
+                },
+            ]);
+            countRequests = allFindDocs.length;
         } if (filter === "Subtype") {
             findDocs = await order.aggregate([
                 {
@@ -92,8 +137,21 @@ export default class RequestsController extends BaseController {
                     },
                 },
             ]).skip(skip).limit(limit);
+            const allFindDocs = await order.aggregate([
+                {
+                    $addFields: {
+                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                    },
+                },
+                {
+                    $match: {
+                        "reception.address": reception,
+                        "material.subtype": { $regex: filterValue, $options: "i" },
+                    },
+                },
+            ]);
+            countRequests = allFindDocs.length;
         }
-        const countRequests = findDocs.length;
         for (let i = 0; i < findDocs.length; i += 1) {
             requests.push({
                 among: findDocs[i].material.count,

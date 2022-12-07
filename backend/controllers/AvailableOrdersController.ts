@@ -28,6 +28,7 @@ export default class AvailableOrdersController extends BaseController {
         const orders: Array<Order> = [];
         let skip: number;
         let limit: number;
+        let countOrders: number = 0;
         if (perPage === "All") {
             skip = 0;
             limit = 0;
@@ -37,10 +38,16 @@ export default class AvailableOrdersController extends BaseController {
         }
         if (filter === "Point of Departure") {
             findDocs = await order.aggregate([{ $match: { "reception.address": { $regex: filterValue, $options: "i" }, status: "For export" } }]).skip(skip).limit(limit);
+            const allFindDocs = await order.aggregate([{ $match: { "reception.address": { $regex: filterValue, $options: "i" }, status: "For export" } }]);
+            countOrders = allFindDocs.length;
         } if (filter === "Type of waste") {
             findDocs = await order.aggregate([{ $match: { "material.title": { $regex: filterValue, $options: "i" }, status: "For export" } }]).skip(skip).limit(limit);
+            const allFindDocs = await order.aggregate([{ $match: { "material.title": { $regex: filterValue, $options: "i" }, status: "For export" } }]);
+            countOrders = allFindDocs.length;
         } if (filter === "Subtype") {
             findDocs = await order.aggregate([{ $match: { "material.subtype": { $regex: filterValue, $options: "i" }, status: "For export" } }]).skip(skip).limit(limit);
+            const allFindDocs = await order.aggregate([{ $match: { "material.subtype": { $regex: filterValue, $options: "i" }, status: "For export" } }]);
+            countOrders = allFindDocs.length;
         }
         for (let i = 0; i < findDocs.length; i += 1) {
             orders.push({
@@ -54,7 +61,6 @@ export default class AvailableOrdersController extends BaseController {
                 type: findDocs[i].material.title,
             });
         }
-        const countOrders = findDocs.length;
         return { countOrders, orders };
     }
 }
