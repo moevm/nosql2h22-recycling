@@ -9,7 +9,6 @@ export default class Generate extends Command {
     'G. St. Petersburg, Torzhkovskaya street, 123',
     'G. St. Petersburg, Prosveshcheniya avenue, 565',
     'G. St. Petersburg, Mebelny lane, 14',
-    'G. St. Petersburg, Mebelny lane, 14',
     'G. St. Petersburg, Lesnaya street, 113',
     'G. St. Petersburg, Lenskaya street, 65',
     'G. St. Petersburg, Veteranov Avenue, 117',
@@ -147,7 +146,6 @@ export default class Generate extends Command {
         users.drivers[numDriver].orders.push(orders[i]._id);
         orders[i].users.push(users.drivers[numDriver]._id);
       }
-
       users.managers[reception].orders.push(orders[i]._id);
       orders[i].users.push(users.managers[reception]._id);
 
@@ -155,7 +153,7 @@ export default class Generate extends Command {
       let userNum = this.getRandomInt(notFull.length);
       users.users[notFull[userNum]].orders.push(orders[i]._id);
       orders[i].users.push(users.users[notFull[userNum]]._id);
-      if(users.users[notFull[userNum]].orders.length == 15){
+      if(users.users[notFull[userNum]].orders.length === 15){
         notFull.splice(userNum, 1);
       }
     }
@@ -321,14 +319,17 @@ export default class Generate extends Command {
     let name = this.generateName();
     let surname = this.generateSurname();
     let password: string;
+    let login: string;
     if (i === 0) {
       password = role.toLowerCase();
+      login = role.toLowerCase();
     }
     else {
       password = this.generatePassword();
+      login = this.generateLogin(name, surname, i);
     }
     return {
-      "_id": new mongoose.Types.ObjectId(), "login": this.generateLogin(name, surname, i),
+      "_id": new mongoose.Types.ObjectId(), "login": login,
       "password": password, "email": this.generateEmail(name, surname, i), "role": role,
       "firstName": name, "lastName": surname, "loyalty": this.getRandomInt(5) + 1, "orders": []
 

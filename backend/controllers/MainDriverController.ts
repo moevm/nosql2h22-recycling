@@ -26,6 +26,7 @@ export default class MainDriverController extends BaseController {
         const { login, page, perPage } = this.req.body;
         let skip: number;
         let limit: number;
+        let countOrders: number = 0;
         const orders: Array<Order> = [];
         if (perPage === "All") {
             skip = 0;
@@ -43,8 +44,10 @@ export default class MainDriverController extends BaseController {
         const findOrders = await order.find(
             { _id: { $in: driverData[0].orders }, status: "In delivery" },
         ).skip(skip).limit(limit).sort({ date: 1 });
+        countOrders = await order.find(
+            { _id: { $in: driverData[0].orders }, status: "In delivery" },
+        ).count();
         const driver = `${driverData[0].firstName} ${driverData[0].lastName}`;
-        const countOrders = findOrders.length;
         for (let i = 0; i < findOrders.length; i += 1) {
             orders.push({
                 Amount: findOrders[i].material.count,

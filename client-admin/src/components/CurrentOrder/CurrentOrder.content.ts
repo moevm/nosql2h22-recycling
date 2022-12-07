@@ -2,12 +2,32 @@ import {TableCellCurrentOrder} from "../TableData/TableData.types";
 
 export const columns = [
     {
-        dataField: "parameter",
-        text: "Parameter",
+        dataField: "_id",
+        text: "Request ID",
     },
     {
-        dataField: "value",
-        text: "Reception",
+        dataField: "Amount",
+        text: "Amount",
+    },
+    {
+        dataField: "PointOfArrival",
+        text: "Point Of Arrival",
+    },
+    {
+        dataField: "PointOfDeparture",
+        text: "Point Of Departure",
+    },
+    {
+        dataField: "TypeOfWaste",
+        text: "Type Of Waste",
+    },
+    {
+        dataField: "Subtype",
+        text: "Subtype",
+    },
+    {
+        dataField: "request",
+        text: "Finish request",
     },
 ]
 
