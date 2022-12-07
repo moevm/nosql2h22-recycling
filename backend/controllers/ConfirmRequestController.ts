@@ -9,8 +9,8 @@ export default class ConfirmRequestController extends BaseController {
     @Post("/confirm")
     public async confirm(): Promise<any> {
         const { orderID, login } = this.req.body;
-        await order.updateOne({ _id: new mongoose.Types.ObjectId(orderID) }, { $set: { status: "In transit" } });
-        await order.updateOne({ _id: new mongoose.Types.ObjectId(orderID) }, { $push: { history: { date: new Date(), status: "In transit" } } });
+        await order.updateOne({ _id: new mongoose.Types.ObjectId(orderID) }, { $set: { status: "In delivery" } });
+        await order.updateOne({ _id: new mongoose.Types.ObjectId(orderID) }, { $push: { history: { date: new Date(), status: "In delivery" } } });
         await user.updateOne(
             { login },
             { $push: { orders: new mongoose.Types.ObjectId(orderID) } },

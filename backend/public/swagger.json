@@ -402,9 +402,9 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Driver": {
+			"Order": {
 				"properties": {
-					"Driver": {
+					"_id": {
 						"type": "string"
 					},
 					"PointOfDeparture": {
@@ -422,57 +422,47 @@
 					"Amount": {
 						"type": "number",
 						"format": "double"
+					},
+					"request": {
+						"type": "string",
+						"enum": [
+							""
+						],
+						"nullable": false
 					}
 				},
 				"required": [
-					"Driver",
+					"_id",
 					"PointOfDeparture",
 					"PointOfArrival",
 					"TypeOfWaste",
 					"Subtype",
-					"Amount"
+					"Amount",
+					"request"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"mongoose.Types.ObjectId": {
-				"type": "string"
-			},
-			"Order": {
+			"Driver": {
 				"properties": {
-					"users": {
-						"items": {
-							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
-						},
-						"type": "array"
-					},
-					"status": {
+					"driver": {
 						"type": "string"
 					},
-					"date": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"reception": {
-						"$ref": "#/components/schemas/Reception"
-					},
-					"material": {
-						"$ref": "#/components/schemas/Material"
-					},
-					"history": {
+					"orders": {
 						"items": {
-							"$ref": "#/components/schemas/History"
+							"$ref": "#/components/schemas/Order"
 						},
 						"type": "array"
+					},
+					"countOrders": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
-					"users",
-					"status",
-					"date",
-					"reception",
-					"material",
-					"history"
+					"driver",
+					"orders",
+					"countOrders"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -769,6 +759,23 @@
 								"schema": {
 									"$ref": "#/components/schemas/Order"
 								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/driver/finish": {
+			"post": {
+				"operationId": "Finish",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
 							}
 						}
 					}
