@@ -13,7 +13,7 @@ interface Reception {
     Glass?: number,
     Battery?: number,
     Amount?: number,
-    Percentage: number
+    Percentage: string
 }
 
 interface Receptions {
@@ -87,6 +87,9 @@ export default class MainStorageController extends BaseController {
             }
         }
         const countReceptions = totals.length;
+        if (limit === 0) {
+            limit = countReceptions;
+        }
         for (let i = skip; i < skip + limit; i += 1) {
             if (i >= countReceptions) {
                 break;
@@ -100,7 +103,7 @@ export default class MainStorageController extends BaseController {
                 Address: totals[i]._id.reception,
                 Amount: totals[i].total,
                 Manager: `${manager[0].firstName} ${manager[0].lastName}`,
-                Percentage: totals[i].total / 100,
+                Percentage: (totals[i].total / 100).toString().replace(".", ","),
             });
         }
         for (let i = 0; i < findDocs.length; i += 1) {

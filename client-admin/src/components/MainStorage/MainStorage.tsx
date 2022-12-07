@@ -1,9 +1,10 @@
 import React, { useEffect, useState} from 'react';
-import { Form } from 'react-bootstrap';
+import {Button, Form} from 'react-bootstrap';
 import {ratios, metal, paper, plastic, glass, organic, battery} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
-import {columns} from "./MainStorage.content"
-import Container from "react-bootstrap/Container";
+import {columns, header} from "./MainStorage.content"
+import {Container, Col, Row} from "react-bootstrap";
+import {CSVLink} from "react-csv";
 
 export const MainStorage = () => {
     const [selectedType, setSelectedType] = useState<string>('All');
@@ -12,10 +13,29 @@ export const MainStorage = () => {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(5);
     const [total, setTotal] = useState<number>(5);
+    const [exportedData,setExportedData] = useState<Array<any>>([]);
 
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
     };
+
+    const exportData = () =>{
+        fetch('http://localhost:8000/api/admin/main', {
+                method:"POST",
+                headers: new Headers({
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                }),
+                body: JSON.stringify({type:selectedType, subType: selectedSubType, page: page, perPage:"All"})
+            }
+        )
+            .then(response => response.json())
+            .then(content => {
+                setExportedData(content.orders);
+                console.log(content.orders);
+            })
+            .catch(err => console.error(err));
+    }
 
     const getData = () => {
         fetch('http://localhost:8000/api/admin/main', {
@@ -37,6 +57,7 @@ export const MainStorage = () => {
 
     useEffect(() => {
         getData();
+        exportData();
     }, [])
 
     useEffect(() => {
@@ -134,8 +155,20 @@ export const MainStorage = () => {
                         <label style={{margin: '0vh 3vh 0vh -2vh'}}>{radio.name}</label>
                     </>
                 ))}
-                <Container style={{width: '20vh', margin: '3vh 0vh 3vh 0vh'}}>
-                    {showSubtypes()}
+                <Container style={{width: '90vh', margin: '3vh 0vh 3vh 0vh'}}>
+                    <Row>
+                        <Col>
+                            {showSubtypes()}
+                        </Col>
+                        <Col>
+                            <Button onClick={exportData} style={{width: '30vh'}} variant='success' >
+                                <CSVLink style={{color:'white',textDecoration: 'none'}} data={exportedData} headers={header} separator={";"} filename="AdminStorageTable">
+                                    <>Export</>
+                                </CSVLink>
+                            </Button>
+
+                        </Col>
+                    </Row>
                 </Container>
             </div>
             <TableData
