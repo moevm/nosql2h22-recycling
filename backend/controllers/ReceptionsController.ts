@@ -88,6 +88,9 @@ export default class MainStorageController extends BaseController {
         }
         const countReceptions = totals.length;
         for (let i = skip; i < skip + limit; i += 1) {
+            if (i >= countReceptions) {
+                break;
+            }
             // eslint-disable-next-line no-underscore-dangle,no-await-in-loop
             const users = await order.find({ "reception.address": totals[i]._id.reception }, { users: 1, _id: 0 }).limit(1);
             // eslint-disable-next-line no-await-in-loop

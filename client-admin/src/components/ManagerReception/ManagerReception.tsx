@@ -45,23 +45,6 @@ export const ManagerReception = () => {
             .catch(err => console.error(err));
     }
 
-    useEffect(()=>{
-        fetch('http://localhost:8000/api/manager/reception', {
-            method:"POST",
-            headers: new Headers({
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            }),
-            body: JSON.stringify({login: userLogged.user, filter: searchParameter, filterValue: ''})
-        })
-            .then(response => response.json())
-            .then(content => {
-                setData(content.materials);
-                userLogged.setReception(content.reception);
-            })
-            .catch(err => console.error(err));
-    }, [])
-
     const requestForData = (request: string) =>{
         return fetch('http://localhost:8000/api/manager/reception', {
             method:"POST",
@@ -69,7 +52,7 @@ export const ManagerReception = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({login: userLogged.user, filter: searchParameter, filterValue: request})
+            body: JSON.stringify({login: localStorage.getItem("user"), filter: searchParameter, filterValue: request, page, perPage})
         })
             .then(r => r.json())
             .catch(error => {
@@ -84,9 +67,10 @@ export const ManagerReception = () => {
             requestForData(debouncedSearchTerm).then(results => {
                 setIsSearching(false);
                 setData(results.materials);
+                setTotal(results.countMaterials)
             });
         },
-        [debouncedSearchTerm]
+        [debouncedSearchTerm,page, perPage]
     );
 
     return (

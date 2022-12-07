@@ -120,6 +120,26 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Receptions": {
+				"properties": {
+					"countReceptions": {
+						"type": "number",
+						"format": "double"
+					},
+					"receptions": {
+						"items": {
+							"$ref": "#/components/schemas/Reception"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"countReceptions",
+					"receptions"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Transit": {
 				"properties": {
 					"carrier": {
@@ -137,6 +157,26 @@
 					"carrier",
 					"reception",
 					"amount"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Transits": {
+				"properties": {
+					"countTransits": {
+						"type": "number",
+						"format": "double"
+					},
+					"transits": {
+						"items": {
+							"$ref": "#/components/schemas/Transit"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"countTransits",
+					"transits"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -293,11 +333,16 @@
 							"$ref": "#/components/schemas/Material"
 						},
 						"type": "array"
+					},
+					"countMaterials": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
 					"reception",
-					"materials"
+					"materials",
+					"countMaterials"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -337,6 +382,26 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"Requests": {
+				"properties": {
+					"countRequests": {
+						"type": "number",
+						"format": "double"
+					},
+					"requests": {
+						"items": {
+							"$ref": "#/components/schemas/Request"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"countRequests",
+					"requests"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Driver": {
 				"properties": {
 					"Driver": {
@@ -370,39 +435,44 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"mongoose.Types.ObjectId": {
+				"type": "string"
+			},
 			"Order": {
 				"properties": {
-					"orderID": {
+					"users": {
+						"items": {
+							"$ref": "#/components/schemas/mongoose.Types.ObjectId"
+						},
+						"type": "array"
+					},
+					"status": {
 						"type": "string"
 					},
-					"departure": {
-						"type": "string"
+					"date": {
+						"type": "string",
+						"format": "date-time"
 					},
-					"arrival": {
-						"type": "string"
+					"reception": {
+						"$ref": "#/components/schemas/Reception"
 					},
-					"type": {
-						"type": "string"
+					"material": {
+						"$ref": "#/components/schemas/Material"
 					},
-					"subtype": {
-						"type": "string"
-					},
-					"amount": {
-						"type": "number",
-						"format": "double"
-					},
-					"action": {
-						"type": "string"
+					"history": {
+						"items": {
+							"$ref": "#/components/schemas/History"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
-					"orderID",
-					"departure",
-					"arrival",
-					"type",
-					"subtype",
-					"amount",
-					"action"
+					"users",
+					"status",
+					"date",
+					"reception",
+					"material",
+					"history"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -487,10 +557,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Reception"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/Receptions"
 								}
 							}
 						}
@@ -509,10 +576,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Transit"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/Transits"
 								}
 							}
 						}
@@ -629,10 +693,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Request"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/Requests"
 								}
 							}
 						}
@@ -670,10 +731,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Order"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/Orders"
 								}
 							}
 						}

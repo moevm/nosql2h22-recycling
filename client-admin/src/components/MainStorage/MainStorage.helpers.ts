@@ -13,7 +13,7 @@ export const ratios: Ratio[] = [
 export const metal: SubtypeOfRecycle[] = [
     {name: 'All', value: '1'},
     {name: 'Steel', value: '2'},
-    {name: 'Aluminium', value: '3'}
+    {name: 'Aluminum', value: '3'}
 ]
 
 export const plastic: SubtypeOfRecycle[] = [
