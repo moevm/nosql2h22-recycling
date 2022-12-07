@@ -1,5 +1,14 @@
 import {TableCellStorage} from "../TableData/TableData.types";
 
+export const header = [
+    { label: "ID", key: "ID" },
+    { label: "Date", key: "Date" },
+    { label: "Type", key: "Type" },
+    { label: "SubType", key: "SubType" },
+    { label: "Amount of waste", key: "Amount" },
+    { label: "Status", key: "Status" },
+]
+
 export const columns = [
     {
         dataField: "ID",

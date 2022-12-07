@@ -1,19 +1,19 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Form, Container, Row, Col, Button} from "react-bootstrap";
 import {TableData} from "../TableData/TableData";
-import {columns, data, header} from "./Reception.content";
+import {columns, header} from "./Reception.content";
 import {CSVLink} from 'react-csv';
 import useDebounce from "./Reception.hooks";
 
 export const Receptions = () => {
     const [searchParameter, setSearchParameter] = useState<string>('Reception')
-    const [currentData, setData] = useState(data);
-    const [currentCols, setCols] = useState(columns);
+    const [currentData, setData] = useState([]);
     const [searchInput, setSearchInput] = useState("");
     const [isSearching, setIsSearching] = useState(false);
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(5);
     const [total, setTotal] = useState<number>(5);
+    const [exportData, setExportedData] = useState<Array<any>>([]);
 
     const searchHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setSearchParameter(event.target.value);
@@ -40,6 +40,21 @@ export const Receptions = () => {
                 .then(content => {
                     setData(content.receptions);
                     setTotal(content.countReceptions);
+                })
+                .catch(err => console.error(err));
+
+            fetch('http://localhost:8000/api/admin/receptions', {
+                    method:"POST",
+                    headers: new Headers({
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    }),
+                    body: JSON.stringify({filter: searchParameter, filterValue: '', page: page, perPage: "All"})
+                }
+            )
+                .then(response => response.json())
+                .then(content => {
+                    setExportedData(content.receptions);
                 })
                 .catch(err => console.error(err));
         },
@@ -76,23 +91,20 @@ export const Receptions = () => {
 
     return (
         <>
-            <Container style={{width: '90vh', margin:'1vh 0vh 0vh 0vh'}}>
+            <Container style={{width: '120vh', margin:'1vh 0vh 0vh 0vh'}}>
                 <Row>
-                    <Col xs lg="3">
+                    <Col>
                         <Form.Select onChange={searchHandler}  aria-label="Choose parameter of search">
                             <option value='Reception'>Reception</option>
                             <option value='Manager'>Manager</option>
                         </Form.Select>
                     </Col>
-                    <Col lg="4">
-                        <input onChange={inputHandler} type="search" placeholder={`Search ${searchParameter}`} />
+                    <Col>
+                        <input style={{width: '40vh'}} onChange={inputHandler} type="search" placeholder={`Search ${searchParameter}`} />
                     </Col>
-                    <Col lg="2">
-                        <Button style={{width: '12vh', backgroundColor: '#029d27'}} variant='success'>Import</Button>
-                    </Col>
-                    <Col lg="2">
-                        <CSVLink data={data} headers={header} separator={";"} filename="AdminReceptionsTable">
-                            <Button style={{width: '12vh'}} variant='success' >Export</Button>
+                    <Col>
+                        <CSVLink data={exportData} headers={header} separator={";"} filename="AdminReceptionsTable">
+                            <Button style={{width: '40vh'}} variant='success' >Export</Button>
                         </CSVLink>
                     </Col>
                 </Row>

@@ -1,5 +1,11 @@
 import {TableCellCarrier} from "../TableData/TableData.types";
 
+export const header = [
+    { label: "Carrier", key: "carrier" },
+    { label: "Reception", key: "reception" },
+    { label: "Amount of waste", key: "amount" }
+]
+
 export const columns = [
     {
         dataField: "carrier",

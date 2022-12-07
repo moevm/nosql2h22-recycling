@@ -1,9 +1,10 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
-import {Form, Container, Row, Col} from "react-bootstrap";
+import {Form, Container, Row, Col, Button} from "react-bootstrap";
 import {TableData} from "../TableData/TableData";
-import {columns, data} from "./Transitiions.content";
+import {columns, header} from "./Transitiions.content";
 import {TableCellCarrier} from "../TableData/TableData.types";
 import useDebounce from "../Receptions/Reception.hooks";
+import {CSVLink} from "react-csv";
 
 export const Transitions = () => {
     const [searchParameter, setSearchParameter] = useState<string>('Reception');
@@ -13,6 +14,7 @@ export const Transitions = () => {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(5);
     const [total, setTotal] = useState<number>(5);
+    const [exportedData,setExportedData] = useState<Array<any>>([]);
 
     const inputHandler = (event: React.FormEvent<HTMLInputElement>) => {
         setSearchInput(event.currentTarget.value);
@@ -39,6 +41,21 @@ export const Transitions = () => {
                 .then(content => {
                     setData(content.transits);
                     setTotal(content.countTransits)
+                })
+                .catch(err => console.error(err));
+
+            fetch('http://localhost:8000/api/admin/transit', {
+                    method:"POST",
+                    headers: new Headers({
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    }),
+                    body: JSON.stringify({filter: searchParameter, filterValue: '', page:page, perPage:"All"})
+                }
+            )
+                .then(response => response.json())
+                .then(content => {
+                    setExportedData(content.transits);
                 })
                 .catch(err => console.error(err));
         },
@@ -77,14 +94,21 @@ export const Transitions = () => {
         <>
             <Container style={{width: '90vh', margin:'1vh 0vh 0vh 0vh'}}>
                 <Row>
-                    <Col xs lg="3">
+                    <Col>
                         <Form.Select onChange={searchHandler}  aria-label="Choose parameter of search">
                             <option value='Reception'>Reception</option>
                             <option value='Carrier'>Carrier</option>
                         </Form.Select>
                     </Col>
-                    <Col lg="4">
-                        <input onChange={inputHandler} type="search" placeholder={`Search ${searchParameter}` } />
+                    <Col>
+                        <input style={{width: '30vh'}} onChange={inputHandler} type="search" placeholder={`Search ${searchParameter}` } />
+                    </Col>
+                    <Col>
+                        <Button style={{width: '30vh'}} variant='success' >
+                            <CSVLink style={{color:'white',textDecoration: 'none'}} data={exportedData} headers={header} separator={";"} filename="AdminTransitionsTable">
+                                <>Export</>
+                            </CSVLink>
+                        </Button>
                     </Col>
                 </Row>
             </Container>

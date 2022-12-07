@@ -64,6 +64,9 @@ export default class MainStorageController extends BaseController {
             }
         }
         const countTransits = findDocs.length;
+        if (limit === 0) {
+            limit = countTransits;
+        }
         for (let i = skip; i < skip + limit; i += 1) {
             if (i >= countTransits) {
                 break;

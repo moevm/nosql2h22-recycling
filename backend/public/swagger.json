@@ -108,8 +108,7 @@
 						"format": "double"
 					},
 					"Percentage": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					}
 				},
 				"required": [
