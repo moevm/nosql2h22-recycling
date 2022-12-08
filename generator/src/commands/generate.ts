@@ -354,7 +354,7 @@ export default class Generate extends Command {
       "Michael",
       "Nikita",
       "Matvey",
-      "Novel",
+      "Roman",
       "Egor",
       "Arseniy",
       "Ivan",

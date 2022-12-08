@@ -2,6 +2,7 @@ import { Post, Route } from "tsoa";
 import BaseController from "./BaseController";
 import { IMainStorage } from "../models/MainStorage";
 import { order } from "../models/Order";
+import { user } from "../models/User";
 
 interface Orders {
     countOrders: number,
@@ -38,23 +39,29 @@ export default class MainStorageController extends BaseController {
             findDocs = await order.find(
                 query,
                 {
-                    _id: 1, date: 1, "material.title": 1, "material.subtype": 1, "material.count": 1, status: 1,
+                    _id: 1, date: 1, "material.title": 1, "material.subtype": 1, "material.count": 1, status: 1, users: 1,
                 },
-            );
+            ).sort({ date: 1 });
         } else {
             findDocs = await order.find(
                 query,
                 {
-                    _id: 1, date: 1, "material.title": 1, "material.subtype": 1, "material.count": 1, status: 1,
+                    _id: 1, date: 1, "material.title": 1, "material.subtype": 1, "material.count": 1, status: 1, users: 1,
                 },
-            ).skip((Number(page) - 1) * Number(perPage)).limit(Number(perPage));
+            ).sort({ date: 1 }).skip((Number(page) - 1) * Number(perPage)).limit(Number(perPage));
         }
         const orders: Array<IMainStorage> = [];
         for (let i = 0; i < findDocs.length; i += 1) {
+            // eslint-disable-next-line no-await-in-loop
+            const userName = await user.find({ _id: { $in: findDocs[i].users }, role: "User" }, { firstName: 1, lastName: 1, _id: 0 });
+            // eslint-disable-next-line no-await-in-loop
+            const driverName = await user.find({ _id: { $in: findDocs[i].users }, role: "Driver" }, { firstName: 1, lastName: 1, _id: 0 });
             orders.push({
                 // eslint-disable-next-line no-underscore-dangle
                 ID: findDocs[i]._id.toString(),
-                Date: `${findDocs[i].date.getDate().toString().padStart(2, "0")}.${findDocs[i].date.getMonth().toString().padStart(2, "0")}.${findDocs[i].date.getFullYear()} ${findDocs[i].date.getHours().toString().padStart(2, "0")}:${findDocs[i].date.getMinutes().toString().padStart(2, "0")}`,
+                Date: findDocs[i].date.toISOString().split("T")[0],
+                Driver: `${driverName[0].firstName} ${driverName[0].lastName}`,
+                User: `${userName[0].firstName} ${userName[0].lastName}`,
                 Amount: findDocs[i].material.count,
                 Status: findDocs[i].status,
                 SubType: findDocs[i].material.subtype,
