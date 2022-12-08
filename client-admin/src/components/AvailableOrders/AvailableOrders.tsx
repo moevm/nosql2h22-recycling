@@ -82,7 +82,15 @@ export const AvailableOrders = () => {
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button onClick={()=>{setShow(false)}} variant="secondary">Close</Button>
+                    <Button onClick={()=>{
+                        setShow(false);
+                        requestForData(debouncedSearchTerm).then(results => {
+                            setIsSearching(false);
+                            setData(results.orders);
+                            setTotal(results.countOrders);
+                        });
+                    }}
+                            variant="secondary">Close</Button>
                 </Modal.Footer>
             </Modal>
             <Card.Body>

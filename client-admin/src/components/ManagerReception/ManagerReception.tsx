@@ -35,7 +35,7 @@ export const ManagerReception = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({reception: userLogged.reception, type: currentRequest.type, subtype: currentRequest.subtype})
+            body: JSON.stringify({reception: localStorage.getItem("reception"), type: currentRequest.type, subtype: currentRequest.subtype})
         })
             .then(response => response.json())
             .then(content => {
@@ -68,6 +68,7 @@ export const ManagerReception = () => {
                 setIsSearching(false);
                 setData(results.materials);
                 setTotal(results.countMaterials)
+                localStorage.setItem("reception",results.reception);
             });
         },
         [debouncedSearchTerm,page, perPage]
@@ -81,11 +82,20 @@ export const ManagerReception = () => {
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p>Request has created/</p>
+                    <p>Request has created</p>
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button onClick={()=>{setShow(false)}} variant="secondary">Close</Button>
+                    <Button onClick={()=>{
+                        setShow(false);
+                        requestForData(debouncedSearchTerm).then(results => {
+                            setIsSearching(false);
+                            setData(results.materials);
+                            setTotal(results.countMaterials)
+                            localStorage.setItem("reception",results.reception);
+                        });
+                    }}
+                            variant="secondary">Close</Button>
                 </Modal.Footer>
             </Modal>
             <Card.Body style={{width: '90vh', padding:'1vh', margin:'1vh 0vh 0vh 0vh'}}>
