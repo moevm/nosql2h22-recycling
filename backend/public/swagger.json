@@ -14,6 +14,12 @@
 					"Date": {
 						"type": "string"
 					},
+					"User": {
+						"type": "string"
+					},
+					"Driver": {
+						"type": "string"
+					},
 					"Type": {
 						"type": "string"
 					},
@@ -31,6 +37,8 @@
 				"required": [
 					"ID",
 					"Date",
+					"User",
+					"Driver",
 					"Type",
 					"SubType",
 					"Amount",
@@ -147,6 +155,15 @@
 					"reception": {
 						"type": "string"
 					},
+					"date": {
+						"type": "string"
+					},
+					"type": {
+						"type": "string"
+					},
+					"subType": {
+						"type": "string"
+					},
 					"amount": {
 						"type": "number",
 						"format": "double"
@@ -155,6 +172,9 @@
 				"required": [
 					"carrier",
 					"reception",
+					"date",
+					"type",
+					"subType",
 					"amount"
 				],
 				"type": "object",
@@ -351,6 +371,9 @@
 					"req_id": {
 						"type": "string"
 					},
+					"user": {
+						"type": "string"
+					},
 					"date": {
 						"type": "string"
 					},
@@ -372,6 +395,7 @@
 				},
 				"required": [
 					"req_id",
+					"user",
 					"date",
 					"type_of_waste",
 					"subtype",
@@ -406,6 +430,9 @@
 					"_id": {
 						"type": "string"
 					},
+					"date": {
+						"type": "string"
+					},
 					"PointOfDeparture": {
 						"type": "string"
 					},
@@ -432,6 +459,7 @@
 				},
 				"required": [
 					"_id",
+					"date",
 					"PointOfDeparture",
 					"PointOfArrival",
 					"TypeOfWaste",

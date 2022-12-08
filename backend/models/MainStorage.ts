@@ -3,6 +3,8 @@ import { model, Schema } from "mongoose";
 interface IMainStorage {
     ID: string,
     Date: string,
+    User: string,
+    Driver: string,
     Type: string,
     SubType: string,
     Amount: number,

@@ -28,7 +28,7 @@ export default class UserController extends BaseController {
         } = this.req.query;
 
         const skip = (Number(page) - 1) * Number(perPage);
-        const limit = skip + Number(perPage);
+        const limit = skip;
 
         const currentUser = await user.findOne({ login }, { orders: 1, _id: 0 });
 

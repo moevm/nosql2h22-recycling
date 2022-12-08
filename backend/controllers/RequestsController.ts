@@ -1,9 +1,11 @@
 import { Post, Route } from "tsoa";
 import BaseController from "./BaseController";
 import { order } from "../models/Order";
+import { user } from "../models/User";
 
 interface Request {
     req_id: string,
+    user: string,
     date: string,
     type_of_waste: number,
     subtype: number,
@@ -40,7 +42,7 @@ export default class RequestsController extends BaseController {
                 {
                     $addFields: {
                         orderID: { $toString: "$_id" },
-                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                        newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
                     },
                 },
                 {
@@ -49,12 +51,12 @@ export default class RequestsController extends BaseController {
                         orderID: { $regex: filterValue, $options: "i" },
                     },
                 },
-            ]).skip(skip).limit(limit);
+            ]).sort({ date: 1 }).skip(skip).limit(limit);
             const allFindDocs = await order.aggregate([
                 {
                     $addFields: {
                         orderID: { $toString: "$_id" },
-                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                        newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
                     },
                 },
                 {
@@ -70,7 +72,7 @@ export default class RequestsController extends BaseController {
                 {
                     $addFields: {
                         dateUTC: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
-                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                        newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
                     },
                 },
                 {
@@ -79,12 +81,12 @@ export default class RequestsController extends BaseController {
                         dateUTC: { $regex: filterValue, $options: "i" },
                     },
                 },
-            ]).skip(skip).limit(limit);
+            ]).sort({ date: 1 }).skip(skip).limit(limit);
             const allFindDocs = await order.aggregate([
                 {
                     $addFields: {
                         dateUTC: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
-                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                        newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
                     },
                 },
                 {
@@ -99,7 +101,7 @@ export default class RequestsController extends BaseController {
             findDocs = await order.aggregate([
                 {
                     $addFields: {
-                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                        newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
                     },
                 },
                 {
@@ -108,11 +110,11 @@ export default class RequestsController extends BaseController {
                         "material.title": { $regex: filterValue, $options: "i" },
                     },
                 },
-            ]).skip(skip).limit(limit);
+            ]).sort({ date: 1 }).skip(skip).limit(limit);
             const allFindDocs = await order.aggregate([
                 {
                     $addFields: {
-                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                        newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
                     },
                 },
                 {
@@ -127,7 +129,7 @@ export default class RequestsController extends BaseController {
             findDocs = await order.aggregate([
                 {
                     $addFields: {
-                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                        newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
                     },
                 },
                 {
@@ -136,11 +138,11 @@ export default class RequestsController extends BaseController {
                         "material.subtype": { $regex: filterValue, $options: "i" },
                     },
                 },
-            ]).skip(skip).limit(limit);
+            ]).sort({ date: 1 }).skip(skip).limit(limit);
             const allFindDocs = await order.aggregate([
                 {
                     $addFields: {
-                        newDate: { $dateToString: { format: "%d.%m.%Y %H:%M", date: "$date" } },
+                        newDate: { $dateToString: { format: "%Y-%m-%d", date: "$date" } },
                     },
                 },
                 {
@@ -153,6 +155,8 @@ export default class RequestsController extends BaseController {
             countRequests = allFindDocs.length;
         }
         for (let i = 0; i < findDocs.length; i += 1) {
+            // eslint-disable-next-line no-underscore-dangle,no-await-in-loop
+            const usersForOrder = await user.find({ orders: { $in: findDocs[i]._id }, role: "User" }, { firstName: 1, lastName: 1, _id: 0 });
             requests.push({
                 among: findDocs[i].material.count,
                 date: findDocs[i].newDate,
@@ -161,6 +165,7 @@ export default class RequestsController extends BaseController {
                 status: findDocs[i].status,
                 subtype: findDocs[i].material.subtype,
                 type_of_waste: findDocs[i].material.title,
+                user: `${usersForOrder[0].firstName} ${usersForOrder[0].lastName}`,
             });
         }
         return { countRequests, requests };
