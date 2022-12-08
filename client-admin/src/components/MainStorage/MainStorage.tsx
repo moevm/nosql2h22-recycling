@@ -14,6 +14,9 @@ export const MainStorage = () => {
     const [perPage, setPerPage] = useState<number>(5);
     const [total, setTotal] = useState<number>(5);
     const [exportedData,setExportedData] = useState<Array<any>>([]);
+    const [date,setDate] = useState<string>("");
+    const [client, setClient] = useState<string>("");
+    const [driver, setDriver] = useState<string>("");
 
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
@@ -66,16 +69,6 @@ export const MainStorage = () => {
 
     const showSubtypes = () => {
         switch(selectedType){
-            case 'All':
-                return (
-                    <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
-                        {ratios.map((radio,idx)=>(
-                            <option>
-                                {radio.name}
-                            </option>
-                        ))}
-                    </Form.Select>
-                )
             case 'Metal':
                 return (
                     <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
@@ -155,18 +148,41 @@ export const MainStorage = () => {
                         <label style={{margin: '0vh 3vh 0vh -2vh'}}>{radio.name}</label>
                     </>
                 ))}
+                <CSVLink style={{color:'white',textDecoration: 'none'}} data={exportedData} headers={header} separator={";"} filename="AdminStorageTable">
+                    <Button onClick={exportData} style={{width: '30vh'}} variant='success' >
+                        Export table to SCV
+                    </Button>
+                </CSVLink>
+                <div style={{width: '108vh',marginTop:'3vh'}}>
+                    {showSubtypes()}
+                </div>
                 <Container style={{width: '90vh', margin: '3vh 0vh 3vh 0vh'}}>
                     <Row>
                         <Col>
-                            {showSubtypes()}
+                            <>
+                                <label style={{margin: '0vh 3vh 0vh -2vh'}}>Date:</label>
+                                <input
+                                    type='date'
+                                    style={{margin: '0vh 3vh 0vh 0vh'}}
+                                    onChange={(e)=>{setDate(e.target.value)}}
+                                />
+                            </>
                         </Col>
                         <Col>
-                            <Button onClick={exportData} style={{width: '30vh'}} variant='success' >
-                                <CSVLink style={{color:'white',textDecoration: 'none'}} data={exportedData} headers={header} separator={";"} filename="AdminStorageTable">
-                                    <>Export</>
-                                </CSVLink>
-                            </Button>
-
+                            <input
+                                type='search'
+                                style={{margin: '0vh 1vh 0vh 0vh'}}
+                                placeholder="Search user"
+                                onChange={(e)=>{setClient(e.target.value)}}
+                            />
+                        </Col>
+                        <Col>
+                            <input
+                                type='search'
+                                style={{margin: '0vh 1vh 0vh 0vh'}}
+                                placeholder="Search driver"
+                                onChange={(e)=>{setDriver(e.target.value)}}
+                            />
                         </Col>
                     </Row>
                 </Container>

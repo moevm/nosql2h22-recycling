@@ -104,11 +104,11 @@ export const Transitions = () => {
                         <input style={{width: '30vh'}} onChange={inputHandler} type="search" placeholder={`Search ${searchParameter}` } />
                     </Col>
                     <Col>
-                        <Button style={{width: '30vh'}} variant='success' >
-                            <CSVLink style={{color:'white',textDecoration: 'none'}} data={exportedData} headers={header} separator={";"} filename="AdminTransitionsTable">
-                                <>Export</>
-                            </CSVLink>
-                        </Button>
+                        <CSVLink style={{color:'white',textDecoration: 'none'}} data={exportedData} headers={header} separator={";"} filename="AdminTransitionsTable">
+                            <Button style={{width: '30vh'}} variant='success' >
+                                Export
+                            </Button>
+                        </CSVLink>
                     </Col>
                 </Row>
             </Container>
