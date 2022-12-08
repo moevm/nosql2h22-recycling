@@ -19,7 +19,6 @@ export default class MainStorageController extends BaseController {
         } = this.req.body;
         let findDocs: Array<any>;
         const query = {};
-
         if (filters.type === "All" || filters.type === undefined) {
             query["history.3"] = { $exists: true };
         } else if (filters.subType === "All" || filters.subType === undefined) {
@@ -54,7 +53,7 @@ export default class MainStorageController extends BaseController {
             users.push(findUsers[i]._id);
         }
 
-        const driverData: Array<string> = filters.user.split(" ");
+        const driverData: Array<string> = filters.driver.split(" ");
         let driversQuery: {};
         const drivers: Array<mongoose.Types.ObjectId> = [];
         if (driverData.length === 1) {
@@ -77,7 +76,9 @@ export default class MainStorageController extends BaseController {
             drivers.push(findDrivers[i]._id);
         }
 
-        const findOrderIDs = await order.find({ $and: [{ users: { $in: findUsers } }, { users: { $in: findDrivers } }] }, { _id: 1 });
+        const intersectionUsersDrivers = findUsers.filter((x) => { return findDrivers.some((x2) => { return x.toString() === x2.toString(); }); });
+
+        const findOrderIDs = await order.find({ _id: { $in: intersectionUsersDrivers } }, { _id: 1 });
         const orderIDs: Array<mongoose.Types.ObjectId> = [];
         for (let i = 0; i < findOrderIDs.length; i += 1) {
             // eslint-disable-next-line no-underscore-dangle
@@ -105,7 +106,7 @@ export default class MainStorageController extends BaseController {
             } else {
                 query["material.count"] = { $gte: new Date(0), $lte: new Date(filters.date.to) };
             }
-        } else if (filters.amount.to === "") {
+        } else if (filters.date.to === "") {
             query["material.count"] = { $gte: new Date(filters.date.from) };
         } else {
             query["material.count"] = { $gte: new Date(filters.date.from), $lte: new Date(filters.date.to) };
