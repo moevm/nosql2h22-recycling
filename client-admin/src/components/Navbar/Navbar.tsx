@@ -18,7 +18,7 @@ export const AdminNavbar = ({content, ...rest}: IAdminNavbarProps) => {
                <>
                    <h3 className='user-name'>{localStorage.getItem("user")}</h3>
                    <a href="/login">
-                       <button className='button-logout'>Log Out</button>
+                       <button onClick={()=>{localStorage.setItem("user","");}} className='button-logout'>Log Out</button>
                    </a>
                </>
 
