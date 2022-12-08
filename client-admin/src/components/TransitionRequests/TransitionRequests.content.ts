@@ -3,13 +3,17 @@ import {TableRequests} from '../TableData/TableData.types'
 export const columns = [
     {
         dataField: "req_id",
-        text: "req_id",
+        text: "RequestID",
         sort: true
     },
     {
         dataField: "date",
         text: "Date",
         sort: true
+    },
+    {
+        dataField: "user",
+        text: "User",
     },
     {
         dataField: "type_of_waste",
@@ -21,7 +25,7 @@ export const columns = [
     },
     {
         dataField: "among",
-        text: "Among of waste",
+        text: "Amount of waste",
         sort: true
     },
     {

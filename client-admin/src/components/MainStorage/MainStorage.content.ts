@@ -21,6 +21,14 @@ export const columns = [
         sort: true
     },
     {
+        dataField: "User",
+        text: "User",
+    },
+    {
+        dataField: "Driver",
+        text: "Driver",
+    },
+    {
         dataField: "Type",
         text: "Type of Waste"
     },

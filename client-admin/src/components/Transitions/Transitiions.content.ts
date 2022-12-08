@@ -8,12 +8,24 @@ export const header = [
 
 export const columns = [
     {
+        dataField: "date",
+        text: "Date of delivery",
+    },
+    {
         dataField: "carrier",
         text: "Carrier",
     },
     {
         dataField: "reception",
         text: "Reception",
+    },
+    {
+        dataField: "type",
+        text: "Type of waste",
+    },
+    {
+        dataField: "subType",
+        text: "Subtype",
     },
     {
         dataField: "amount",

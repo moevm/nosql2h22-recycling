@@ -14,9 +14,13 @@ export const MainStorage = () => {
     const [perPage, setPerPage] = useState<number>(5);
     const [total, setTotal] = useState<number>(5);
     const [exportedData,setExportedData] = useState<Array<any>>([]);
-    const [date,setDate] = useState<string>("");
+    const [startDate,setStartDate] = useState<string>("");
+    const [finishDate,setFinishDate] = useState<string>("");
     const [client, setClient] = useState<string>("");
     const [driver, setDriver] = useState<string>("");
+    const [lowerAmount, setLowerAmount] = useState<string>("");
+    const [upperAmount, setUpperAmount] = useState<string>("");
+    const [showAdd, setShowAdd] = useState<boolean>(false);
 
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
@@ -35,7 +39,6 @@ export const MainStorage = () => {
             .then(response => response.json())
             .then(content => {
                 setExportedData(content.orders);
-                console.log(content.orders);
             })
             .catch(err => console.error(err));
     }
@@ -47,7 +50,19 @@ export const MainStorage = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({type:selectedType, subType: selectedSubType, page: page, perPage:perPage})
+            body: JSON.stringify({filters:{
+                type:selectedType,
+                subType: selectedSubType,
+                user: localStorage.getItem("user"),
+                driver:driver,
+                amount:{
+                    from: lowerAmount,
+                    to: upperAmount
+                },
+                date:{
+                    from:startDate,
+                    to: finishDate,
+                }}  ,page: page, perPage:perPage})
         }
         )
             .then(response => response.json())
@@ -156,36 +171,91 @@ export const MainStorage = () => {
                 <div style={{width: '108vh',marginTop:'3vh'}}>
                     {showSubtypes()}
                 </div>
-                <Container style={{width: '90vh', margin: '3vh 0vh 3vh 0vh'}}>
+                <Form.Check
+                    style = {{width:"50vh",marginTop:'3vh'}}
+                    type="switch"
+                    label="Show additional filters"
+                    onChange={()=>{setShowAdd(!showAdd)}}
+                />
+                {showAdd && <Container style={{width: '95%', margin: '3vh 0vh 3vh 0vh'}}>
                     <Row>
                         <Col>
                             <>
-                                <label style={{margin: '0vh 3vh 0vh -2vh'}}>Date:</label>
+                                <label style={{margin: '0vh 3vh 0vh 0vh'}}>Start date:</label>
                                 <input
                                     type='date'
                                     style={{margin: '0vh 3vh 0vh 0vh'}}
-                                    onChange={(e)=>{setDate(e.target.value)}}
+                                    onChange={(e) => {
+                                        setStartDate(e.target.value)
+                                    }}
                                 />
                             </>
                         </Col>
                         <Col>
+                            <>
+                                <label style={{margin: '0vh 3vh 0vh -2vh'}}>Finish date:</label>
+                                <input
+                                    type='date'
+                                    style={{margin: '0vh 3vh 0vh 0vh'}}
+                                    onChange={(e) => {
+                                        setFinishDate(e.target.value)
+                                    }}
+                                />
+                            </>
+                        </Col>
+                        <Col lg={2}>
                             <input
                                 type='search'
                                 style={{margin: '0vh 1vh 0vh 0vh'}}
                                 placeholder="Search user"
-                                onChange={(e)=>{setClient(e.target.value)}}
+                                onChange={(e) => {
+                                    setClient(e.target.value)
+                                }}
                             />
                         </Col>
-                        <Col>
+                        <Col lg={2}>
                             <input
                                 type='search'
                                 style={{margin: '0vh 1vh 0vh 0vh'}}
                                 placeholder="Search driver"
-                                onChange={(e)=>{setDriver(e.target.value)}}
+                                onChange={(e) => {
+                                    setDriver(e.target.value)
+                                }}
                             />
                         </Col>
                     </Row>
+                    <Row style={{margin: "3vh 0vh 0vh -2vh"}}>
+                        <Col lg={4}>
+                            <>
+                                <label>Amount from:</label>
+                                <input
+                                    type='number'
+                                    min={0}
+                                    style={{margin: '0vh 1vh 0vh 2vh'}}
+                                    placeholder="Amount from:"
+                                    onChange={(e) => {
+                                        setLowerAmount(e.target.value)
+                                    }}
+                                />
+                            </>
+                        </Col>
+                        <Col lg={3}>
+                            <>
+                                <label>Amount to:</label>
+                                <input
+                                    type='number'
+                                    style={{margin: '0vh 1vh 0vh 2vh'}}
+                                    min={0}
+                                    placeholder="Amount to:"
+                                    onChange={(e) => {
+                                        setUpperAmount(e.target.value)
+                                    }}
+                                />
+                            </>
+                        </Col>
+                    </Row>
                 </Container>
+                }
             </div>
             <TableData
                 total={total}

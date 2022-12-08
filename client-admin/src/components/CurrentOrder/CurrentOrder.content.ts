@@ -1,14 +1,13 @@
-import {TableCellCurrentOrder} from "../TableData/TableData.types";
-
 export const columns = [
     {
         dataField: "_id",
         text: "Request ID",
     },
     {
-        dataField: "Amount",
-        text: "Amount",
+        dataField: "date",
+        text: "Date",
     },
+
     {
         dataField: "PointOfArrival",
         text: "Point Of Arrival",
@@ -26,17 +25,13 @@ export const columns = [
         text: "Subtype",
     },
     {
+        dataField: "Amount",
+        text: "Amount",
+    },
+    {
         dataField: "request",
         text: "Finish request",
     },
 ]
 
-export const dataCurrentOrder: TableCellCurrentOrder[] = [
-    {parameter: 'Driver', value: "Ryan Gosling"},
-    {parameter: 'Point of Departure', value: "Derbent"},
-    {parameter: 'Point of Arrival', value: "Tam"},
-    {parameter: 'Type of waste', value: "Metal"},
-    {parameter: 'Subtype', value: "Aluminium"},
-    {parameter: 'Amount', value: "434kg"},
-]
 
