@@ -21,7 +21,7 @@ nosql2h22-recycling
 ## Запуск с помощью `docker-compose`
 1. В корне проекта запустить команду `npm run deps && npm run build`
 
-2. Далее перейти в папку `generator`, выполнить команду `npm i`, вернуться в корень проекта
+2. Далее перейти в папку `generator`, выполнить команду `npm i && npm run build`, вернуться в корень проекта
 
 3. Выполнить команду:
 ``` sudo docker-compose -f docker-compose.dev.yml build ```
