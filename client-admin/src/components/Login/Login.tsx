@@ -19,10 +19,6 @@ export const Login = () => {
         setShow(false)
     };
 
-    useEffect(()=>{
-        localStorage.setItem("user","");
-    },[])
-
     const handleLogin = () => {
         fetch('http://localhost:8000/api/login', {
                 method:"POST",
@@ -53,7 +49,6 @@ export const Login = () => {
                     localStorage.setItem("user",email);
                     navigate('/carrier_screen')
                 }else{
-                    console.log(content, visibility);
                     setVisible(true);
                 }
             })
