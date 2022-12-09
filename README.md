@@ -29,3 +29,20 @@ nosql2h22-recycling
 4. Выполнить команду:
 ``` sudo docker-compose -f docker-compose.dev.yml up ```
 5. Если нужно сгенерировать данные для БД, то запустить команду из корня проекта: `./generator/bin/run generate -p=27018 -u=30 -o=15 -h=localhost -d=test`
+
+## Тестовые пользователи для запуска приложения от каждой роли:
+### Admin:
+1. Логин: admin
+2. Пароль: admin
+
+### Manager:
+1. Логин: manager
+2. Пароль: manager
+
+### Carrier:
+1. Логин: driver
+2. Пароль: driver
+
+
+
+
