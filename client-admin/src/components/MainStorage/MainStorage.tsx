@@ -14,10 +14,13 @@ export const MainStorage = () => {
     const [perPage, setPerPage] = useState<number>(5);
     const [total, setTotal] = useState<number>(5);
     const [exportedData,setExportedData] = useState<Array<any>>([]);
+
     const [startDate,setStartDate] = useState<string>("");
     const [finishDate,setFinishDate] = useState<string>("");
+
     const [client, setClient] = useState<string>("");
     const [driver, setDriver] = useState<string>("");
+
     const [lowerAmount, setLowerAmount] = useState<string>("");
     const [upperAmount, setUpperAmount] = useState<string>("");
     const [showAdd, setShowAdd] = useState<boolean>(false);

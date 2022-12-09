@@ -15,8 +15,15 @@ export const AvailableOrders = () => {
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(5);
     const [total, setTotal] = useState<number>(5);
+    const [showAdd, setShowAdd] = useState<boolean>(false);
 
-    const userLogged = useContext(UserLogged);
+    const [lowerAmount, setLowerAmount] = useState<string>("");
+    const [upperAmount, setUpperAmount] = useState<string>("");
+
+    const [startDate,setStartDate] = useState<string>("");
+    const [finishDate,setFinishDate] = useState<string>("");
+
+    const [client, setClient] = useState<string>("");
 
     const searchHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setSearchParameter(event.target.value);
@@ -76,11 +83,9 @@ export const AvailableOrders = () => {
                 <Modal.Header closeButton>
                     <Modal.Title>Information alert</Modal.Title>
                 </Modal.Header>
-
                 <Modal.Body>
                     <p>Request has accepted</p>
                 </Modal.Body>
-
                 <Modal.Footer>
                     <Button onClick={()=>{
                         setShow(false);
@@ -113,6 +118,84 @@ export const AvailableOrders = () => {
                     </Row>
                 </Container>
             </Card.Body>
+            <Form.Check
+                style = {{width:"50vh", marginLeft:"3vh"}}
+                type="switch"
+                label="Show additional filters"
+                onChange={()=>{setShowAdd(!showAdd)}}
+            />
+            {showAdd && <Container style={{width: '150vh', margin:'1vh 0vh 2vh 0vh'}}>
+                <Row style={{marginTop:'3vh'}}>
+                    <Col>
+                        <label style={{margin: '0vh 3vh 0vh 0vh'}}>Start date:</label>
+                        <input
+                            type='date'
+                            style={{margin: '0vh 3vh 0vh 1vh'}}
+                            onChange={(e) => {
+                                setStartDate(e.target.value)
+                            }}
+                        />
+                    </Col>
+                    <Col>
+                        <label>Amount from:</label>
+                        <input
+                            type='number'
+                            min={0}
+                            style={{margin: '0vh 1vh 0vh 0.5vh'}}
+                            placeholder="Amount from:"
+                            onChange={(e) => {
+                                setLowerAmount(e.target.value)
+                            }}
+                        />
+                    </Col>
+                    <Col>
+                        <label style={{margin: '0vh 3vh 0vh 0vh'}}>User:</label>
+                        <input
+                            type='text'
+                            style={{margin: '0vh 3vh 0vh 1vh'}}
+                            placeholder="Search user"
+                            onChange={(e) => {
+                                setClient(e.target.value)
+                            }}
+                        />
+                    </Col>
+                </Row>
+                <Row style={{marginTop:"1vh"}}>
+                    <Col>
+                        <label style={{margin: '0vh 3vh 0vh 0vh'}}>Finish date:</label>
+                        <input
+                            type='date'
+                            style={{margin: '0vh 3vh 0vh 0vh'}}
+                            onChange={(e) => {
+                                setFinishDate(e.target.value)
+                            }}
+                        />
+                    </Col>
+                    <Col>
+                        <label>Amount to:</label>
+                        <input
+                            type='number'
+                            min={0}
+                            style={{margin: '0vh 1vh 0vh 3vh'}}
+                            placeholder="Amount to:"
+                            onChange={(e) => {
+                                setUpperAmount(e.target.value)
+                            }}
+                        />
+                    </Col>
+                    <Col>
+                        <>
+                            <Button style={{width:"60%", marginLeft:"18%",marginRight:"22%"}} variant="success" onClick={()=>{
+                                requestForData(debouncedSearchTerm).then(results => {
+                                    setIsSearching(false);
+                                    setData(results.orders);
+                                    setTotal(results.countOrders);
+                                });}
+                            }>Update table</Button>
+                        </>
+                    </Col>
+                </Row>
+            </Container>}
             <TableData tableCells={useTableData(currentData, acceptRequest)}
                        header={columns}
                        total={total}
