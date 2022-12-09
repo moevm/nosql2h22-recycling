@@ -319,6 +319,17 @@ export const Receptions = () => {
                                 }}
                             />
                         </Col>
+                        <Col lg={3}>
+                            <>
+                                <Button variant="success" onClick={()=>{
+                                    requestForData(debouncedSearchTerm).then(results => {
+                                        setIsSearching(false);
+                                        setData(results.receptions);
+                                        setTotal(results.countReceptions);
+                                    });}
+                                }>Update table</Button>
+                            </>
+                        </Col>
                     </Row>
                 </Container>
             </div>}
