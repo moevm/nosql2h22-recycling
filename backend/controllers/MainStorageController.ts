@@ -29,10 +29,9 @@ export default class MainStorageController extends BaseController {
             query["material.title"] = filters.type;
             query["material.subtype"] = filters.subType;
         }
-
         const userData: Array<string> = filters.user.split(" ");
         let usersQuery: {};
-        const users: Array<mongoose.Types.ObjectId> = [];
+        let users: Array<mongoose.Types.ObjectId> = [];
         if (userData.length === 1) {
             usersQuery = {
                 role: "User",
@@ -47,37 +46,37 @@ export default class MainStorageController extends BaseController {
             return { countOrders: 0, orders: [] };
         }
 
-        const findUsers = await user.find(usersQuery, { _id: 1 });
-        for (let i = 0; i < findUsers.length; i += 1) {
+        const findUsersOrders = await user.find(usersQuery, { orders: 1, _id: 0 });
+        for (let i = 0; i < findUsersOrders.length; i += 1) {
             // eslint-disable-next-line no-underscore-dangle
-            users.push(findUsers[i]._id);
+            // @ts-ignore
+            users = users.concat(findUsersOrders[i].orders);
         }
 
         const driverData: Array<string> = filters.driver.split(" ");
         let driversQuery: {};
-        const drivers: Array<mongoose.Types.ObjectId> = [];
+        let drivers: Array<mongoose.Types.ObjectId> = [];
         if (driverData.length === 1) {
             driversQuery = {
-                role: "User",
+                role: "Driver",
                 $or: [{ firstName: { $regex: `${driverData[0]}`, $options: "i" } }, { lastName: { $regex: `${driverData[0]}`, $options: "i" } }],
             };
         } else if (driverData.length === 2) {
             driversQuery = {
-                role: "User",
+                role: "Driver",
                 $or: [{ firstName: { $regex: `^${driverData[0]}$`, $options: "i" }, lastName: { $regex: `${driverData[1]}`, $options: "i" } }, { firstName: { $regex: `${driverData[1]}`, $options: "i" }, lastName: { $regex: `^${driverData[0]}$`, $options: "i" } }],
             };
         } else {
             return { countOrders: 0, orders: [] };
         }
 
-        const findDrivers = await user.find(driversQuery, { _id: 1 });
-        for (let i = 0; i < findDrivers.length; i += 1) {
+        const findDriversOrders = await user.find(driversQuery, { orders: 1, _id: 0 });
+        for (let i = 0; i < findDriversOrders.length; i += 1) {
             // eslint-disable-next-line no-underscore-dangle
-            drivers.push(findDrivers[i]._id);
+            // @ts-ignore
+            drivers = drivers.concat(findDriversOrders[i].orders);
         }
-
-        const intersectionUsersDrivers = findUsers.filter((x) => { return findDrivers.some((x2) => { return x.toString() === x2.toString(); }); });
-
+        const intersectionUsersDrivers = drivers.filter((x) => { return users.some((x2) => { return x.toString() === x2.toString(); }); });
         const findOrderIDs = await order.find({ _id: { $in: intersectionUsersDrivers } }, { _id: 1 });
         const orderIDs: Array<mongoose.Types.ObjectId> = [];
         for (let i = 0; i < findOrderIDs.length; i += 1) {
@@ -102,16 +101,15 @@ export default class MainStorageController extends BaseController {
 
         if (filters.date.from === "") {
             if (filters.date.to === "") {
-                query["material.count"] = { $gte: new Date(0) };
+                query["date"] = { $gte: new Date(0) };
             } else {
-                query["material.count"] = { $gte: new Date(0), $lte: new Date(filters.date.to) };
+                query["date"] = { $gte: new Date(0), $lte: new Date(filters.date.to) };
             }
         } else if (filters.date.to === "") {
-            query["material.count"] = { $gte: new Date(filters.date.from) };
+            query["date"] = { $gte: new Date(filters.date.from) };
         } else {
-            query["material.count"] = { $gte: new Date(filters.date.from), $lte: new Date(filters.date.to) };
+            query["date"] = { $gte: new Date(filters.date.from), $lte: new Date(filters.date.to) };
         }
-
         const countOrders: number = await order.find(query).count();
         if (perPage === "All") {
             findDocs = await order.find(

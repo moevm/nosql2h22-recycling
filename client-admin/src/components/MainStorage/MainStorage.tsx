@@ -33,7 +33,19 @@ export const MainStorage = () => {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 }),
-                body: JSON.stringify({type:selectedType, subType: selectedSubType, page: page, perPage:"All"})
+            body: JSON.stringify({filters:{
+                    type:selectedType,
+                    subType: selectedSubType,
+                    user: client,
+                    driver:driver,
+                    amount:{
+                        from: lowerAmount,
+                        to: upperAmount
+                    },
+                    date:{
+                        from:startDate,
+                        to: finishDate,
+                    }}  ,page: page, perPage:perPage})
             }
         )
             .then(response => response.json())
@@ -53,7 +65,7 @@ export const MainStorage = () => {
             body: JSON.stringify({filters:{
                 type:selectedType,
                 subType: selectedSubType,
-                user: localStorage.getItem("user"),
+                user: client,
                 driver:driver,
                 amount:{
                     from: lowerAmount,
@@ -177,9 +189,9 @@ export const MainStorage = () => {
                     label="Show additional filters"
                     onChange={()=>{setShowAdd(!showAdd)}}
                 />
-                {showAdd && <Container style={{width: '95%', margin: '3vh 0vh 3vh 0vh'}}>
+                {showAdd && <Container style={{width: '99%', margin: '3vh 0vh 3vh 0vh'}}>
                     <Row>
-                        <Col>
+                        <Col lg={3}>
                             <>
                                 <label style={{margin: '0vh 3vh 0vh 0vh'}}>Start date:</label>
                                 <input
@@ -193,12 +205,14 @@ export const MainStorage = () => {
                         </Col>
                         <Col>
                             <>
-                                <label style={{margin: '0vh 3vh 0vh -2vh'}}>Finish date:</label>
+                                <label>Amount from:</label>
                                 <input
-                                    type='date'
-                                    style={{margin: '0vh 3vh 0vh 0vh'}}
+                                    type='number'
+                                    min={0}
+                                    style={{margin: '0vh 1vh 0vh 2vh'}}
+                                    placeholder="Amount from:"
                                     onChange={(e) => {
-                                        setFinishDate(e.target.value)
+                                        setLowerAmount(e.target.value)
                                     }}
                                 />
                             </>
@@ -213,38 +227,31 @@ export const MainStorage = () => {
                                 }}
                             />
                         </Col>
-                        <Col lg={2}>
-                            <input
-                                type='search'
-                                style={{margin: '0vh 1vh 0vh 0vh'}}
-                                placeholder="Search driver"
-                                onChange={(e) => {
-                                    setDriver(e.target.value)
-                                }}
-                            />
+                        <Col lg={3}>
+                            <>
+                                <Button variant="success" onClick={getData}>Update table</Button>
+                            </>
                         </Col>
                     </Row>
-                    <Row style={{margin: "3vh 0vh 0vh -2vh"}}>
-                        <Col lg={4}>
+                    <Row style={{margin: "2vh 0vh 0vh -1.5vh"}}>
+                        <Col lg={3}>
                             <>
-                                <label>Amount from:</label>
+                                <label style={{margin: '0vh 3vh 0vh 0vh'}}>Finish date:</label>
                                 <input
-                                    type='number'
-                                    min={0}
-                                    style={{margin: '0vh 1vh 0vh 2vh'}}
-                                    placeholder="Amount from:"
+                                    type='date'
+                                    style={{margin: '0vh 3vh 0vh -1vh'}}
                                     onChange={(e) => {
-                                        setLowerAmount(e.target.value)
+                                        setFinishDate(e.target.value)
                                     }}
                                 />
                             </>
                         </Col>
-                        <Col lg={3}>
+                        <Col lg={4}>
                             <>
                                 <label>Amount to:</label>
                                 <input
                                     type='number'
-                                    style={{margin: '0vh 1vh 0vh 2vh'}}
+                                    style={{margin: '0vh 1vh 0vh 5vh'}}
                                     min={0}
                                     placeholder="Amount to:"
                                     onChange={(e) => {
@@ -252,6 +259,16 @@ export const MainStorage = () => {
                                     }}
                                 />
                             </>
+                        </Col>
+                        <Col>
+                            <input
+                                type='search'
+                                style={{margin: '0vh 1vh 0vh 1vh'}}
+                                placeholder="Search driver"
+                                onChange={(e) => {
+                                    setDriver(e.target.value)
+                                }}
+                            />
                         </Col>
                     </Row>
                 </Container>
