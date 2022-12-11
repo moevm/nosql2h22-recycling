@@ -31,11 +31,11 @@ export const TableData = ({tableCells, header, page, perPage, total, setPerPage,
         setTimeout(() => {
             setPage(page);
             setPerPage(sizePerPage);
-        }, 500);
+        }, 10);
     };
 
     return (
-        <div style = {{width:'200vh', margin:'0vh 0vh 0vh 1vh'}}>
+        <div style = {{width:'195vh', margin:'0vh 0vh 0vh 1vh'}}>
             <BootstrapTable
                 hover
                 remote

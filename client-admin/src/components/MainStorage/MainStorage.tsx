@@ -15,6 +15,16 @@ export const MainStorage = () => {
     const [total, setTotal] = useState<number>(5);
     const [exportedData,setExportedData] = useState<Array<any>>([]);
 
+    const [startDate,setStartDate] = useState<string>("");
+    const [finishDate,setFinishDate] = useState<string>("");
+
+    const [client, setClient] = useState<string>("");
+    const [driver, setDriver] = useState<string>("");
+
+    const [lowerAmount, setLowerAmount] = useState<string>("");
+    const [upperAmount, setUpperAmount] = useState<string>("");
+    const [showAdd, setShowAdd] = useState<boolean>(false);
+
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
     };
@@ -26,13 +36,24 @@ export const MainStorage = () => {
                     Accept: 'application/json',
                     'Content-Type': 'application/json'
                 }),
-                body: JSON.stringify({type:selectedType, subType: selectedSubType, page: page, perPage:"All"})
+            body: JSON.stringify({filters:{
+                    type:selectedType,
+                    subType: selectedSubType,
+                    user: client,
+                    driver:driver,
+                    amount:{
+                        from: lowerAmount,
+                        to: upperAmount
+                    },
+                    date:{
+                        from:startDate,
+                        to: finishDate,
+                    }}  ,page: page, perPage:perPage})
             }
         )
             .then(response => response.json())
             .then(content => {
                 setExportedData(content.orders);
-                console.log(content.orders);
             })
             .catch(err => console.error(err));
     }
@@ -44,7 +65,19 @@ export const MainStorage = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({type:selectedType, subType: selectedSubType, page: page, perPage:perPage})
+            body: JSON.stringify({filters:{
+                type:selectedType,
+                subType: selectedSubType,
+                user: client,
+                driver:driver,
+                amount:{
+                    from: lowerAmount,
+                    to: upperAmount
+                },
+                date:{
+                    from:startDate,
+                    to: finishDate,
+                }}  ,page: page, perPage:perPage})
         }
         )
             .then(response => response.json())
@@ -66,16 +99,6 @@ export const MainStorage = () => {
 
     const showSubtypes = () => {
         switch(selectedType){
-            case 'All':
-                return (
-                    <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
-                        {ratios.map((radio,idx)=>(
-                            <option>
-                                {radio.name}
-                            </option>
-                        ))}
-                    </Form.Select>
-                )
             case 'Metal':
                 return (
                     <Form.Select aria-label="Default select example" onChange={(e)=>{setSubType(e.target.value)}}>
@@ -155,21 +178,104 @@ export const MainStorage = () => {
                         <label style={{margin: '0vh 3vh 0vh -2vh'}}>{radio.name}</label>
                     </>
                 ))}
-                <Container style={{width: '90vh', margin: '3vh 0vh 3vh 0vh'}}>
+                <CSVLink style={{color:'white',textDecoration: 'none'}} data={exportedData} headers={header} separator={";"} filename="AdminStorageTable">
+                    <Button onClick={exportData} style={{width: '30vh'}} variant='success' >
+                        Export table to SCV
+                    </Button>
+                </CSVLink>
+                <div style={{width: '108vh',marginTop:'3vh'}}>
+                    {showSubtypes()}
+                </div>
+                <Form.Check
+                    style = {{width:"50vh",marginTop:'3vh'}}
+                    type="switch"
+                    label="Show additional filters"
+                    onChange={()=>{setShowAdd(!showAdd)}}
+                />
+                {showAdd && <Container style={{width: '99%', margin: '3vh 0vh 3vh 0vh'}}>
                     <Row>
-                        <Col>
-                            {showSubtypes()}
+                        <Col lg={3}>
+                            <>
+                                <label style={{margin: '0vh 3vh 0vh 0vh'}}>Start date:</label>
+                                <input
+                                    type='date'
+                                    style={{margin: '0vh 3vh 0vh 0vh'}}
+                                    onChange={(e) => {
+                                        setStartDate(e.target.value)
+                                    }}
+                                />
+                            </>
                         </Col>
                         <Col>
-                            <Button onClick={exportData} style={{width: '30vh'}} variant='success' >
-                                <CSVLink style={{color:'white',textDecoration: 'none'}} data={exportedData} headers={header} separator={";"} filename="AdminStorageTable">
-                                    <>Export</>
-                                </CSVLink>
-                            </Button>
-
+                            <>
+                                <label>Amount from:</label>
+                                <input
+                                    type='number'
+                                    min={0}
+                                    style={{margin: '0vh 1vh 0vh 2vh'}}
+                                    placeholder="Amount from:"
+                                    onChange={(e) => {
+                                        setLowerAmount(e.target.value)
+                                    }}
+                                />
+                            </>
+                        </Col>
+                        <Col lg={2}>
+                            <input
+                                type='search'
+                                style={{margin: '0vh 1vh 0vh 0vh'}}
+                                placeholder="Search user"
+                                onChange={(e) => {
+                                    setClient(e.target.value)
+                                }}
+                            />
+                        </Col>
+                        <Col lg={3}>
+                            <>
+                                <Button variant="success" onClick={getData}>Update table</Button>
+                            </>
+                        </Col>
+                    </Row>
+                    <Row style={{margin: "2vh 0vh 0vh -1.5vh"}}>
+                        <Col lg={3}>
+                            <>
+                                <label style={{margin: '0vh 3vh 0vh 0vh'}}>Finish date:</label>
+                                <input
+                                    type='date'
+                                    style={{margin: '0vh 3vh 0vh -1vh'}}
+                                    onChange={(e) => {
+                                        setFinishDate(e.target.value)
+                                    }}
+                                />
+                            </>
+                        </Col>
+                        <Col lg={4}>
+                            <>
+                                <label>Amount to:</label>
+                                <input
+                                    type='number'
+                                    style={{margin: '0vh 1vh 0vh 5vh'}}
+                                    min={0}
+                                    placeholder="Amount to:"
+                                    onChange={(e) => {
+                                        setUpperAmount(e.target.value)
+                                    }}
+                                />
+                            </>
+                        </Col>
+                        <Col>
+                            <input
+                                type='search'
+                                style={{margin: '0vh 1vh 0vh 1vh'}}
+                                placeholder="Search driver"
+                                onChange={(e) => {
+                                    setDriver(e.target.value)
+                                }}
+                            />
                         </Col>
                     </Row>
                 </Container>
+                }
             </div>
             <TableData
                 total={total}

@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Modal, Table} from "react-bootstrap";
-import {dataCurrentOrder} from "./CurrentOrder.content";
 import {UserLogged} from "../../App";
 import {TableData} from "../TableData/TableData";
 import {columns} from "./CurrentOrder.content";

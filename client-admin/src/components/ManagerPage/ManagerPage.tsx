@@ -34,7 +34,7 @@ export const ManagerPage = () => {
                             checked={radioValue === "1"}
                             onChange={(e) => setRadioValue(e.currentTarget.value)}
                         >
-                            Receptions
+                            Reception
                         </ToggleButton>
                         <ToggleButton
                             key="2"

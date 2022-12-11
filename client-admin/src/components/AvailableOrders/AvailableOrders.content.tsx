@@ -1,9 +1,15 @@
-import {TableCellAvailableOrders} from "../TableData/TableData.types";
-
 export const columns = [
     {
         dataField: "orderID",
         text: "Order ID"
+    },
+    {
+        dataField: "date",
+        text: "Date"
+    },
+    {
+        dataField: "user",
+        text: "User"
     },
     {
         dataField: "departure",
@@ -31,14 +37,3 @@ export const columns = [
     }
 ]
 
-export const dataAvailableOrders: TableCellAvailableOrders[] = [
-    {departure: 'asdad', arrival: 'afa', type: 'Metal', subtype: 'Brass', amount: '123kg', action: "asdsa"},
-    {departure: 'asdad', arrival: 'afa', type: 'Metal', subtype: 'Brass', amount: '123kg', action: "asdasda"},
-    {departure: 'sffsdasdasdad', arrival: 'afa', type: 'Metal', subtype: 'Brass', amount: '123kg', action: "asdsadsad"},
-    {departure: '34dasddad', arrival: 'afa', type: 'Metal', subtype: 'Brass', amount: '123kg', action: "asdsad"},
-    {departure: 'asasdadad', arrival: 'afa', type: 'Metal', subtype: 'Brass', amount: '123kg', action: "asdsad"},
-    {departure: 'qwdad', arrival: 'afa', type: 'Metal', subtype: 'Brass', amount: '123kg', action: ""},
-    {departure: 'jyjyjysdassdad', arrival: 'afa', type: 'Metal', subtype: 'Brass', amount: '123kg', action: "asdasdasd"},
-    {departure: 'qqwqdasdad', arrival: 'afa', type: 'Metal', subtype: 'Brass', amount: '123kg', action: "asdsad"},
-    {departure: 'zxzasdad', arrival: 'afa', type: 'Metal', subtype: 'Brass', amount: '123kg', action: "asdasdasd"},
-]
