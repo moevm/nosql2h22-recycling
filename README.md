@@ -19,16 +19,16 @@ nosql2h22-recycling
 
 
 ## Запуск с помощью `docker-compose`
-1. В корне проекта запустить команду `npm run deps && npm run build`
 
-2. Далее перейти в папку `generator`, выполнить команду `npm i && npm run build`, вернуться в корень проекта
+1. Выполнить команду:
+``` chmod +x ./entrypoint.sh ```
 
-3. Выполнить команду:
+2. Выполнить команду:
 ``` sudo docker-compose -f docker-compose.dev.yml build ```
+Если требуется генерация данных для БД, то предварительно стоит выставить переменную среды `GENERATE=true`.
 
-4. Выполнить команду:
+2. Выполнить команду:
 ``` sudo docker-compose -f docker-compose.dev.yml up ```
-5. Если нужно сгенерировать данные для БД, то запустить команду из корня проекта: `./generator/bin/run generate -p=27018 -u=30 -o=15 -h=localhost -d=test`
 
 ## Тестовые пользователи для запуска приложения от каждой роли:
 ### Admin:
