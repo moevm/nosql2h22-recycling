@@ -14,9 +14,11 @@
         "build:client": "cd ./client && npm run build && cd ../",
         "build:client-admin": "cd ./client-admin && npm run build && cd ../",
         "build:backend": "cd ./backend && npm run build && npm run swagger && cd ../",
+        "build:generator": "cd ./generator && npm run build && cd ../",
         "lint": "eslint --fix --ext .ts,.tsx,.js,.jsx ./",
         "deps": "npm ci && npm-run-all --sequential deps:{backend,client,client-admin}",
         "deps:backend": "cd ./backend && npm ci && cd ../",
+        "deps:generator": "cd ./generator && npm i && cd ../",
         "deps:client-admin": "cd ./client-admin && npm ci && cd ../",
         "deps:client": "cd ./client && npm ci && cd ../",
         "deploy": "npm run build && docker-compose -f docker-compose.dev.yml up"
