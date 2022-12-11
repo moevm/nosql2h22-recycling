@@ -38,6 +38,9 @@ export default class Generate extends Command {
   static args = [{name: 'file'}]
 
   public async run(): Promise<void> {
+    if (process.env.GENERATE !== 'true') {
+      return;
+    }
     const {args, flags} = await this.parse(Generate)
     const url = `mongodb://${flags.host || "localhost"}:${flags.port}/${flags.database || "Recycling"}`;
     this.initConnection(url)
