@@ -23,8 +23,6 @@ export const AvailableOrders = () => {
     const [startDate,setStartDate] = useState<string>("");
     const [finishDate,setFinishDate] = useState<string>("");
 
-    const [client, setClient] = useState<string>("");
-
     const searchHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setSearchParameter(event.target.value);
     };
@@ -145,17 +143,6 @@ export const AvailableOrders = () => {
                             placeholder="Amount from:"
                             onChange={(e) => {
                                 setLowerAmount(e.target.value)
-                            }}
-                        />
-                    </Col>
-                    <Col>
-                        <label style={{margin: '0vh 3vh 0vh 0vh'}}>User:</label>
-                        <input
-                            type='text'
-                            style={{margin: '0vh 3vh 0vh 1vh'}}
-                            placeholder="Search user"
-                            onChange={(e) => {
-                                setClient(e.target.value)
                             }}
                         />
                     </Col>
