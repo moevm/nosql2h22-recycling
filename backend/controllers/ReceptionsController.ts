@@ -21,14 +21,46 @@ interface Receptions {
     receptions: Array<Reception>
 }
 
+interface Filters {
+    Paper?: {
+        greater: number,
+        less: number
+    },
+    Metal?: {
+        greater: number,
+        less: number
+    },
+    Plastic?: {
+        greater: number,
+        less: number
+    },
+    Organic?: {
+        greater: number,
+        less: number
+    },
+    Glass?: {
+        greater: number,
+        less: number
+    },
+    Battery?: {
+        greater: number,
+        less: number
+    },
+    Amount?: {
+        greater: number,
+        less: number
+    },
+}
+
 @Route("/api/admin")
 export default class MainStorageController extends BaseController {
     @Post("/receptions")
     public async receptions(): Promise<Receptions> {
         const {
-            filter, filterValue, page, perPage,
+            mainFilter, mainFilterValue, filters, page, perPage,
         } = this.req.body;
         let query: {};
+        const findFilters: Filters = {};
         let findDocs: Array<any> = [];
         let totals: Array<any> = [];
         let skip: number;
@@ -41,19 +73,35 @@ export default class MainStorageController extends BaseController {
             skip = (Number(page) - 1) * Number(perPage);
             limit = Number(perPage);
         }
-        if (filter === "Reception") {
+
+        // eslint-disable-next-line no-restricted-syntax
+        for (const key in filters) {
+            if (filters[key].from === "") {
+                if (filters[key].to === "") {
+                    findFilters[key] = { greater: 0, less: Number.MAX_SAFE_INTEGER };
+                } else {
+                    findFilters[key] = { greater: 0, less: parseInt(filters[key].to, 10) };
+                }
+            } else if (filters[key].to === "") {
+                findFilters[key] = { greater: parseInt(filters[key].from, 10), less: Number.MAX_SAFE_INTEGER };
+            } else {
+                findFilters[key] = { greater: parseInt(filters[key].from, 10), less: parseInt(filters[key].to, 10) };
+            }
+        }
+
+        if (mainFilter === "Reception") {
             findDocs = await order.aggregate(
-                [{ $match: { "reception.address": { $regex: filterValue, $options: "i" }, status: "For export" } },
+                [{ $match: { "reception.address": { $regex: mainFilterValue, $options: "i" }, status: "For export" } },
                     { $group: { _id: { reception: "$reception.address", type: "$material.title" }, totalELem: { $sum: "$material.count" } } }]
                 ,
             );
             totals = await order.aggregate(
-                [{ $match: { "reception.address": { $regex: filterValue, $options: "i" }, status: "For export" } },
+                [{ $match: { "reception.address": { $regex: mainFilterValue, $options: "i" }, status: "For export" } },
                     { $group: { _id: { reception: "$reception.address" }, total: { $sum: "$material.count" } } }]
                 ,
             );
-        } if (filter === "Manager") {
-            const userData: Array<string> = filterValue.split(" ");
+        } if (mainFilter === "Manager") {
+            const userData: Array<string> = mainFilterValue.split(" ");
             if (userData.length === 1) {
                 query = {
                     role: "Manager",
@@ -112,6 +160,18 @@ export default class MainStorageController extends BaseController {
                 if (receptions[j].Address === findDocs[i]._id.reception) {
                     // eslint-disable-next-line no-underscore-dangle
                     receptions[j][findDocs[i]._id.type] = findDocs[i].totalELem;
+                }
+            }
+        }
+        for (let i = 0; i < receptions.length; i += 1) {
+            // eslint-disable-next-line no-restricted-syntax
+            for (const key in findFilters) {
+                if (key in Object.keys(receptions[i])) {
+                    if (!(findFilters[key].greater <= receptions[i][key] && receptions[i][key] <= findFilters[key].less)) {
+                        receptions.splice(i, 1);
+                    }
+                } else if (!(findFilters[key].greater === 0 && findFilters[key].less === Number.MAX_SAFE_INTEGER)) {
+                    receptions.splice(i, 1);
                 }
             }
         }
