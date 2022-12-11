@@ -4,7 +4,8 @@ import { user } from "../models/User";
 import { order } from "../models/Order";
 
 interface Order {
-    _id: string
+    _id: string,
+    date: string,
     PointOfDeparture: string,
     PointOfArrival: string,
     TypeOfWaste: string,
@@ -43,13 +44,14 @@ export default class MainDriverController extends BaseController {
         );
         const findOrders = await order.find(
             { _id: { $in: driverData[0].orders }, status: "In delivery" },
-        ).skip(skip).limit(limit).sort({ date: 1 });
+        ).sort({ date: 1 }).skip(skip).limit(limit);
         countOrders = await order.find(
             { _id: { $in: driverData[0].orders }, status: "In delivery" },
         ).count();
         const driver = `${driverData[0].firstName} ${driverData[0].lastName}`;
         for (let i = 0; i < findOrders.length; i += 1) {
             orders.push({
+                date: findOrders[i].date.toISOString().split("T")[0],
                 Amount: findOrders[i].material.count,
                 PointOfArrival: "Storage",
                 PointOfDeparture: findOrders[i].reception.address,

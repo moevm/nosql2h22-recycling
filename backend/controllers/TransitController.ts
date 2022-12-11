@@ -6,6 +6,9 @@ import { user } from "../models/User";
 interface Transit {
     carrier: string,
     reception: string,
+    date: string,
+    type: string,
+    subType: string,
     amount: number
 }
 
@@ -35,7 +38,7 @@ export default class MainStorageController extends BaseController {
         }
         if (filter === "Reception") {
             findDocs = await order.find({ "reception.address": { $regex: filterValue, $options: "i" }, status: "In delivery" }, {
-                users: 1, "reception.address": 1, "material.count": 1, _id: 0,
+                users: 1, "reception.address": 1, "material.title": 1, "material.subtype": 1, "material.count": 1, history: 1, _id: 0,
             });
         } if (filter === "Carrier") {
             const userData: Array<string> = filterValue.split(" ");
@@ -59,7 +62,7 @@ export default class MainStorageController extends BaseController {
             for (let i = 0; i < findOrders.length; i += 1) {
                 // eslint-disable-next-line no-await-in-loop
                 findDocs = findDocs.concat(await order.find({ _id: { $in: findOrders[i].orders }, status: "In delivery" }, {
-                    users: 1, "reception.address": 1, "material.count": 1, _id: 0,
+                    users: 1, "reception.address": 1, "material.title": 1, "material.subtype": 1, "material.count": 1, history: 1, _id: 0,
                 }));
             }
         }
@@ -74,6 +77,9 @@ export default class MainStorageController extends BaseController {
             // eslint-disable-next-line no-await-in-loop
             const carrier = await user.find({ role: "Driver", _id: { $in: findDocs[i].users } }, { firstName: 1, lastName: 1, _id: 0 });
             transits.push({
+                date: findDocs[i].history[2].date.toISOString().split("T")[0],
+                subType: findDocs[i].material.subtype,
+                type: findDocs[i].material.title,
                 reception: findDocs[i].reception.address,
                 amount: findDocs[i].material.count,
                 carrier: `${carrier[0].firstName} ${carrier[0].lastName}`,
