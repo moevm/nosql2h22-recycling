@@ -54,7 +54,17 @@ export const AvailableOrders = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({filter: searchParameter, filterValue: request, page:page, perPage:perPage})
+            body: JSON.stringify({filters:{
+                    date:{
+                        to: finishDate,
+                        from: startDate
+                    },
+                    amount:{
+                        to: upperAmount,
+                        from: lowerAmount
+                    }
+                },
+                page:page, perPage:perPage, mainFilter: searchParameter, mainFilterValue: searchInput})
         })
             .then(r => r.json())
             .catch(error => {
