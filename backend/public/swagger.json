@@ -628,7 +628,7 @@
 			}
 		},
 		"/api/user/orders": {
-			"get": {
+			"post": {
 				"operationId": "Orders",
 				"responses": {
 					"200": {

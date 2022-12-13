@@ -163,21 +163,20 @@ export default class MainStorageController extends BaseController {
                 }
             }
         }
-
         for (let i = 0; i < allReceptions.length; i += 1) {
             // eslint-disable-next-line no-restricted-syntax
             for (const key in findFilters) {
                 // eslint-disable-next-line no-underscore-dangle
                 if (Object.keys(allReceptions[i]).includes(key)) {
                     if (!(findFilters[key].greater <= allReceptions[i][key] && allReceptions[i][key] <= findFilters[key].less)) {
-                        // eslint-disable-next-line no-underscore-dangle
                         allReceptions.splice(i, 1);
-                        i = 0;
+                        i = -1;
+                        break;
                     }
                 } else if (!(findFilters[key].greater === 0 && findFilters[key].less === Number.MAX_SAFE_INTEGER)) {
-                    // eslint-disable-next-line no-underscore-dangle
                     allReceptions.splice(i, 1);
-                    i = 0;
+                    i = -1;
+                    break;
                 }
             }
         }
@@ -186,7 +185,7 @@ export default class MainStorageController extends BaseController {
             limit = countReceptions;
         }
         for (let i = skip; i < skip + limit; i += 1) {
-            if (i >= countReceptions) {
+            if (i >= countReceptions || countReceptions === 0) {
                 break;
             }
             receptions.push(allReceptions[i]);

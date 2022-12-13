@@ -22,7 +22,7 @@ export default class ManagerReceptionController extends BaseController {
     @Post("/reception")
     public async reception(): Promise<Manager> {
         const {
-            login, filter, filterValue, page, perPage
+            login, filter, filterValue, page, perPage,
         } = this.req.body;
         let skip: number;
         let limit: number;
