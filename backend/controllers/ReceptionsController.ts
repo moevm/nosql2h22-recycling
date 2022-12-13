@@ -65,6 +65,7 @@ export default class MainStorageController extends BaseController {
         let totals: Array<any> = [];
         let skip: number;
         let limit: number;
+        const allReceptions: Array<Reception> = [];
         const receptions: Array<Reception> = [];
         if (perPage === "All") {
             skip = 0;
@@ -88,7 +89,6 @@ export default class MainStorageController extends BaseController {
                 findFilters[key] = { greater: parseInt(filters[key].from, 10), less: parseInt(filters[key].to, 10) };
             }
         }
-
         if (mainFilter === "Reception") {
             findDocs = await order.aggregate(
                 [{ $match: { "reception.address": { $regex: mainFilterValue, $options: "i" }, status: "For export" } },
@@ -134,19 +134,19 @@ export default class MainStorageController extends BaseController {
                 ));
             }
         }
-        const countReceptions = totals.length;
-        if (limit === 0) {
-            limit = countReceptions;
-        }
-        for (let i = skip; i < skip + limit; i += 1) {
-            if (i >= countReceptions) {
-                break;
-            }
+        for (let i = 0; i < totals.length; i += 1) {
             // eslint-disable-next-line no-underscore-dangle,no-await-in-loop
-            const users = await order.find({ "reception.address": totals[i]._id.reception }, { users: 1, _id: 0 }).limit(1);
+            const users = await order.find({ "reception.address": totals[i]._id.reception }, {
+                users: 1,
+                _id: 0,
+            }).limit(1);
             // eslint-disable-next-line no-await-in-loop
-            const manager = await user.find({ role: "Manager", _id: { $in: users[0].users } }, { firstName: 1, lastName: 1, _id: 0 });
-            receptions.push({
+            const manager = await user.find({ role: "Manager", _id: { $in: users[0].users } }, {
+                firstName: 1,
+                lastName: 1,
+                _id: 0,
+            });
+            allReceptions.push({
                 // eslint-disable-next-line no-underscore-dangle
                 Address: totals[i]._id.reception,
                 Amount: totals[i].total,
@@ -155,25 +155,41 @@ export default class MainStorageController extends BaseController {
             });
         }
         for (let i = 0; i < findDocs.length; i += 1) {
-            for (let j = 0; j < receptions.length; j += 1) {
+            for (let j = 0; j < allReceptions.length; j += 1) {
                 // eslint-disable-next-line no-underscore-dangle
-                if (receptions[j].Address === findDocs[i]._id.reception) {
+                if (allReceptions[j].Address === findDocs[i]._id.reception) {
                     // eslint-disable-next-line no-underscore-dangle
-                    receptions[j][findDocs[i]._id.type] = findDocs[i].totalELem;
+                    allReceptions[j][findDocs[i]._id.type] = findDocs[i].totalELem;
                 }
             }
         }
-        for (let i = 0; i < receptions.length; i += 1) {
+
+        for (let i = 0; i < allReceptions.length; i += 1) {
             // eslint-disable-next-line no-restricted-syntax
             for (const key in findFilters) {
-                if (key in Object.keys(receptions[i])) {
-                    if (!(findFilters[key].greater <= receptions[i][key] && receptions[i][key] <= findFilters[key].less)) {
-                        receptions.splice(i, 1);
+                // eslint-disable-next-line no-underscore-dangle
+                if (Object.keys(allReceptions[i]).includes(key)) {
+                    if (!(findFilters[key].greater <= allReceptions[i][key] && allReceptions[i][key] <= findFilters[key].less)) {
+                        // eslint-disable-next-line no-underscore-dangle
+                        allReceptions.splice(i, 1);
+                        i = 0;
                     }
                 } else if (!(findFilters[key].greater === 0 && findFilters[key].less === Number.MAX_SAFE_INTEGER)) {
-                    receptions.splice(i, 1);
+                    // eslint-disable-next-line no-underscore-dangle
+                    allReceptions.splice(i, 1);
+                    i = 0;
                 }
             }
+        }
+        const countReceptions = allReceptions.length;
+        if (limit === 0) {
+            limit = countReceptions;
+        }
+        for (let i = skip; i < skip + limit; i += 1) {
+            if (i >= countReceptions) {
+                break;
+            }
+            receptions.push(allReceptions[i]);
         }
         return { countReceptions, receptions };
     }

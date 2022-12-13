@@ -12,8 +12,8 @@ export const Transitions = () => {
     const [currentData, setData] = useState<Array<TableCellCarrier>>([]);
     const [searchInput, setSearchInput] = useState("");
     const [isSearching, setIsSearching] = useState(false);
-    const [selectedType, setSelectedType] = useState<string>('All');
-    const [selectedSubType, setSubType] = useState<string>('All');
+    const [selectedType, setSelectedType] = useState<string>('');
+    const [selectedSubType, setSubType] = useState<string>('');
     const [page, setPage] = useState<number>(1);
     const [perPage, setPerPage] = useState<number>(5);
     const [total, setTotal] = useState<number>(5);
@@ -113,7 +113,19 @@ export const Transitions = () => {
                         Accept: 'application/json',
                         'Content-Type': 'application/json'
                     }),
-                    body: JSON.stringify({filter: searchParameter, filterValue: '', page:page, perPage:perPage})
+                    body: JSON.stringify({filters:{
+                        type: selectedType,
+                        subType:selectedSubType,
+                        date:{
+                            to: startDate,
+                            from: finishDate
+                        },
+                        amount:{
+                            to: lowerAmount,
+                            from: upperAmount
+                        }
+                        },
+                        page:page, perPage:perPage, mainFilter: searchParameter, mainFilterValue: ""})
                 }
             )
                 .then(response => response.json())
@@ -129,7 +141,19 @@ export const Transitions = () => {
                         Accept: 'application/json',
                         'Content-Type': 'application/json'
                     }),
-                    body: JSON.stringify({filter: searchParameter, filterValue: '', page:page, perPage:"All"})
+                body: JSON.stringify({filters:{
+                        type: selectedType,
+                        subType:selectedSubType,
+                        date:{
+                            to: finishDate,
+                            from: startDate
+                        },
+                        amount:{
+                            to: upperAmount,
+                            from: lowerAmount
+                        }
+                        },
+                    page:page, perPage:"All", mainFilter: searchParameter, mainFilterValue: ""})
                 }
             )
                 .then(response => response.json())
@@ -148,7 +172,20 @@ export const Transitions = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({filter: searchParameter, filterValue: request, page:page, perPage:perPage})
+            body: JSON.stringify({filters:{
+                    type: selectedType,
+                    subType:selectedSubType,
+                    date:{
+                        to: startDate,
+                        from: finishDate
+                    },
+                    amount:{
+                        to: lowerAmount,
+                        from: upperAmount
+                    },
+                    },
+
+                page:page, perPage:perPage, mainFilter: searchParameter, mainFilterValue: request})
         })
             .then(r => r.json())
             .catch(error => {

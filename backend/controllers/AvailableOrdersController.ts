@@ -39,7 +39,6 @@ export default class AvailableOrdersController extends BaseController {
             skip = (Number(page) - 1) * Number(perPage);
             limit = Number(perPage);
         }
-
         let startDate: Date;
         let endDate: Date;
         let startAmount: number;
@@ -59,7 +58,6 @@ export default class AvailableOrdersController extends BaseController {
             startDate = new Date(filters.date.from);
             endDate = new Date(filters.date.to);
         }
-
         if (filters.amount.from === "") {
             if (filters.amount.to === "") {
                 startAmount = 0;
@@ -75,7 +73,6 @@ export default class AvailableOrdersController extends BaseController {
             startAmount = parseInt(filters.amount.from, 10);
             endAmount = parseInt(filters.amount.to, 10);
         }
-
         if (mainFilter === "Point of Departure") {
             findDocs = await order.aggregate([{
                 $match: {

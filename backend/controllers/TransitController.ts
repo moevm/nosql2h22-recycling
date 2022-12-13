@@ -58,7 +58,6 @@ export default class MainStorageController extends BaseController {
             startDate = new Date(filters.date.from);
             endDate = new Date(filters.date.to);
         }
-
         if (filters.amount.from === "") {
             if (filters.amount.to === "") {
                 startAmount = 0;
@@ -74,13 +73,12 @@ export default class MainStorageController extends BaseController {
             startAmount = parseInt(filters.amount.from, 10);
             endAmount = parseInt(filters.amount.to, 10);
         }
-
         if (mainFilter === "Reception") {
             findDocs = await order.find({
                 "reception.address": { $regex: mainFilterValue, $options: "i" },
                 status: "In delivery",
-                "material.title": { $regex: type, options: "i" },
-                "material.subtype": { $regex: subType, options: "i" },
+                "material.title": { $regex: type, $options: "i" },
+                "material.subtype": { $regex: subType, $options: "i" },
                 date: { $gte: startDate, $lte: endDate },
                 "material.count": { $gte: startAmount, $lte: endAmount },
             }, {
@@ -110,8 +108,8 @@ export default class MainStorageController extends BaseController {
                 findDocs = findDocs.concat(await order.find({
                     _id: { $in: findOrders[i].orders },
                     status: "In delivery",
-                    "material.title": { $regex: type, options: "i" },
-                    "material.subtype": { $regex: subType, options: "i" },
+                    "material.title": { $regex: type, $options: "i" },
+                    "material.subtype": { $regex: subType, $options: "i" },
                     date: { $gte: startDate, $lte: endDate },
                     "material.count": { $gte: startAmount, $lte: endAmount },
                 }, {

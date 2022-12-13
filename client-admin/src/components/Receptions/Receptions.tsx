@@ -55,7 +55,36 @@ export const Receptions = () => {
                         Accept: 'application/json',
                         'Content-Type': 'application/json'
                     }),
-                    body: JSON.stringify({filter: searchParameter, filterValue: '', page: page, perPage:perPage})
+                body: JSON.stringify({filters:{
+                        Amount:{
+                            from: lowerAmount,
+                            to: upperAmount
+                        },
+                        Battery:{
+                            from: lowerBattery,
+                            to: upperBattery
+                        },
+                        Metal:{
+                            from: lowerMetal,
+                            to: upperMetal
+                        },
+                        Organic:{
+                            from: lowerOrganic,
+                            to: upperOrganic
+                        },
+                        Glass:{
+                            from: lowerGlass,
+                            to: upperGlass
+                        },
+                        Plastic:{
+                            from: lowerPlastic,
+                            to: upperPlastic
+                        },
+                        Paper:{
+                            from: lowerPaper,
+                            to: upperPaper
+                        },
+                        }, mainFilter: searchParameter, mainFilterValue: "", page: page, perPage:perPage})
                 }
             )
                 .then(response => response.json())
@@ -71,7 +100,36 @@ export const Receptions = () => {
                         Accept: 'application/json',
                         'Content-Type': 'application/json'
                     }),
-                    body: JSON.stringify({filter: searchParameter, filterValue: '', page: page, perPage: "All"})
+                body: JSON.stringify({filters:{
+                        Amount:{
+                            from: lowerAmount,
+                            to: upperAmount
+                        },
+                        Battery:{
+                            from: lowerBattery,
+                            to: upperBattery
+                        },
+                        Metal:{
+                            from: lowerMetal,
+                            to: upperMetal
+                        },
+                        Organic:{
+                            from: lowerOrganic,
+                            to: upperOrganic
+                        },
+                        Glass:{
+                            from: lowerGlass,
+                            to: upperGlass
+                        },
+                        Plastic:{
+                            from: lowerPlastic,
+                            to: upperPlastic
+                        },
+                        Paper:{
+                            from: lowerPaper,
+                            to: upperPaper
+                        },
+                    }, mainFilter: "", mainFilterValue: "", page: page, perPage:perPage})
                 }
             )
                 .then(response => response.json())
@@ -90,7 +148,36 @@ export const Receptions = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }),
-            body: JSON.stringify({filter: searchParameter, filterValue: request, page: page, perPage:perPage})
+            body: JSON.stringify({filters:{
+                    Amount:{
+                        from: lowerAmount,
+                        to: upperAmount
+                    },
+                    Battery:{
+                        from: lowerBattery,
+                        to: upperBattery
+                    },
+                    Metal:{
+                        from: lowerMetal,
+                        to: upperMetal
+                    },
+                    Organic:{
+                        from: lowerOrganic,
+                        to: upperOrganic
+                    },
+                    Glass:{
+                        from: lowerGlass,
+                        to: upperGlass
+                    },
+                    Plastic:{
+                        from: lowerPlastic,
+                        to: upperPlastic
+                    },
+                    Paper:{
+                        from: lowerPaper,
+                        to: upperPaper
+                    },
+                }, mainFilter: searchParameter, mainFilterValue: request, page: page, perPage:perPage})
         })
             .then(r => r.json())
             .catch(error => {
