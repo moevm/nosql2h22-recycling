@@ -100,18 +100,3 @@ export default class MainDriverController extends BaseController {
         return { driver, countOrders, orders };
     }
 }
-/*
-filters:{
-                        amount:{
-                            from: lowerAmount,
-                            to: upperAmount
-                        },
-                        date:{
-                            from: startDate,
-                            to: finishDate
-                        },
-                        pointOfDeparture: departure,
-                        type: type,
-                        subType: subType
-                    }
- */
