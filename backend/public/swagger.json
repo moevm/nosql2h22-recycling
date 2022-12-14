@@ -493,6 +493,22 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Status": {
+				"properties": {
+					"status": {
+						"type": "string"
+					},
+					"file": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"status",
+					"file"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -628,7 +644,7 @@
 			}
 		},
 		"/api/user/orders": {
-			"post": {
+			"get": {
 				"operationId": "Orders",
 				"responses": {
 					"200": {
@@ -803,6 +819,25 @@
 						"content": {
 							"application/json": {
 								"schema": {}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/api/admin/import": {
+			"get": {
+				"operationId": "Import",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Status"
+								}
 							}
 						}
 					}

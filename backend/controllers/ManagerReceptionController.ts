@@ -38,6 +38,13 @@ export default class ManagerReceptionController extends BaseController {
         let countMaterials: number = 0;
         const userOrders = await user.find({ login }, { orders: 1, _id: 0 }).limit(1);
         const receptionFind = await order.find({ _id: userOrders[0].orders[0] }, { "reception.address": 1, _id: 0 });
+        if (receptionFind.length === 0) {
+            return {
+                reception: "",
+                materials,
+                countMaterials: 0,
+            };
+        }
         const reception = receptionFind[0].reception.address;
         if (filter === "type") {
             findDocs = await order.aggregate(

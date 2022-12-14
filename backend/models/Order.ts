@@ -27,22 +27,40 @@ interface IOrder {
 }
 
 const orderSchema = new Schema<IOrder>({
-    users: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    status: Schema.Types.String,
-    date: Schema.Types.Date,
+    users: {
+        type: [{ type: Schema.Types.ObjectId, ref: "User" }],
+        required: true,
+    },
+    status: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    date: {
+        type: Schema.Types.Date,
+        required: true,
+    },
     reception: {
-        address: Schema.Types.String,
-        limit: Schema.Types.Number,
+        type: {
+            address: Schema.Types.String,
+            limit: Schema.Types.Number,
+        },
+        required: true,
     },
     material: {
-        title: Schema.Types.String,
-        subtype: Schema.Types.String,
-        count: Schema.Types.Number,
-        price: Schema.Types.Number,
+        type: {
+            title: Schema.Types.String,
+            subtype: Schema.Types.String,
+            count: Schema.Types.Number,
+            price: Schema.Types.Number,
+        },
+        required: true,
     },
-    history: Schema.Types.Array,
+    history: {
+        type: [{ type: Schema.Types.ObjectId }],
+        required: true,
+    },
 });
 
 const order = model("Order", orderSchema);
 
-export { IOrder, order };
+export { IOrder, order, orderSchema };
