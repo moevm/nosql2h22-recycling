@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import {Button, Form} from 'react-bootstrap';
+import {Button, Form, Modal} from 'react-bootstrap';
 import {ratios, metal, paper, plastic, glass, organic, battery} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
 import {columns, header} from "./MainStorage.content"
@@ -24,6 +24,16 @@ export const MainStorage = () => {
     const [lowerAmount, setLowerAmount] = useState<string>("");
     const [upperAmount, setUpperAmount] = useState<string>("");
     const [showAdd, setShowAdd] = useState<boolean>(false);
+
+    const [show, setShow] = useState<boolean>(false);
+
+    const [userFile, setUserFile] = useState("");
+    const [userJSON, setUserJSON] = useState({});
+
+    const [ordersFile, setOrdersFile] = useState("");
+    const [ordersJSON, setOrdersJSON] = useState({});
+
+
 
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
@@ -162,8 +172,99 @@ export const MainStorage = () => {
         }
     }
 
+    const handleOrders = (e:any) => {
+        e.preventDefault();
+
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.addEventListener('load', (event) => {
+            try{
+                // @ts-ignore
+                setOrdersJSON(JSON.parse(event.target.result));
+            }
+            catch (e){
+                alert("Wrong");
+            }
+        });
+        reader.readAsText(file);
+    }
+
+    const handleUsers = (e:any) => {
+        e.preventDefault();
+
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.addEventListener('load', (event) => {
+            try{
+                // @ts-ignore
+                setUserJSON(JSON.parse(event.target.result));
+            }
+            catch (e){
+                alert("Wrong");
+            }
+        });
+        reader.readAsText(file);
+    }
+
+    const sendObjects = () => {
+        console.log(userJSON);
+        console.log("======================================================");
+        console.log(ordersJSON);
+            fetch('http://localhost:8000/api/admin/import', {
+                    method:"POST",
+                    headers: new Headers({
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json'
+                    }),
+                    body: JSON.stringify({
+                        users:  userJSON,
+                        orders: ordersJSON
+                    })
+                }
+            )
+                .then(response => response.json())
+                .then(message => {
+                    if(message !== "OK"){
+                        alert("плохо")
+                    }
+                })
+                .catch(err => console.error(err));
+    }
+
     return (
         <>
+            <Modal show={show} onHide={() => { setShow(false) }}>
+                <Modal.Header closeButton>
+                    <Modal.Title>File import.</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <>
+                        <label>Choose users json:</label>
+                        <input type='file'
+                               accept="application/JSON"
+                               onChange = {handleUsers}
+                               style={{marginLeft: "2vh", marginTop:"1vh"}}
+                        />
+                    </>
+                    <>
+                        <label>Choose orders json:</label>
+                        <input type='file'
+                               accept="application/JSON"
+                               style={{marginLeft: "1vh", marginTop:"1vh"}}
+                               onChange={handleOrders}
+                        />
+                    </>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={sendObjects} variant="primary">Submit</Button>
+                    <Button onClick={()=>{
+                        setShow(false);
+                    }}
+                            variant="secondary">Close</Button>
+                </Modal.Footer>
+            </Modal>
             <div>
                 {ratios.map((radio,idx)=>(
                     <>
@@ -183,6 +284,11 @@ export const MainStorage = () => {
                         Export table to SCV
                     </Button>
                 </CSVLink>
+                <>
+                    <Button onClick={()=>{setShow(true)}} style={{width: '30vh', marginLeft:"1vh"}} variant='success' >
+                        Import DB
+                    </Button>
+                </>
                 <div style={{width: '108vh',marginTop:'3vh'}}>
                     {showSubtypes()}
                 </div>
