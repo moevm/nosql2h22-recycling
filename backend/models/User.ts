@@ -12,16 +12,40 @@ interface IUser {
 }
 
 const userSchema = new Schema<IUser>({
-    login: Schema.Types.String,
-    password: Schema.Types.String,
-    email: Schema.Types.String,
-    role: Schema.Types.String,
-    firstName: Schema.Types.String,
-    lastName: Schema.Types.String,
-    loyalty: Schema.Types.Number,
-    orders: Schema.Types.Array,
+    login: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    password: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    email: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    role: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    firstName: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    lastName: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    loyalty: {
+        type: Schema.Types.Number,
+        required: true,
+    },
+    orders: {
+        type: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+        required: true,
+    },
 });
 
 const user = model<IUser>("Users", userSchema);
 
-export { IUser, user };
+export { IUser, user, userSchema };

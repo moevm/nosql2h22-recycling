@@ -139,6 +139,11 @@ export const CurrentOrder = () => {
                             }}
                         />
                     </>
+                    <>
+                        <Button onClick={requestForData} variant="success">
+                            Update table
+                        </Button>
+                    </>
                     <Form.Check
                         style = {{width:"50vh",marginTop:'3vh', marginLeft:"2vh"}}
                         type="switch"
