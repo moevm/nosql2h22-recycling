@@ -49,6 +49,7 @@ export default class RequestsController extends BaseController {
                     $match: {
                         "reception.address": reception,
                         orderID: { $regex: filterValue, $options: "i" },
+                        status: { $in: ["In delivery", "For export"] },
                     },
                 },
             ]).sort({ date: 1 }).skip(skip).limit(limit);
@@ -63,6 +64,7 @@ export default class RequestsController extends BaseController {
                     $match: {
                         "reception.address": reception,
                         orderID: { $regex: filterValue, $options: "i" },
+                        status: { $in: ["In delivery", "For export"] },
                     },
                 },
             ]);
@@ -79,6 +81,7 @@ export default class RequestsController extends BaseController {
                     $match: {
                         "reception.address": reception,
                         dateUTC: { $regex: filterValue, $options: "i" },
+                        status: { $in: ["In delivery", "For export"] },
                     },
                 },
             ]).sort({ date: 1 }).skip(skip).limit(limit);
@@ -93,6 +96,7 @@ export default class RequestsController extends BaseController {
                     $match: {
                         "reception.address": reception,
                         dateUTC: { $regex: filterValue, $options: "i" },
+                        status: { $in: ["In delivery", "For export"] },
                     },
                 },
             ]);
@@ -108,6 +112,7 @@ export default class RequestsController extends BaseController {
                     $match: {
                         "reception.address": reception,
                         "material.title": { $regex: filterValue, $options: "i" },
+                        status: { $in: ["In delivery", "For export"] },
                     },
                 },
             ]).sort({ date: 1 }).skip(skip).limit(limit);
@@ -121,6 +126,7 @@ export default class RequestsController extends BaseController {
                     $match: {
                         "reception.address": reception,
                         "material.title": { $regex: filterValue, $options: "i" },
+                        status: { $in: ["In delivery", "For export"] },
                     },
                 },
             ]);
@@ -136,6 +142,7 @@ export default class RequestsController extends BaseController {
                     $match: {
                         "reception.address": reception,
                         "material.subtype": { $regex: filterValue, $options: "i" },
+                        status: { $in: ["In delivery", "For export"] },
                     },
                 },
             ]).sort({ date: 1 }).skip(skip).limit(limit);
@@ -149,6 +156,7 @@ export default class RequestsController extends BaseController {
                     $match: {
                         "reception.address": reception,
                         "material.subtype": { $regex: filterValue, $options: "i" },
+                        status: { $in: ["In delivery", "For export"] },
                     },
                 },
             ]);

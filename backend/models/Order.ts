@@ -66,6 +66,52 @@ const orderSchema = new Schema<IOrder>({
     },
 });
 
+const insertOrderSchema = new Schema({
+    _id: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    users: {
+        type: [{ type: Schema.Types.String, ref: "User" }],
+        required: true,
+    },
+    status: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    date: {
+        type: Schema.Types.String,
+        required: true,
+    },
+    reception: {
+        type: {
+            address: Schema.Types.String,
+            limit: Schema.Types.Number,
+        },
+        required: true,
+    },
+    material: {
+        type: {
+            title: Schema.Types.String,
+            subtype: Schema.Types.String,
+            count: Schema.Types.Number,
+            price: Schema.Types.Number,
+        },
+        required: true,
+    },
+    history: {
+        type: [{
+            type: {
+                status: Schema.Types.String,
+                date: Schema.Types.String,
+            },
+        }],
+        required: true,
+    },
+});
+
 const order = model("Order", orderSchema);
 
-export { IOrder, order, orderSchema };
+export {
+    IOrder, order, orderSchema, insertOrderSchema,
+};
