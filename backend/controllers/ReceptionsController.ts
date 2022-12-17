@@ -91,12 +91,12 @@ export default class MainStorageController extends BaseController {
         }
         if (mainFilter === "Reception") {
             findDocs = await order.aggregate(
-                [{ $match: { "reception.address": { $regex: mainFilterValue, $options: "i" }, status: "For export" } },
+                [{ $match: { "reception.address": { $regex: mainFilterValue, $options: "i" }, status: "Created" } },
                     { $group: { _id: { reception: "$reception.address", type: "$material.title" }, totalELem: { $sum: "$material.count" } } }]
                 ,
             );
             totals = await order.aggregate(
-                [{ $match: { "reception.address": { $regex: mainFilterValue, $options: "i" }, status: "For export" } },
+                [{ $match: { "reception.address": { $regex: mainFilterValue, $options: "i" }, status: "Created" } },
                     { $group: { _id: { reception: "$reception.address" }, total: { $sum: "$material.count" } } }]
                 ,
             );
@@ -122,13 +122,13 @@ export default class MainStorageController extends BaseController {
             for (let i = 0; i < findUsers.length; i += 1) {
                 // eslint-disable-next-line no-await-in-loop
                 findDocs = findDocs.concat(await order.aggregate(
-                    [{ $match: { _id: { $in: findUsers[i].orders }, status: "For export" } },
+                    [{ $match: { _id: { $in: findUsers[i].orders }, status: "Created" } },
                         { $group: { _id: { reception: "$reception.address", type: "$material.title" }, totalELem: { $sum: "$material.count" } } }]
                     ,
                 ));
                 // eslint-disable-next-line no-await-in-loop
                 totals = totals.concat(await order.aggregate(
-                    [{ $match: { _id: { $in: findUsers[i].orders }, status: "For export" } },
+                    [{ $match: { _id: { $in: findUsers[i].orders }, status: "Created" } },
                         { $group: { _id: { reception: "$reception.address" }, total: { $sum: "$material.count" } } }]
                     ,
                 ));
