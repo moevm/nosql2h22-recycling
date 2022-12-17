@@ -1,10 +1,12 @@
 FROM node:16
 ENV DIRPATH=/client
+ENV NODE_ENV=production
+
 WORKDIR /$DIRPATH
 
-COPY package.json /$DIRPATH/package.json
-COPY .next /$DIRPATH/.next
-COPY node_modules /$DIRPATH/node_modules
-COPY server /$DIRPATH/server
+COPY . /$DIRPATH/
+
+RUN npm i
+RUN npm run build
 
 EXPOSE 3030

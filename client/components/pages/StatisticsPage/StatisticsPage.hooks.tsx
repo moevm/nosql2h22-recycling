@@ -25,6 +25,6 @@ export const useFilters = (
 const buildFilter = (filter: { type: string, value: string }, prevFilter: IFilters) => {
     const newFilter = Object.assign({}, prevFilter);
     // @ts-ignore
-    newFilter[filter.type] = filter.value;
+    newFilter[filter.type] = filter.value === "All" ? "." : filter.value;
     return newFilter;
 }

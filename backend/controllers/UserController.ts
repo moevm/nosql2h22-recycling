@@ -30,11 +30,11 @@ export default class UserController extends BaseController {
         return currentUser;
     }
 
-    @Get("/orders")
+    @Post("/orders")
     public async orders(): Promise<OrdersResponse> {
         const {
             login, filters, page, perPage,
-        } = this.req.query;
+        } = this.req.body;
         const query: Query = {};
         const skip = (Number(page) - 1) * Number(perPage);
         const limit = skip;
