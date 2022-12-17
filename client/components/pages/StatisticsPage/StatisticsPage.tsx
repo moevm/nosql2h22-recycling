@@ -157,9 +157,15 @@ export const StatisticsPage = ({ title, description, footer }: IStatisticsPagePr
         const login = session?.user?.email?.split("@")[0];
         console.log(filter);
         // @ts-ignore
-        server.get(filter !== "All"
-            ? `/user/orders?login=${login}&page=${page}&perPage=${perPage}&filter=${filter}`
-            : `/user/orders?login=${login}&page=${page}&perPage=${perPage}&filter=.`).then((res) => {
+        server.post(
+            "/user/orders",
+            {
+                login,
+                page,
+                perPage,
+                filters: filter,
+            }
+            ).then((res) => {
             setTotal(res.data.count);
             setOrders(buildData(res.data.result));
         }).catch((e) => {
