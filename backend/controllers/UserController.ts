@@ -37,9 +37,7 @@ export default class UserController extends BaseController {
         } = this.req.body;
         const query: Query = {};
         const skip = (Number(page) - 1) * Number(perPage);
-        const limit = skip;
-
-        // @ts-ignore
+        const limit = perPage;
         // eslint-disable-next-line guard-for-in,no-restricted-syntax
         for (const key in filters) {
             switch (key) {
@@ -53,23 +51,18 @@ export default class UserController extends BaseController {
                     query.status = { $regex: filters[key], $options: "i" };
                     break;
                 case "date":
-                    query.date = { $gte: filters[key].from, $lte: filters[key].to };
+                    query.date = { $gte: new Date(filters[key].from), $lte: new Date(filters[key].to) };
                     break;
                 default:
                     query["material.count"] = { $gte: filters[key].from, $lte: filters[key].to };
                     break;
             }
         }
-
         const currentUser = await user.findOne({ login }, { orders: 1, _id: 0 });
-
         if (!currentUser) throw new Error("No user found");
-
         // eslint-disable-next-line no-underscore-dangle
         query._id = { $in: currentUser.orders };
-
         const orders = await order.aggregate<IOrder>([{ $match: query }]).skip(skip).limit(limit);
-
         return {
             count: currentUser.orders.length,
             result: orders.map((userOrder: IOrder) => {
@@ -86,7 +79,6 @@ export default class UserController extends BaseController {
 
         const currentUser = await user.findOne({ login }, { _id: 1 });
         if (!currentUser) throw new Error("No user found");
-
         const receptionOrders = await order.aggregate(
             [{ $match: { "reception.address": { $regex: reception }, status: { $in: ["Created", "For export"] } } },
                 { $group: { _id: { reception: "$reception.address" }, total: { $sum: "$material.count" } } }]
@@ -116,7 +108,6 @@ export default class UserController extends BaseController {
             // eslint-disable-next-line no-underscore-dangle
             users: [currentUser._id],
         });
-
         if (!res) throw new Error("Creation failed");
         // eslint-disable-next-line no-underscore-dangle
         await user.updateOne({ _id: currentUser._id }, { $push: { orders: res._id } });

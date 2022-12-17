@@ -56,7 +56,12 @@ const orderSchema = new Schema<IOrder>({
         required: true,
     },
     history: {
-        type: [{ type: Schema.Types.ObjectId }],
+        type: [{
+            type: {
+                status: Schema.Types.String,
+                date: Date,
+            },
+        }],
         required: true,
     },
 });

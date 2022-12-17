@@ -644,7 +644,7 @@
 			}
 		},
 		"/api/user/orders": {
-			"get": {
+			"post": {
 				"operationId": "Orders",
 				"responses": {
 					"200": {
@@ -828,7 +828,7 @@
 			}
 		},
 		"/api/admin/import": {
-			"get": {
+			"post": {
 				"operationId": "Import",
 				"responses": {
 					"200": {

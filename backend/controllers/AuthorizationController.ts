@@ -34,7 +34,6 @@ export default class AuthorizationController extends BaseController {
         const res = await user.find(query);
 
         if (res.length > 0) return {};
-
         await user.create({
             email,
             firstName,
@@ -44,7 +43,6 @@ export default class AuthorizationController extends BaseController {
             orders: [],
             role: "User",
         });
-
         return {};
     }
 }
