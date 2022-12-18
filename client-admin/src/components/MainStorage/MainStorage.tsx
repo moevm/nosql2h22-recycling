@@ -60,7 +60,7 @@ export const MainStorage = () => {
                     date:{
                         from:startDate,
                         to: finishDate,
-                    }}  ,page: page, perPage:perPage})
+                    }}  ,page: page, perPage:"All"})
             }
         )
             .then(response => response.json())
