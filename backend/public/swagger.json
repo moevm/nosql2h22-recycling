@@ -828,7 +828,7 @@
 			}
 		},
 		"/api/admin/import": {
-			"get": {
+			"post": {
 				"operationId": "Import",
 				"responses": {
 					"200": {
