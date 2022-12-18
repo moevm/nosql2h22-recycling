@@ -6,7 +6,7 @@ import {CSVLink} from 'react-csv';
 import useDebounce from "./Reception.hooks";
 
 export const Receptions = () => {
-    const [searchParameter, setSearchParameter] = useState<string>('Reception')
+    const [searchParameter, setSearchParameter] = useState<string>("Reception")
     const [currentData, setData] = useState([]);
     const [searchInput, setSearchInput] = useState("");
     const [isSearching, setIsSearching] = useState(false);
@@ -129,7 +129,7 @@ export const Receptions = () => {
                             from: lowerPaper,
                             to: upperPaper
                         },
-                    }, mainFilter: "", mainFilterValue: "", page: page, perPage:perPage})
+                    }, mainFilter: searchParameter, mainFilterValue: "", page: page, perPage:"All"})
                 }
             )
                 .then(response => response.json())

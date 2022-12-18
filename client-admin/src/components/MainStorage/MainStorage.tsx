@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from 'react';
-import {Button, Form, Modal} from 'react-bootstrap';
+import {Button, Card, Form, Modal} from 'react-bootstrap';
 import {ratios, metal, paper, plastic, glass, organic, battery} from "./MainStorage.helpers";
 import {TableData} from "../TableData/TableData";
 import {columns, header} from "./MainStorage.content"
@@ -33,7 +33,9 @@ export const MainStorage = () => {
     const [ordersFile, setOrdersFile] = useState("");
     const [ordersJSON, setOrdersJSON] = useState({});
 
+    const [errorVisibility, setVisible] = useState(false);
 
+    const [errorText,setErrorText] = useState("");
 
     const radioHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSelectedType(event.target.value);
@@ -58,7 +60,7 @@ export const MainStorage = () => {
                     date:{
                         from:startDate,
                         to: finishDate,
-                    }}  ,page: page, perPage:perPage})
+                    }}  ,page: page, perPage:"All"})
             }
         )
             .then(response => response.json())
@@ -178,16 +180,21 @@ export const MainStorage = () => {
         let reader = new FileReader();
         let file = e.target.files[0];
 
-        reader.addEventListener('load', (event) => {
-            try{
-                // @ts-ignore
-                setOrdersJSON(JSON.parse(event.target.result));
-            }
-            catch (e){
-                alert("Wrong");
-            }
-        });
-        reader.readAsText(file);
+        if(file){
+            reader.addEventListener('load', (event) => {
+                try{
+                    // @ts-ignore
+                    setOrdersJSON(JSON.parse(event.target.result));
+                }
+                catch (e){
+                    setVisible(true);
+                    setErrorText("Orders files is not valid.");
+                }
+            });
+            reader.readAsText(file);
+        }else{
+            setOrdersJSON({});
+        }
     }
 
     const handleUsers = (e:any) => {
@@ -196,22 +203,25 @@ export const MainStorage = () => {
         let reader = new FileReader();
         let file = e.target.files[0];
 
-        reader.addEventListener('load', (event) => {
-            try{
-                // @ts-ignore
-                setUserJSON(JSON.parse(event.target.result));
-            }
-            catch (e){
-                alert("Wrong");
-            }
-        });
-        reader.readAsText(file);
+        if(file){
+            reader.addEventListener('load', (event) => {
+                try{
+                    // @ts-ignore
+                    setUserJSON(JSON.parse(event.target.result));
+                }
+                catch (e){
+                    setVisible(true);
+                    setErrorText("Users files is not valid.");
+                }
+            });
+            reader.readAsText(file);
+        }else{
+            setUserJSON({});
+        }
     }
 
     const sendObjects = () => {
-        console.log(userJSON);
-        console.log("======================================================");
-        console.log(ordersJSON);
+        if(Object.keys(ordersJSON).length !== 0 && Object.keys(userJSON).length !== 0){
             fetch('http://localhost:8000/api/admin/import', {
                     method:"POST",
                     headers: new Headers({
@@ -226,16 +236,25 @@ export const MainStorage = () => {
             )
                 .then(response => response.json())
                 .then(message => {
-                    if(message !== "OK"){
-                        alert("плохо")
+                    if(message.status === "neOK"){
+                        alert("Import hasn't been finished, check validity of your files.");
+                    }else{
+                        alert("Successful import!");
                     }
                 })
                 .catch(err => console.error(err));
+        }else{
+            setVisible(true);
+            setErrorText("You should send 2 files.")
+        }
     }
 
     return (
         <>
-            <Modal show={show} onHide={() => { setShow(false) }}>
+            <Modal show={show} onHide={() => {
+                setShow(false);
+                setVisible(false);
+            }}>
                 <Modal.Header closeButton>
                     <Modal.Title>File import.</Modal.Title>
                 </Modal.Header>
@@ -257,6 +276,17 @@ export const MainStorage = () => {
                         />
                     </>
                 </Modal.Body>
+                {
+                    errorVisibility && <Card bg='danger' text='white'>
+                        <Card.Body>
+                            <Card.Title>File import has failed</Card.Title>
+                            <Card.Text>
+                                {errorText}
+                            </Card.Text>
+                        </Card.Body>
+
+                    </Card>
+                }
                 <Modal.Footer>
                     <Button onClick={sendObjects} variant="primary">Submit</Button>
                     <Button onClick={()=>{
