@@ -5,8 +5,6 @@ services:
     container_name: "recycling_db"
     image: mongo:5.0
     restart: unless-stopped
-    ports:
-      - "27018:27017"
     volumes:
       - mongo_data:/var/lib/mongo/data
 
